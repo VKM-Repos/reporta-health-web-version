@@ -21,7 +21,9 @@ const Header = () => {
 
         <div className="relative">
             {/* contact us btn */}
+
             <Link href="login"><button className='hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm  leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300'>Login</button></Link>
+
   
             {/* hamburger button*/}
             <div className="mobile absolute right-5 lg:hidden">
