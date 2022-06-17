@@ -21,8 +21,8 @@ const Header = () => {
             <a
               className={
                 router.pathname === "/"
-                  ? "text-accent mx-4"
-                  : "tracking-wide mx-4 hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  ? "text-accent mx-4 font-extrabold"
+                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Home
@@ -32,8 +32,8 @@ const Header = () => {
             <a
               className={
                 router.pathname === "/about"
-                  ? "text-accent mx-4"
-                  : "tracking-wide mx-4 hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  ? "text-accent mx-4 font-extrabold"
+                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               About
@@ -43,8 +43,8 @@ const Header = () => {
             <a
               className={
                 router.pathname === "/report-facility"
-                  ? "text-accent mx-4"
-                  : "tracking-wide mx-4 hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  ? "text-accent mx-4 font-extrabold"
+                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Report a facility
@@ -54,8 +54,8 @@ const Header = () => {
             <a
               className={
                 router.pathname === "/register-facility"
-                  ? "text-accent mx-4"
-                  : "tracking-wide mx-4 hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  ? "text-accent mx-4 font-extrabold"
+                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Register a facility

@@ -56,7 +56,7 @@ const SearchForm = () => {
           </div>
         </div>
         {/* search input */}
-        <div className="lg:col-span-3 flex flex-row items-center justify-start lg:w-[39rem] px-4 rounded-md bg-gray">
+        <div className="lg:col-span-3 flex flex-row items-center justify-start lg:w-[39rem] px-2 lg:px-4 rounded-md bg-gray">
           <span>
             <svg
               width="24"
