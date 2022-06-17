@@ -1,3 +1,4 @@
+import Landing from "@components/Landing/Landing";
 import Layout from "@components/Layout/Layout";
 import PropTypes from "prop-types";
 
@@ -10,7 +11,7 @@ export default function Home() {
           description: "give any description here",
         }}
       >
-        <span className="text-4xl underline">Hello world</span>
+        <Landing />
       </Layout>
     </div>
   );
