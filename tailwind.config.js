@@ -22,6 +22,10 @@ module.exports = {
         sans: ["Plus Jakarta Sans", ...defaultTheme.fontFamily.serif],
         jarkata: ["Plus Jakarta Sans"],
       },
+      width: {
+        '128': '32rem',
+        '120': '29rem'
+      }
     },
   },
   plugins: [],

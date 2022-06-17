@@ -11,7 +11,25 @@
 }
 
 
+.login-image {
+  background-image: url('../assets/images/login-reg-pattern.png');
+  background-size: cover;
+}
 
+::placeholder {
+    font: 16px/400 inherit;
+}
+.input-email {
+  width: 32rem;
+}
+
+.input-password::placeholder {
+  font-size: 50px;
+  font-weight:400;
+  font-family: jarkata;
+  letter-spacing: 0;
+  align-items: center;
+}
 .hamburger span,
 .hamburger span:before,
 .hamburger span:after {
