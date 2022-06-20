@@ -27,7 +27,7 @@ const SearchHeader = () => {
   };
   return (
     <header>
-      <nav className=" w-[95vw] mx-auto flex flex-row items-start justify-between px-6 py-4 ">
+      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between  px-6 py-4 ">
         {/* logo */}
         <Link href="/">
           <a className="lg:px-2 text-left text-sm font-extrabold text-primary ">
@@ -36,21 +36,19 @@ const SearchHeader = () => {
         </Link>
 
         {/* nav links */}
-        <div className="basis-4/6">
-          <div className="lg:max-w-[12rem] flex flex-col">
+        <div className="hidden lg:block lg:basis-4/6 z-30">
+          <div className="lg:max-w-[12rem] flex flex-col relative">
             <label
-              className="cursor-pointer flex flex-row items-center justify-start text-xs lg:text-sm text-secondary "
+              className="cursor-pointer flex flex-row items-center  justify-start text-xs lg:text-sm text-secondary "
               onClick={toggling}
             >
               {" "}
-              select location <AiOutlineDown className="ml-4 text-black" />{" "}
+              {selectedOption || "Abuja"}, Nigeria
+              <AiOutlineDown className="ml-4 text-black" />{" "}
             </label>
-            <div className="relative flex flex-col ">
-              <div className="flex py-2 items-start text-xs lg:text-sm">
-                {selectedOption || "Abuja"}
-              </div>
+            <div className="relative flex flex-col">
               {isOpen && (
-                <div className="absolute left-0 w-full h-[7rem] shadow-xl bg-white overflow-auto">
+                <div className="fixed px-2 py-4 min-w-[15rem] max-h-[10rem] shadow-xl bg-white overflow-auto">
                   <div className=" py-4 text-secondary text-xs lg:text-sm">
                     {options.map((option) => (
                       <span
@@ -82,7 +80,7 @@ const SearchHeader = () => {
             {showSidebar ? (
               <a
                 onClick={() => setShowSidebar(!showSidebar)}
-                className="fixed hamburger active z-5 0"
+                className="fixed hamburger active z-50"
               >
                 <span></span>
               </a>
