@@ -34,10 +34,10 @@ export default function registerFacility(props) {
             <div className="flex gap-5 ">
                 <Button 
                     onClick={props.onClose}
-                    className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300" >
+                    className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm" >
                         Cancel</Button>
 
-                <Button className="hidden text-white  bg-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300"  >Proceed</Button>
+                <Button className="hidden text-white  bg-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm"  >Proceed</Button>
             </div>
         </div>
     </div>
