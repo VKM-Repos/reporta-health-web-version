@@ -77,7 +77,7 @@ const Header = () => {
             {showSidebar ? (
               <a
                 onClick={() => setShowSidebar(!showSidebar)}
-                className="fixed hamburger active z-5 0"
+                className="fixed hamburger active z-50"
               >
                 <span></span>
               </a>
