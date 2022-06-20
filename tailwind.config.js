@@ -23,7 +23,7 @@ module.exports = {
         jarkata: ["Plus Jakarta Sans"],
       },
       width: {
-        '128': '32rem',
+        '128': '33rem',
         '120': '29rem'
       }
     },

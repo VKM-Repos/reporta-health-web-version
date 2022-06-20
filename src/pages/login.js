@@ -26,17 +26,17 @@ export default function login() {
   return (
     <div className="max-w-screen max-h-screen flex">
 
-      <div className=" hidden lg:block login-image w-6/12 h-screen bg-accent"></div>
+      <div className="hidden lg:block login-image w-6/12 h-screen bg-accent"></div>
 
 
-      <div className="flex flex-col justify-center mx-auto">
-        <h2 className="text-4xl font-bold mt-14">Login.</h2>
+      <div className="flex flex-col justify-center mx-auto px-10 sm:px-5">
+        <h2 className="text-4xl font-bold mt-20">Login.</h2>
         <p className="text-secondary mt-3 mb-10">Welcome back to your account</p>
         <label className="mb-3">Email</label>
         <Input
         type="text"
         placeholder="Janedoe@gmail.com"
-        className="px-4 py-4 bg-gray outline-none  sm:w-128 w-96 rounded-md"
+        className="px-4 py-4 bg-gray outline-none  w-128 rounded-md"
         onChange={handleChange}
         value={formData.email}
          />
@@ -46,7 +46,7 @@ export default function login() {
         <Input
         type={!showPasword ? 'password' : 'text' }
         placeholder="......."
-        className="px-4 py-4  bg-gray outline-none sm:w-120 w-80 rounded-md  input-password"
+        className="px-4 py-4  bg-gray outline-none w-120  rounded-md  input-password"
         onChange={handleChange}
         value={formData.password}
          />
@@ -54,7 +54,7 @@ export default function login() {
         </div>
          <p className="text-right mt-4 mb-14 text-sm">Forgot password? <a href="#" className="text-primary">Reset it</a> </p>
          <Button className="bg-primary text-white rounded-md py-4 px-4" onClick={handleClick}>Login</Button>
-         <p className="mt-5 text-center text-sm ">Don’t have an account yet? <Link href="register-facility" ><a className="text-primary">Sign up</a></Link> </p>
+         <p className="mt-5 text-center text-sm ">Don’t have an account yet? <Link href="signup" ><a className="text-primary">Sign up</a></Link> </p>
       </div>
     </div>
   )
