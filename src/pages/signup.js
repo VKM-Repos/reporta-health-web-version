@@ -93,7 +93,7 @@ export default function login() {
          <Button className="text-xs text-secondary" onClick={handleShowPassword}>Show</Button>
         </div>
          <p className="text-right mt-4 mb-4 text-sm">Forgot password? <a href="#" className="text-primary">Reset it</a> </p>
-         <Button className="bg-primary text-white rounded-md py-4 px-4" onClick={handleClick}>Create account</Button>
+         <Button className="bg-primary text-white hover:scale-95 rounded-md py-4 px-4" onClick={handleClick}>Create account</Button>
          <p className="mt-3 mb-4 text-center text-sm ">Already have an account? <Link href="login" ><a className="text-primary">Login</a></Link> </p>
       </div>
     </div>
