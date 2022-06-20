@@ -54,7 +54,7 @@ export default function login() {
         </div>
          <p className="text-right mt-4 mb-14 text-sm">Forgot password? <a href="#" className="text-primary">Reset it</a> </p>
          <Button className="bg-primary text-white rounded-md py-4 px-4" onClick={handleClick}>Login</Button>
-         <p className="mt-5 text-center text-sm ">Don’t have an account yet? <Link href="register-facility" ><a className="text-primary">Sign up</a></Link> </p>
+         <p className="mt-5 text-center text-sm ">Don’t have an account yet? <Link href="signup" ><a className="text-primary">Sign up</a></Link> </p>
       </div>
     </div>
   )
