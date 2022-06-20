@@ -6,10 +6,10 @@ import SearchForm from "@components/Forms/SearchForm/SearchForm";
 
 const Landing = () => {
   return (
-    <section className="fixed top-0 w-[100vw] min-h-screen font-jarkata">
-      <div className="w-full lg:w-2/3 bg-background min-h-screen lg:pt-[5%] pt-[15%]">
+    <section className="-mt-[20%] w-[100vw] font-jarkata">
+      <div className="w-full lg:w-2/3 bg-background h-full py-[20%]">
         <div className="w-5/6 mx-auto relative flex flex-col items-start justify-center ">
-          <h1 className="text-black font-extrabold lg:text-[3.3rem] md:text-[3.5rem] text-[2.5rem] tracking-normal leading-tight mt-4 lg:mt-12">
+          <h1 className="text-black font-extrabold lg:text-[3.3rem] md:text-[3.5rem] text-[2.6rem] tracking-normal leading-tight mt-4 lg:mt-12">
             Find healthcare <br className="hidden lg:block" /> facilites close{" "}
             <br className="hidden lg:block" /> to you.
           </h1>
@@ -19,7 +19,7 @@ const Landing = () => {
             to the supervising authorities.
           </p>
           {/* search bar */}
-          <div className="bg-transparent my-6 z-50">
+          <div className="bg-transparent my-12 z-30">
             <SearchForm />
           </div>
 
@@ -32,7 +32,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <div className="hidden z-30 lg:block pt-[10%] absolute top-0  lg:-right-[5%]">
+      <div className="hidden z-20 lg:block pt-[10%] absolute top-0  lg:-right-[5%]">
         <Image src={landing} alt="landing" />
       </div>
     </section>

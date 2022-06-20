@@ -6,11 +6,11 @@ export default function Home() {
     <div className="w-full bg-transparent relative overflow-hidden select-none  z-2">
       <Layout
         pageMeta={{
-          title: "oops - Page not found",
+          title: "Reporta Health - Search and report a facility",
           description: "give any description here",
         }}
       >
-        <h1>Page not found</h1>
+        <h1>About Reporta health</h1>
       </Layout>
     </div>
   );

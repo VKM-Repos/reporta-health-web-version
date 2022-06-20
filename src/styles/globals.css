@@ -3,14 +3,10 @@
 @tailwind utilities;
 
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-}
-
 
 * {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
@@ -37,11 +33,6 @@ body {
   bottom: -7px;
 }
 
-/*
-#hamburger span, #hamburger span:before, #hamburger span:after {
-  transition: all 200ms ease-in-out;
-}
-*/
 .hamburger span,
 .hamburger span:before,
 .hamburger span:after {

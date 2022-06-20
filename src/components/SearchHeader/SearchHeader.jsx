@@ -1,13 +1,33 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import { AiOutlineDown } from "react-icons/ai";
 
-const Header = () => {
+const SearchHeader = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
+
+  const options = [
+    "Abuja",
+    "Lagos",
+    "Calabar",
+    "Kaduna",
+    "Port Harcourt",
+    "Benin City",
+  ];
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const toggling = () => setIsOpen(!isOpen);
+
+  const onOptionClicked = (value) => () => {
+    setSelectedOption(value);
+    setIsOpen(false);
+  };
   return (
-    <header className="w-full relative bg-transparent z-50">
-      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between px-6 py-4 ">
+    <header>
+      <nav className=" w-[95vw] mx-auto flex flex-row items-start justify-between px-6 py-4 ">
         {/* logo */}
         <Link href="/">
           <a className="lg:px-2 text-left text-sm font-extrabold text-primary ">
@@ -16,59 +36,44 @@ const Header = () => {
         </Link>
 
         {/* nav links */}
-        <div className="hidden lg:basis-2/4 lg:flex flex-row items-center justify-center mr-16 text-seconary text-sm">
-          <Link href="/">
-            <a
-              className={
-                router.pathname === "/"
-                  ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
-              }
+        <div className="basis-4/6">
+          <div className="lg:max-w-[12rem] flex flex-col">
+            <label
+              className="cursor-pointer flex flex-row items-center justify-start text-xs lg:text-sm text-secondary "
+              onClick={toggling}
             >
-              Home
-            </a>
-          </Link>
-          <Link href="/about">
-            <a
-              className={
-                router.pathname === "/about"
-                  ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
-              }
-            >
-              About
-            </a>
-          </Link>
-          <Link href="/report-facility">
-            <a
-              className={
-                router.pathname === "/report-facility"
-                  ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
-              }
-            >
-              Report a facility
-            </a>
-          </Link>
-          <Link href="/register-facility">
-            <a
-              className={
-                router.pathname === "/register-facility"
-                  ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
-              }
-            >
-              Register a facility
-            </a>
-          </Link>
+              {" "}
+              select location <AiOutlineDown className="ml-4 text-black" />{" "}
+            </label>
+            <div className="relative flex flex-col ">
+              <div className="flex py-2 items-start text-xs lg:text-sm">
+                {selectedOption || "Abuja"}
+              </div>
+              {isOpen && (
+                <div className="absolute left-0 w-full h-[7rem] shadow-xl bg-white overflow-auto">
+                  <div className=" py-4 text-secondary text-xs lg:text-sm">
+                    {options.map((option) => (
+                      <span
+                        className="flex flex-col px-1 py-1 hover:bg-background"
+                        onClick={onOptionClicked(option)}
+                        key={Math.random()}
+                      >
+                        {option}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="relative">
           {/* contact us btn */}
 
-          <Link href="login">
+          <Link href="report-facility">
             <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300">
-              Login
+              Report a facility
             </button>
           </Link>
 
@@ -164,4 +169,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default SearchHeader;
