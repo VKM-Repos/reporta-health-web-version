@@ -6,17 +6,24 @@ import Button from "../components/Button/Button"
 export default function login() {
   const [formData, setFormData] = useState(
     {
-      email: "",
-      password: ""
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: ""
     }
     )
     const [showPasword, setShowPassword] = useState(false)
-    function handleChange(){
-      console.log("formData")
+    function handleChange(event){
+        const {type, name, value, checked} = event.target
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: type === "checkbox" ? checked : value 
+        }))
     }
-
     function handleClick() {
-      console.log("handleClick")
+        alert("Please wait...")
+      console.log(formData)
     }
 
     function handleShowPassword(){
@@ -37,7 +44,8 @@ export default function login() {
         placeholder="Jane"
         className="px-4 py-4 bg-gray outline-none  w-64 rounded-md"
         onChange={handleChange}
-        value={formData.email}
+        name="firstName"
+        value={formData.firstName}
          />
         </div>
 
@@ -47,8 +55,9 @@ export default function login() {
         type="text"
         placeholder="Doe"
         className="px-4 py-4 bg-gray outline-none w-64 rounded-md"
+        name="lastName"
         onChange={handleChange}
-        value={formData.email}
+        value={formData.lastName}
          />
         </div>
         </div>
@@ -57,6 +66,7 @@ export default function login() {
         type="email"
         placeholder="Janedoe@gmail.com"
         className="px-4 py-4 bg-gray outline-none sm:w-128 rounded-md"
+        name="email"
         onChange={handleChange}
         value={formData.email}
          />
@@ -65,8 +75,9 @@ export default function login() {
         type="text"
         placeholder="+234"
         className="px-4 py-4 bg-gray outline-none w-128 rounded-md"
+        name="phone"
         onChange={handleChange}
-        value={formData.email}
+        value={formData.phone}
          />       
 
         <label className="mt-5 mb-3">Password</label>
@@ -75,6 +86,7 @@ export default function login() {
         type={!showPasword ? 'password' : 'text' }
         placeholder="......."
         className="px-4 py-4  bg-gray outline-none rounded-md sm:w-120 w-80 input-password"
+        name="password"
         onChange={handleChange}
         value={formData.password}
          />
