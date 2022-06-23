@@ -143,17 +143,16 @@ const Header = () => {
                 Report a facility
               </a>
             </Link>
-            <Link href="/register-facility">
-              <a
+              <button
                 className={
                   router.pathname === "/register-facility"
                     ? "my-2"
                     : "tracking-wide leading-loose my-2"
                 }
+                onClick={()=>{setShowSidebar(!showSidebar); setShowMOdal(true)}}
               >
                 Register a facility
-              </a>
-            </Link>
+              </button>
           </div>
 
           <div className="mt-12 py-2 px-4 w-full">
