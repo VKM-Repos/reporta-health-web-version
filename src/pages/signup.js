@@ -29,20 +29,9 @@ export default function Signup() {
   }
 
   return (
-    <div
-      className="max-w-screen max-h-screen flex overflow-hidden
-    
-    
-    
-    
-    
-    
-    
-    
-    "
-    >
-      <div className=" hidden lg:block login-image w-6/12 h-screen bg-accent "></div>
-      <div className="flex flex-col justify-center mx-auto px-10 sm:px-5">
+    <div className="max-w-screen max-h-screen flex">
+      <div className=" hidden lg:block login-image w-6/12 h-screen bg-accent"></div>
+      <div className="flex flex-col justify-center mx-auto py-10 px-10 sm:px-5">
         <h2 className="text-4xl font-bold mt-40 sm:mt-5">Create account.</h2>
         <p className="text-secondary mt-3 mb-7">
           Enter a few details to create your account
@@ -115,7 +104,7 @@ export default function Signup() {
           </a>{" "}
         </p>
         <Button
-          className="bg-primary text-white rounded-md py-4 px-4"
+          className="bg-primary text-white hover:scale-95 rounded-md py-4 px-4"
           onClick={handleClick}
         >
           Create account

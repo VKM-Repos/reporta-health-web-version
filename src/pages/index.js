@@ -1,6 +1,8 @@
+import React, { useState } from "react"
 import Landing from "@components/Landing/Landing";
 import Layout from "@components/Layout/Layout";
 import PropTypes from "prop-types";
+
 
 export default function Home() {
   return (
@@ -13,6 +15,7 @@ export default function Home() {
       >
         <Landing />
       </Layout>
+
     </div>
   );
 }
