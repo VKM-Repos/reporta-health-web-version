@@ -71,8 +71,8 @@ export default function Stepper(props) {
     return (
         <div className="flex  items-center justify-between">
             <div className="flex justify-center">
-                <button onClick={() => props.handleClick() } className="text-xs flex gap-1 justify-center items-end" >
-                    <svg width="8" height="14" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg" >
+                <button onClick={() => props.handleClick() } className="text-xs lg:text-sm flex gap-1 justify-center items-center" >
+                    <svg className="mr-4" width="8" height="14" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg" >
                     <path d="M7.49954 14.6L2.06621 9.16669C1.42454 8.52502 1.42454 7.47502 2.06621 6.83336L7.49954 1.40002" stroke="#242F9B" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg> 
                 Back
@@ -81,7 +81,7 @@ export default function Stepper(props) {
 
 
 
-            <div className="py-5 flex lg:w-80 w-40 justify-between items-center"> 
+            <div className="py-5 flex lg:w-1/3 w-1/2 justify-between items-center"> 
             {displaySteps}
             </div>
         </div>

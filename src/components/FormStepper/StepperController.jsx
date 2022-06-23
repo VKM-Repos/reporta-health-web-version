@@ -4,7 +4,7 @@ import Button from "@components/Button/button"
 
 export default function StepperController(props) {
     return (
-        <div className="grid grid-cols-5 gap-5 ">
+        <div className="my-16 grid grid-cols-5 gap-5 ">
             <Button 
                 onClick={props.onClose}
                 className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2" >

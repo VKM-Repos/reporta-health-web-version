@@ -50,8 +50,8 @@ export default function RegisterFacility(props) {
     }
 
   return (
-    <div className="fixed lg:p-40  inset-0 bg-black bg-opacity-30 backdrop-blur-md flex justify-center items-center">
-        <div className="bg-white lg:my-40 p-2 px-5 lg:px-20 rounded-md lg:w-1/2 w-[90vw] h-[98vh] overflow-y-auto ">
+    <div className="fixed  top-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-md flex justify-center items-center">
+        <div className="bg-white px-5 py-4 lg:px-10 rounded-md lg:w-2/5 w-[90vw] h-[80vh] overflow-y-auto ">
             <div>
                 <Stepper handleClick={handleClick} steps={steps} currentStep={currentStep} />
             </div>
