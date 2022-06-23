@@ -5,12 +5,12 @@ import {stepperContext} from "@context/StepperContext"
 import StepperController from "@components/FormStepper/StepperController"
 import Stepper from "@components/FormStepper/Stepper"
 
-import BasicInfoFrom from "@components/Facility/steps/BasicInfoForm"
-import AddressForm from "@components/Facility/steps/AddressForm"
-import OwnerShipForm from "@components/Facility/steps/OwnerShipForm"
-import OperationForm from "@components/Facility/steps/OperationForm"
+import BasicInfoFrom from "@components/Facility/registerFacilitySteps/BasicInfoForm"
+import AddressForm from "@components/Facility/registerFacilitySteps/AddressForm"
+import OwnerShipForm from "@components/Facility/registerFacilitySteps/OwnerShipForm"
+import OperationForm from "@components/Facility/registerFacilitySteps/OperationForm"
 
-export default function registerFacility(props) {
+export default function RegisterFacility(props) {
     const [currentStep, setCurrentStep] = useState(1)
     const [facilityData, setFacilityData] = useState('')
     const [addressData, setAddressData] = useState([])
