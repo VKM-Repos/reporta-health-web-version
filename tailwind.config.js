@@ -16,6 +16,8 @@ module.exports = {
       secondary: "#797979",
       accent: "#2E0249",
       gray: "#F0F0F0",
+      error: "#FF0000",
+      success: "#00FF00"
     },
     extend: {
       fontFamily: {
