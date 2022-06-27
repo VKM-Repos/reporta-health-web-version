@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
+import { useLogin } from "@hooks/useLogin.hook";
+import { useLoginFormValidation } from "@hooks/formValidations/loginFormValidation.schema";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import { AiOutlineWarning } from "react-icons/ai";
+
 import Input from "@components/Input/Input";
 import Button from "@components/Button/Button";
 
 export default function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [showPasword, setShowPassword] = useState(false);
-  function handleChange() {
-    console.log("formData");
-  }
+  const { mutate, isLoading } = useLogin();
+  const onSubmitHandler = (values) => {
+    mutate(values);
+  };
 
-  function handleClick() {
-    console.log("handleClick");
-  }
+  const formik = useLoginFormValidation(onSubmitHandler);
+
+  const [showPasword, setShowPassword] = useState(false);
 
   function handleShowPassword() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -26,36 +27,75 @@ export default function Login() {
     <div className="max-w-screen max-h-screen flex">
       <div className="hidden lg:block login-image w-6/12 h-screen bg-accent"></div>
 
-      <div className="flex flex-col justify-center mx-auto px-10 sm:px-5">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col justify-center mx-auto px-10 sm:px-5"
+      >
         <h2 className="text-4xl font-bold mt-20">Login.</h2>
         <p className="text-secondary mt-3 mb-10">
           Welcome back to your account
         </p>
-        <label className="mb-3">Email</label>
+        <label htmlFor="email" className="mb-3">
+          Email
+        </label>
         <Input
-          type="text"
           placeholder="Janedoe@gmail.com"
-          className="px-4 py-4 bg-gray outline-none  w-128 rounded-md"
-          onChange={handleChange}
-          value={formData.email}
+          id="email"
+          name="email"
+          type="email"
+          className={
+            formik.touched.email && formik.errors.email
+              ? "px-4 py-4 bg-gray outline-none  w-128 rounded-md border border-danger leading-tight focus:outline-none focus:border-danger animate-wiggle"
+              : "px-4 py-4 bg-gray outline-none  w-128 rounded-md "
+          }
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
         />
+        {/* email error div */}
+        {formik.touched.email && formik.errors.email ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {formik.errors.email}
+          </div>
+        ) : null}
 
-        <label className="mt-5 mb-3">Password</label>
-        <div className="fex bg-gray rounded-md">
+        <label htmlFor="password" className="mt-5 mb-3">
+          Password
+        </label>
+        <div className="flex bg-gray rounded-md">
           <Input
+            id="password"
+            name="password"
             type={!showPasword ? "password" : "text"}
             placeholder="......."
-            className="px-4 py-4  bg-gray outline-none w-120  rounded-md  input-password"
-            onChange={handleChange}
-            value={formData.password}
+            className={
+              formik.touched.password && formik.errors.password
+                ? "px-4 py-4  bg-gray outline-none w-120  rounded-md border border-danger leading-tight focus:outline-none focus:border-danger animate-wiggle input-password"
+                : "px-4 py-4  bg-gray outline-none w-120 "
+            }
+            required
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
           />
-          <Button
+          <button
+            type="button"
             className="text-xs text-secondary"
             onClick={handleShowPassword}
           >
             {!showPasword ? "Show" : "Hide"}
-          </Button>
+          </button>
         </div>
+        {/* email error div */}
+        {formik.touched.password && formik.errors.password ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {formik.errors.password}
+          </div>
+        ) : null}
         <p className="text-right mt-4 mb-14 text-sm">
           Forgot password?{" "}
           <a href="#" className="text-primary">
@@ -63,10 +103,11 @@ export default function Login() {
           </a>{" "}
         </p>
         <Button
+          onClick={formik.handleSubmit}
           className="bg-primary text-white rounded-md py-4 px-4"
-          onClick={handleClick}
+          type="submit"
         >
-          Login
+          {isLoading ? <LoadingSpinner text="Logging you in..." /> : "Login"}
         </Button>
         <p className="mt-5 text-center text-sm ">
           Don&apos;t have an account yet?{" "}
@@ -74,7 +115,7 @@ export default function Login() {
             <a className="text-primary">Sign up</a>
           </Link>{" "}
         </p>
-      </div>
+      </form>
     </div>
   );
 }

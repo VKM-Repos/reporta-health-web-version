@@ -16,6 +16,7 @@ module.exports = {
       secondary: "#797979",
       accent: "#2E0249",
       gray: "#F0F0F0",
+      danger: "#CA0B00",
     },
     extend: {
       fontFamily: {
@@ -23,10 +24,10 @@ module.exports = {
         jarkata: ["Plus Jakarta Sans"],
       },
       width: {
-        '128': '33rem',
-        '130': '36rem',
-        '120': '29rem'
-      }
+        128: "33rem",
+        130: "36rem",
+        120: "29rem",
+      },
     },
   },
   plugins: [],
