@@ -2,16 +2,22 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal"
-
+import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
+import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 
 const Header = () => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [showMOdal, setShowMOdal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   const closeModal = () => {
-    setShowMOdal(false)
-  }
+    setShowModal(false);
+  };
+
+  const [showReportModal, setShowReportModal] = useState(false);
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+  };
 
   const router = useRouter();
   return (
@@ -48,23 +54,19 @@ const Header = () => {
               About
             </a>
           </Link>
-          <Link href="/report-facility">
-            <a
-              className={
-                router.pathname === "/report-facility"
-                  ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
-              }
-            >
-              Report a facility
-            </a>
-          </Link>
-          <button  
-          className= "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
-          onClick={()=>setShowMOdal(true)}
+
+          <button
+            className="tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+            onClick={() => setShowReportModal(true)}
           >
-            
-              Register a facility
+            Report a facility
+          </button>
+
+          <button
+            className="tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
+            onClick={() => setShowModal(true)}
+          >
+            Register a facility
           </button>
         </div>
 
@@ -132,27 +134,34 @@ const Header = () => {
                 About
               </a>
             </Link>
-            <Link href="/report-facility">
-              <a
-                className={
-                  router.pathname === "/report-facility"
-                    ? "my-2"
-                    : "tracking-wide leading-loose my-2"
-                }
-              >
-                Report a facility
-              </a>
-            </Link>
-              <button
-                className={
-                  router.pathname === "/register-facility"
-                    ? "my-2"
-                    : "tracking-wide leading-loose my-2"
-                }
-                onClick={()=>{setShowSidebar(!showSidebar); setShowMOdal(true)}}
-              >
-                Register a facility
-              </button>
+
+            <button
+              className={
+                router.pathname === "/report-facility"
+                  ? "my-2"
+                  : "tracking-wide leading-loose my-2"
+              }
+              onClick={() => {
+                setShowSidebar(!showSidebar);
+                setShowReportModal(true);
+              }}
+            >
+              Report a facility
+            </button>
+
+            <button
+              className={
+                router.pathname === "/register-facility"
+                  ? "my-2"
+                  : "tracking-wide leading-loose my-2"
+              }
+              onClick={() => {
+                setShowSidebar(!showSidebar);
+                setShowModal(true);
+              }}
+            >
+              Register a facility
+            </button>
           </div>
 
           <div className="mt-12 py-2 px-4 w-full">
@@ -164,7 +173,11 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <RegisterFacilityModal onClose={closeModal} visible={showMOdal} />
+      <RegisterFacilityModal onClose={closeModal} visible={showModal} />
+      <ReportFacilityModal
+        onClose={closeReportModal}
+        visible={showReportModal}
+      />
     </header>
   );
 };
