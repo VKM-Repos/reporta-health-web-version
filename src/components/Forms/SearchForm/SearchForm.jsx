@@ -24,7 +24,7 @@ const SearchForm = () => {
 
   return (
     <form className="">
-      <div className="w-[80vw] bg-white grid grid-cols-2 lg:grid-cols-5 gap-5 py-2 justify-items-stretch px-4">
+      <div className="w-[80vw] bg-white grid grid-cols-2 lg:grid-cols-5 gap-5 py-2 justify-items-stretch px-4 rounded-md">
         {/* select field */}
         <div className="lg:max-w-[12rem] flex flex-col">
           <label

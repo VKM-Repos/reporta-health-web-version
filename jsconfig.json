@@ -43,6 +43,9 @@
       "@assets/*": [
         "src/assets/*"
       ],
+      "@store/*": [
+        "src/store/*"
+      ],
       "@context/*": [
         "src/context/*"
       ]
