@@ -1,32 +1,10 @@
 import Link from "next/link";
-<<<<<<< HEAD
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import Input from "../components/Input/Input"
-import Button from "../components/Button/Button"
-
-
-export default function login() {
-  
-    const [showPasword, setShowPassword] = useState(false)
-    function handleChange(event){
-        const {type, name, value, checked} = event.target
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: type === "checkbox" ? checked : value 
-        }))
-    }
-    // function handleClick() {
-    //     alert("Please wait...")
-    //   console.log(formData)
-    // }
-=======
 import React, { useState } from "react";
 
 import { useCreateUser } from "@hooks/useCreateUser.hook";
 import { useUserSignupFormValidation } from "@hooks/formValidations/userSignupFormValidation.schema";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { AiOutlineWarning } from "react-icons/ai";
->>>>>>> 0b1dbbb1b0893a0f15bd13f9b7c8b8355a62f9d8
 
 import Input from "@components/Input/Input";
 import Button from "@components/Button/Button";
