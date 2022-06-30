@@ -109,7 +109,7 @@ export default function Stepper(props) {
         </button>{" "}
       </div>
 
-      <div className="py-5 flex w-1/2 lg:w-1/3 justify-between items-center">
+      <div className="py-5 flex w-1/2 lg:w-1/2 justify-between items-center">
         {displaySteps}
       </div>
     </div>
