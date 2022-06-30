@@ -28,18 +28,24 @@
 }
 
 ::placeholder {
-    font: 16px/400 inherit;
+  font: 16px/400 inherit;
 }
 .input-email {
-  width: 32rem;
+width: 32rem;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+  -webkit-box-shadow: 0 0 0 30px #F0F0F0 inset !important;
 }
 
 .input-password::placeholder {
-  font-size: 50px;
-  font-weight:400;
-  font-family: jarkata;
-  letter-spacing: 0;
-  align-items: center;
+font-size: 50px;
+font-weight:400;
+font-family: jarkata;
+letter-spacing: 0;
+align-items: center;
 }
 .hamburger span,
 .hamburger span:before,

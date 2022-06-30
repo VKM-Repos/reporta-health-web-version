@@ -42,7 +42,7 @@ export default function Login() {
           placeholder="Janedoe@gmail.com"
           id="email"
           name="email"
-          type="email"
+          type="text"
           className={
             formik.touched.email && formik.errors.email
               ? "px-4 py-4 bg-gray outline-none  w-128 rounded-md border border-danger leading-tight focus:outline-none focus:border-danger animate-wiggle"
@@ -64,17 +64,13 @@ export default function Login() {
         <label htmlFor="password" className="mt-5 mb-3">
           Password
         </label>
-        <div className="flex bg-gray rounded-md">
+        <div className={`flex bg-gray rounded-md ${formik.touched.password && formik.errors.password ? 'rounded-md border border-danger leading-tight focus:outline-none focus:border-danger animate-wiggle ' : ''}`}>
           <Input
             id="password"
             name="password"
             type={!showPasword ? "password" : "text"}
             placeholder="......."
-            className={
-              formik.touched.password && formik.errors.password
-                ? "px-4 py-4  bg-gray outline-none w-120  rounded-md border border-danger leading-tight focus:outline-none focus:border-danger animate-wiggle input-password"
-                : "px-4 py-4  bg-gray outline-none w-120 "
-            }
+            className="px-4 py-4  bg-gray outline-none w-120  input-password"
             required
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
