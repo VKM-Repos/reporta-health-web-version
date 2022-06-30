@@ -4,24 +4,22 @@ import * as Yup from "yup";
 export const registerFacilityFormValidation = (onSubmitHandler) => {
   const formik = useFormik({
     initialValues: {
-      name: "",
-      type: "",
-      country: "",
-      state: "",
-      lga: "",
+      email: "",
+      councilRegistrationNumber: "",
+      address: "",
+      website: ""
     },
     validationSchema: Yup.object({
-      name: Yup.string()
+      email: Yup.string()
+        .email("Invalid email address")
         .required("This field is empty!")
         .min(5, " too short")
         .max(200, "Too long"),
-      type: Yup.string()
+        councilRegistrationNumber: Yup.string()
         .required("This field is empty!"),
-      country: Yup.string()
+        address: Yup.string()
         .required("This field is empty!"),
-      state: Yup.string()
-        .required("This field is empty!"),
-      lga: Yup.string()
+        website: Yup.string()
         .required("This field is empty!")
     }),
     onSubmit: onSubmitHandler,

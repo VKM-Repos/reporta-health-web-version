@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import Input from "@components/Input/Input"
 
-export default function AddressForm() {
+export default function BasicInfoForm() {
     const [facilityData, setFacilityData] = useContext(stepperContext)
     const handleChange = (event) => {
         const {name, type, value, checked} = event.target
@@ -35,45 +35,73 @@ export default function AddressForm() {
        {({ isSubmitting }) => (
          <Form className="w-full flex flex-col">
 
-            <label className="mb-3 mt-5">Facility email</label>
+            <label className="mb-3 mt-5">Facility name</label>
            <Field 
-            type="email" 
-            name="email"
+            type="text" 
+            name="name"
             placeholder="John Doe Hospital"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="email" component="div" />
+           <ErrorMessage name="name" component="div" />
 
-           <label className="mb-3 mt-4">Council of Nigeria registration number</label>
+           <label className="mb-3 mt-4">Facility type</label>
            <Field 
             type="text" 
-            name="CouncilRegistrationNUmber"
+            name="type"
             placeholder="Hospital/Clinic"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="CouncilRegistrationNUmber" component="div" />
+           <ErrorMessage name="type" component="div" />
 
-           <label className="mb-3 mt-4">Facility address</label>
+           <label className="mb-3 mt-4">Country</label>
            <Field 
             type="text" 
-            name="address"
+            name="country"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
 
-            <label className="mb-3 mt-4">John Doe Street</label>
+            <label className="mb-3 mt-4">State</label>
            <Field 
             type="text" 
             name="state"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
+
+            <label className="mb-3 mt-4">LGA</label>
+           <Field 
+            type="text" 
+            name="lga"
+            placeholder="John Doe Street"
+            className="px-4 py-4 bg-gray outline-none rounded-md"
+            />
+           <ErrorMessage name="lga" component="div" />
            {/* <button type="submit" disabled={isSubmitting}>
              Submit
            </button> */}
          </Form>
        )}
      </Formik>
+
+
+
+
+
+
+
+            {/* <form className="w-full flex flex-col">
+            <label className="mb-3">Facility name</label>
+            <Input
+            // onChange={handleChange}
+            // value={facilityData["hospitalName"] || ""}
+            type="text"
+            name="hospitalName"
+            placeholder="John Doe Hospital"
+            className="px-4 py-4 bg-gray outline-none rounded-md"
+            
+            />
+            </form> */}
         </div>
     )
 }

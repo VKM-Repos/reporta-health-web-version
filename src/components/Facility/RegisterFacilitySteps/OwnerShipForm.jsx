@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import Input from "@components/Input/Input"
 
-export default function BasicInfoForm() {
+export default function OwnerShipForm() {
     const [facilityData, setFacilityData] = useContext(stepperContext)
     const handleChange = (event) => {
         const {name, type, value, checked} = event.target
@@ -35,73 +35,59 @@ export default function BasicInfoForm() {
        {({ isSubmitting }) => (
          <Form className="w-full flex flex-col">
 
-            <label className="mb-3 mt-5">Facility name</label>
+            <label className="mb-3 mt-5">Ownership</label>
            <Field 
             type="text" 
-            name="hospitalName"
+            name="onership"
             placeholder="John Doe Hospital"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="name" component="div" />
+           <ErrorMessage name="onership" component="div" />
 
-           <label className="mb-3 mt-4">Facility type</label>
+           <label className="mb-3 mt-4">Facility level</label>
            <Field 
             type="text" 
-            name="type"
+            name="level"
             placeholder="Hospital/Clinic"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="type" component="div" />
+           <ErrorMessage name="facilityLevel" component="div" />
 
-           <label className="mb-3 mt-4">Country</label>
+           <label className="mb-3 mt-4">Operational hours</label>
            <Field 
             type="text" 
-            name="country"
+            name="operationHours"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
 
-            <label className="mb-3 mt-4">State</label>
+            <label className="mb-3 mt-4">Licence status</label>
            <Field 
             type="text" 
-            name="state"
+            name="licenceStatus"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-
-            <label className="mb-3 mt-4">LGA</label>
+             <label className="mb-3 mt-4">Rgistration status</label>
            <Field 
             type="text" 
-            name="lga"
+            name="registrationStatus"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="lga" component="div" />
+             <label className="mb-3 mt-4">Premises status</label>
+           <Field 
+            type="text" 
+            name="premisesStatus"
+            placeholder="John Doe Street"
+            className="px-4 py-4 bg-gray outline-none rounded-md"
+            />
            {/* <button type="submit" disabled={isSubmitting}>
              Submit
            </button> */}
          </Form>
        )}
      </Formik>
-
-
-
-
-
-
-
-            {/* <form className="w-full flex flex-col">
-            <label className="mb-3">Facility name</label>
-            <Input
-            // onChange={handleChange}
-            // value={facilityData["hospitalName"] || ""}
-            type="text"
-            name="hospitalName"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            
-            />
-            </form> */}
         </div>
     )
 }

@@ -38,7 +38,7 @@ export default function OwnerShipForm() {
             <label className="mb-3 mt-5">Days of operation</label>
            <Field 
             type="text" 
-            name="onership"
+            name="daysOfOperation"
             placeholder="John Doe Hospital"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
@@ -47,7 +47,7 @@ export default function OwnerShipForm() {
            <label className="mb-3 mt-4">Types of service</label>
            <Field 
             type="text" 
-            name="level"
+            name="typesOfService"
             placeholder="Hospital/Clinic"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
@@ -58,7 +58,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3">Medical doctors</label>
                 <Field 
                     type="text" 
-                    name="onership"
+                    name="medicalDoctors"
                     placeholder="John Doe Hospital"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -69,7 +69,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3">Dentists</label>
                 <Field 
                     type="text" 
-                    name="level"
+                    name="dentists"
                     placeholder="Hospital/Clinic"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -81,7 +81,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Nurses</label>
                 <Field 
                     type="text" 
-                    name="onership"
+                    name="nurses"
                     placeholder="John Doe Hospital"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -92,7 +92,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Midwives</label>
                 <Field 
                     type="text" 
-                    name="level"
+                    name="midwives"
                     placeholder="Hospital/Clinic"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -103,7 +103,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Junior communicty health extension worker</label>
                 <Field 
                     type="text" 
-                    name="onership"
+                    name="juniorCommunityHealthExtensionWorker"
                     placeholder="John Doe Hospital"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -114,7 +114,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Health information management officers</label>
                 <Field 
                     type="text" 
-                    name="level"
+                    name="healthInformationManagementOfficers"
                     placeholder="Hospital/Clinic"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -126,7 +126,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Community health officer</label>
                 <Field 
                     type="text" 
-                    name="onership"
+                    name="communityHealthOfficer"
                     placeholder="John Doe Hospital"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -137,7 +137,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Env health officer</label>
                 <Field 
                     type="text" 
-                    name="level"
+                    name="enviromentHealthOfficer"
                     placeholder="Hospital/Clinic"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -149,7 +149,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Pharmacy technicians</label>
                 <Field 
                     type="text" 
-                    name="onership"
+                    name="pharmacyTechnicians"
                     placeholder="John Doe Hospital"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -160,7 +160,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Lab scientists</label>
                 <Field 
                     type="text" 
-                    name="level"
+                    name="labScientists"
                     placeholder="Hospital/Clinic"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -172,7 +172,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Pharmacists</label>
                 <Field 
                     type="text" 
-                    name="onership"
+                    name="phamacists"
                     placeholder="John Doe Hospital"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
@@ -183,14 +183,14 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5">Dental technicians</label>
                 <Field 
                     type="text" 
-                    name="level"
+                    name="dentalTechnicians"
                     placeholder="Hospital/Clinic"
                     className="px-4 py-4 bg-gray outline-none rounded-md"
                     />
                 </div>
            </div>
 
-           <div className="grid grid-cols-2 gap-5">
+           {/* <div className="grid grid-cols-2 gap-5">
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">Community health extension worker</label>
                 <Field 
@@ -206,7 +206,7 @@ export default function OwnerShipForm() {
                 <label className="mb-3 mt-5"></label>
                 
                 </div>
-           </div>
+           </div> */}
            {/* <button type="submit" disabled={isSubmitting}>
              Submit
            </button> */}

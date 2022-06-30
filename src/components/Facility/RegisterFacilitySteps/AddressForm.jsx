@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import Input from "@components/Input/Input"
 
-export default function OwnerShipForm() {
+export default function AddressForm() {
     const [facilityData, setFacilityData] = useContext(stepperContext)
     const handleChange = (event) => {
         const {name, type, value, checked} = event.target
@@ -35,50 +35,36 @@ export default function OwnerShipForm() {
        {({ isSubmitting }) => (
          <Form className="w-full flex flex-col">
 
-            <label className="mb-3 mt-5">Ownership</label>
+            <label className="mb-3 mt-5">Facility email</label>
            <Field 
-            type="text" 
-            name="onership"
+            type="email" 
+            name="email"
             placeholder="John Doe Hospital"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="onership" component="div" />
+           <ErrorMessage name="email" component="div" />
 
-           <label className="mb-3 mt-4">Facility level</label>
+           <label className="mb-3 mt-4">Council of Nigeria registration number</label>
            <Field 
             type="text" 
-            name="level"
+            name="CouncilRegistrationNUmber"
             placeholder="Hospital/Clinic"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
-           <ErrorMessage name="facilityLevel" component="div" />
+           <ErrorMessage name="CouncilRegistrationNUmber" component="div" />
 
-           <label className="mb-3 mt-4">Operational hours</label>
+           <label className="mb-3 mt-4">Facility address</label>
            <Field 
             type="text" 
-            name="operationHours"
+            name="address"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
 
-            <label className="mb-3 mt-4">Licence status</label>
+            <label className="mb-3 mt-4">Facility website</label>
            <Field 
             type="text" 
-            name="licenceStatus"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-             <label className="mb-3 mt-4">Rgistration status</label>
-           <Field 
-            type="text" 
-            name="licenceStatus"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-             <label className="mb-3 mt-4">Premises status</label>
-           <Field 
-            type="text" 
-            name="licenceStatus"
+            name="website"
             placeholder="John Doe Street"
             className="px-4 py-4 bg-gray outline-none rounded-md"
             />
