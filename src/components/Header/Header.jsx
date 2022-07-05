@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 
+import Image from "next/image";
+import logo from "@assets/images/logo.svg";
+
 const Header = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -22,11 +25,11 @@ const Header = () => {
   const router = useRouter();
   return (
     <header className="w-full relative bg-transparent z-50">
-      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between px-6 py-4 ">
+      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between px-8 py-4 ">
         {/* logo */}
         <Link href="/">
           <a className="lg:px-2 text-left text-sm font-extrabold text-primary ">
-            Reporta Health
+            <Image src={logo} alt="reporta-health-logo" />
           </a>
         </Link>
 
