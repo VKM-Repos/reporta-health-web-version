@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import {FormContext} from '@components/Facility/RegisterFacilityModal'
 
 export default function Stepper(props) {
   const [newStep, setNewStep] = useState([]);

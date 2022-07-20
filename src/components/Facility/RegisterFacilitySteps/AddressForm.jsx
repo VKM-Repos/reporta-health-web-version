@@ -1,76 +1,128 @@
-import React, { useContext } from 'react'
-import {stepperContext} from "@context/StepperContext"
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, {useContext} from 'react'
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import { AiOutlineWarning } from "react-icons/ai";
 
-import Input from "@components/Input/Input"
+import * as Yup from 'yup';
 
-export default function AddressForm() {
-    const [facilityData, setFacilityData] = useContext(stepperContext)
-    const handleChange = (event) => {
-        const {name, type, value, checked} = event.target
-        setFacilityData({
-            ...facilityData,
-            [name]: value
-        })
-    }
+import validationSchema from "@hooks/formValidations/registerFacilityFormValidation/validationSchema";
+import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
+import { values } from 'lodash';
+import {useForm} from "../../../context/StepperContext"
+
+export default function AddressForm(props) {
+  const {formData, setFormData } = useForm()
+  const currentValidationSchema = validationSchema[1]
+  const handleSetFormData = (data) => {
+    setFormData(data)
+    props.handleNextStep('next')
+  }
+  console.log(currentValidationSchema)
+    const {
+      formField: {
+        email,
+        councilRegistrationNumber,
+        facilityAddress,
+        website
+      }
+    } = props;
     return (
         <div className="w-full flex flex-col">
             <h2 className="text-xl font-bold">Basic information</h2>
-            <Formik
-      initialValues={{ hospitalName: '', hospitalType: '' }}
-       validate={values => {
-         const errors = {};
-         if (!values.hospitalName) {
-           errors.hospitalName = 'Required';
-         }
-         return errors;
+            
+      <Formik
+       initialValues={{
+        email: formData.email,
+        councilRegistrationNumber: formData.councilRegistrationNumber,
+        address: formData.address,
+        website: formData.website,
        }}
-       onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
+       validationSchema={currentValidationSchema}
+       onSubmit={values => {
+         // same shape as initial values
+         const data = {...formData, ...values}
+         handleSetFormData(data)
+         console.log('address form', formData);
        }}
+       
      >
-       {({ isSubmitting }) => (
+       {({ errors, touched, values }) => (
          <Form className="w-full flex flex-col">
-
-            <label className="mb-3 mt-5">Facility email</label>
-           <Field 
-            type="email" 
-            name="email"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-           <ErrorMessage name="email" component="div" />
-
-           <label className="mb-3 mt-4">Council of Nigeria registration number</label>
-           <Field 
+           <label className="mb-3 mt-5">{email.label}</label>
+            <Field 
             type="text" 
-            name="CouncilRegistrationNUmber"
-            placeholder="Hospital/Clinic"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={email.name}
+            placeholder={email.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.email ? 'border border-danger' : ''}`}
             />
-           <ErrorMessage name="CouncilRegistrationNUmber" component="div" />
+           {errors.email && touched.email ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.email}
+          </div>
+        ) : null}
 
-           <label className="mb-3 mt-4">Facility address</label>
-           <Field 
+           <label className="mb-3 mt-4">{councilRegistrationNumber.label}</label>
+            <Field 
             type="text" 
-            name="address"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={councilRegistrationNumber.name}
+            placeholder={councilRegistrationNumber.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.councilRegistrationNumber ? 'border border-danger' : ''}`}
             />
 
-            <label className="mb-3 mt-4">Facility website</label>
-           <Field 
+           {errors.councilRegistrationNumber && touched.councilRegistrationNumber ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.councilRegistrationNumber}
+          </div>
+        ) : null}
+           <label className="mb-3 mt-4">{facilityAddress.label}</label>
+            <Field 
             type="text" 
-            name="website"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={facilityAddress.name}
+            placeholder={facilityAddress.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.address ? 'border border-danger' : ''}`}
             />
-           {/* <button type="submit" disabled={isSubmitting}>
-             Submit
-           </button> */}
+
+           {errors.address && touched.address ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.address}
+          </div>
+         
+        ) : null}
+           <label className="mb-3 mt-4">{website.label}</label>
+            <Field 
+            type="text" 
+            name={website.name}
+            placeholder={website.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.website ? 'border border-danger' : ''}`}
+            />
+            {errors.website && touched.website ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.website}
+          </div>
+        ) : null}
+            <div className="my-16 grid grid-cols-5 gap-5 ">
+            <button
+              onClick={props.onClose}
+              className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="text-white  bg-primary tracking-wide leading-loose text-sm font-normal py-3 border border-primary rounded-md col-span-3"
+            >
+              {props.currentStep === props.steps.length ? "Submit" : "Proceed"}
+            </button>
+            </div>
          </Form>
        )}
      </Formik>
