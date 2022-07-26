@@ -1,11 +1,8 @@
 import React, { useContext } from "react";
-import { stepperContext } from "@context/StepperContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import Input from "@components/Input/Input";
 
 export default function ComplaintsForm() {
-  const [facilityData, setFacilityData] = useContext(stepperContext);
   const handleChange = (event) => {
     const { name, type, value, checked } = event.target;
     setFacilityData({

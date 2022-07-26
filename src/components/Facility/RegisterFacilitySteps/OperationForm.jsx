@@ -10,12 +10,12 @@ import formInitialValues from "@hooks/formValidations/registerFacilityFormValida
 import {useForm} from "../../../context/StepperContext"
   
 export default function OwnerShipForm(props) {
-    const {formData, setFormData } = useForm()
+    const {formData, setFormData, setLastStep } = useForm()
     const currentValidationSchema = validationSchema[3]
 
     const handleSetFormData = (data) => {
         setFormData(data)
-        props.handleNextStep('next')
+        setLastStep(true)
       }
 
     const {
@@ -60,9 +60,8 @@ export default function OwnerShipForm(props) {
                 validationSchema={currentValidationSchema}
                 onSubmit={values => {
                     // same shape as initial values
-                    const data = {...props.formData, ...values}
+                    const data = {...formData, ...values}
                     handleSetFormData(data)
-                     console.log('operation form', formData);
                 }}
                 >
                 {({ errors, touched }) => (

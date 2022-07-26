@@ -17,7 +17,6 @@ export default function AddressForm(props) {
     setFormData(data)
     props.handleNextStep('next')
   }
-  console.log(currentValidationSchema)
     const {
       formField: {
         email,
@@ -42,7 +41,6 @@ export default function AddressForm(props) {
          // same shape as initial values
          const data = {...formData, ...values}
          handleSetFormData(data)
-         console.log('address form', formData);
        }}
        
      >

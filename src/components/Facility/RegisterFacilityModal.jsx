@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 import StepperController from "@components/FormStepper/StepperController";
 import Stepper from "@components/FormStepper/Stepper";
@@ -12,11 +12,23 @@ import BasicInfoFrom from "@components/Facility/RegisterFacilitySteps/BasicInfoF
 import AddressForm from "@components/Facility/RegisterFacilitySteps/AddressForm";
 import OwnerShipForm from "@components/Facility/RegisterFacilitySteps/OwnerShipForm";
 import OperationForm from "@components/Facility/RegisterFacilitySteps/OperationForm";
-
+import {useForm} from "../../context/StepperContext"
+import { set } from "lodash";
 
 export default function RegisterFacility(props) {
+  const {formData, setFormData, lastStep, setLastStep} = useForm()
+
+  console.log('updated form data from register facility:', formData)
+  console.log('last step: ' , lastStep)
+
+  useEffect(()=>{
+    if(lastStep) {
+      console.log('Submitting Facility data')
+      setLastStep(false)
+    }
+  }, [lastStep])
   const [currentStep, setCurrentStep] = useState(1);
-  // const [formData, setFormData] = useState(formInitialValues)
+  
   const steps = [
     "Basic information",
     "Basic information",
@@ -24,12 +36,6 @@ export default function RegisterFacility(props) {
     "Basic information",
   ];
   const {formField } = registerFacilityFormModel;
-
-  function handleSetFormData(data) {
-    setFormData(data)
-    console.log('formData', formData)
-
-  }
 
   function displayStep(step) {
     switch (step) {
@@ -65,8 +71,6 @@ export default function RegisterFacility(props) {
         />;
       case 4:
         return <OperationForm 
-        // formData={formData} 
-        // handleSetFormData={handleSetFormData} 
         formField={formField} 
         handleNextStep={handleClick}
         currentStep={currentStep}

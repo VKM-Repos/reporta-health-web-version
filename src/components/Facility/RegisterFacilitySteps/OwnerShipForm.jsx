@@ -17,7 +17,6 @@ export default function AddressForm(props) {
     props.handleNextStep('next')
   }
 
-  console.log(currentValidationSchema)
     const {
       formField: {
         ownership,
@@ -29,7 +28,6 @@ export default function AddressForm(props) {
       }
     } = props;
 
-    console.log(props.formField)
     return (
         <div className="w-full flex flex-col">
             <h2 className="text-xl font-bold">Basic information</h2>
@@ -37,18 +35,17 @@ export default function AddressForm(props) {
       <Formik
        initialValues={{
         ownership: formData.ownership,
-        level: formData.facilityLevel,
+        level: formData.level,
         operationHours: formData.operationHours,
         licenceStatus: formData.licenceStatus,
         registrationStatus: formData.registrationStatus,
-        premisesStatus: formData.premisesStatu
+        premisesStatus: formData.premisesStatus
        }}
        validationSchema={currentValidationSchema}
        onSubmit={values => {
          // same shape as initial values
          const data = {...formData, ...values}
          handleSetFormData(data)
-         console.log('ownership form', formData);
        }}
      >
        {({ errors, touched }) => (
@@ -102,7 +99,6 @@ export default function AddressForm(props) {
           </div>
          
         ) : null}
-             {console.log(errors)}
            <label className="mb-3 mt-4">{licenceStatus.label}</label>
             <Field 
             type="text" 

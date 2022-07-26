@@ -42,9 +42,6 @@ export default function BasicInfoForm(props) {
          // same shape as initial values
          const data = {...formData, ...values}
          handleSetFormData(data)
-         console.log(values);
-        
-        console.log('basic form', formData)
        }}
      >
        {({ errors, touched }) => (
