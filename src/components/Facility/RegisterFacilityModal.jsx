@@ -49,8 +49,6 @@ export default function RegisterFacility(props) {
         />;
       case 2:
         return <AddressForm 
-        // formData={formData} 
-        // handleSetFormData={handleSetFormData} 
         formField={formField} 
         handleNextStep={handleClick}
         currentStep={currentStep}
@@ -59,8 +57,6 @@ export default function RegisterFacility(props) {
         />;
       case 3:
         return <OwnerShipForm 
-        // formData={formData} 
-        // handleSetFormData={handleSetFormData} 
         formField={formField} 
         handleNextStep={handleClick}
         currentStep={currentStep}
@@ -111,13 +107,6 @@ export default function RegisterFacility(props) {
             : 
             (displayStep(currentStep))
             }
-        
-          {/* <StepperController
-            handleClick={handleClick}
-            currentStep={currentStep}
-            steps={steps}
-            onClose={props.onClose}
-          /> */}
         </div>
       </div>
       
