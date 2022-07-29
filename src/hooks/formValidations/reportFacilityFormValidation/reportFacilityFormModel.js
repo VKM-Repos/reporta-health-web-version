@@ -19,6 +19,10 @@ export default {
         placeholder: 'John Doe Street',
         requiredErrorMsg: 'Facility address is required'
       },
+      complaints_factor:{
+        name: 'complaints_factor',
+        requiredErrorMsg: 'One or more  Complaints box need to be checked'
+      }
     }
   };
   

@@ -18,8 +18,6 @@ import { set } from "lodash";
 export default function RegisterFacility(props) {
   const {formData, setFormData, lastStep, setLastStep} = useForm()
 
-  console.log('updated form data from register facility:', formData)
-  console.log('last step: ' , lastStep)
 
   useEffect(()=>{
     if(lastStep) {
@@ -87,7 +85,6 @@ export default function RegisterFacility(props) {
     console.log(direction);
     const newStep = currentStep;
     direction === "next" ? newStep++ : newStep--;
-    console.log(newStep);
     newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
   }
 

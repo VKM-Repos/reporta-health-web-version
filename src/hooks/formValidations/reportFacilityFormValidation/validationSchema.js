@@ -5,6 +5,7 @@ const {
     facilityName,
     facilityType,
     facilityAddress,
+    complaints_factor,
   }
 } = reportFacilityFormModel;
 
@@ -14,4 +15,7 @@ export default [
     [facilityType.name]: Yup.string().required(`${facilityType.requiredErrorMsg}`),
     [facilityAddress.name]: Yup.string().required(`${facilityAddress.requiredErrorMsg}`),
   }),
+  Yup.object().shape({
+    [complaints_factor.name]: Yup.array().required(`${complaints_factor.requiredErrorMsg}`)
+  })
 ];

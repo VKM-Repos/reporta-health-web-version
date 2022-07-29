@@ -1,46 +1,58 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as yup from "yup";
+import { AiOutlineWarning } from "react-icons/ai";
 
+import validationSchema from "@hooks/formValidations/reportFacilityFormValidation/validationSchema";
 
-export default function ComplaintsForm() {
-  const handleChange = (event) => {
-    const { name, type, value, checked } = event.target;
-    setFacilityData({
-      ...facilityData,
-      [name]: value,
-    });
-  };
+import {useForm} from "../../../context/StepperContext"
+
+export default function FacilityInfoForm(props) {
+
+  const currentValidationSchema = validationSchema[1]
+
+  const {reportFacilityFormData, setReportFacilityFormData } = useForm()
+  const handleSetFormData = (data) => {
+    setReportFacilityFormData(data)
+    props.handleNextStep('next')
+  }
+  const {
+    formField: {
+      complaints_factor,
+    }
+  } = props;
+  const [validationError, setValidationError] = useState(false)
   return (
     <div className="w-full flex flex-col">
-      <h2 className="text-xl font-bold">Complaints about facility</h2>
+      <h2 className="text-xl font-bold">Facility information</h2>
       <Formik
-        initialValues={{ hospitalName: "", hospitalType: "" }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.hospitalName) {
-            errors.hospitalName = "Required";
+        initialValues={{ 
+          complaints_factor: reportFacilityFormData.complaints_factor,
+        }}
+        validate={values=> {
+          const errors = {}
+          if(values.complaints_factor.length <= 0){
+            errors.complaints_factor = 'One or more  Complaints box need to be checked'
           }
-          return errors;
+          return errors
         }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          const data = {...reportFacilityFormData, ...values}
+          handleSetFormData(data)
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors }) => (
           <Form className="w-full flex flex-col">
-            <div className="">
+           <div className="">
               <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
                 Long delay before recieving care
                 <Field
                   type="checkbox"
-                  name="delay"
+                  name="complaints_factor"
+                  value="1"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
             </div>
 
             <div className="">
@@ -48,22 +60,23 @@ export default function ComplaintsForm() {
                 Cost of service recieved
                 <Field
                   type="checkbox"
-                  name="service cost"
+                  name="complaints_factor"
+                  value="2"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
+
             </div>
             <div className="">
               <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
                 Care recieved was suboptimal
                 <Field
                   type="checkbox"
-                  name="care recieved"
+                  name="complaints_factor"
+                  value="3"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
             </div>
 
             <div className="">
@@ -71,11 +84,12 @@ export default function ComplaintsForm() {
                 Unregistered health facility
                 <Field
                   type="checkbox"
-                  name="unregistered facility"
+                  name="complaints_factor"
+                  value="4"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
+              
             </div>
 
             <div className="">
@@ -83,11 +97,11 @@ export default function ComplaintsForm() {
                 Poor medical equipment
                 <Field
                   type="checkbox"
-                  name="poor equipment"
+                  name="complaints_factor"
+                  value="5"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
             </div>
 
             <div className="">
@@ -95,11 +109,11 @@ export default function ComplaintsForm() {
                 Uncoordinated medical staff
                 <Field
                   type="checkbox"
-                  name="uncordinated staff"
+                  name="complaints_factor"
+                  value="6"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
             </div>
 
             <div className="">
@@ -107,15 +121,51 @@ export default function ComplaintsForm() {
                 Other
                 <Field
                   type="checkbox"
-                  name="other"
+                  name="complaints_factor"
+                  value="7"
                   className=" w-6 h-6 rounded-full"
                 />
               </label>
-              <ErrorMessage name="onership" component="div" />
+              {errors.complaints_factor ? (
+          <div className="flex flex-row items-center text-danger text-sm italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.complaints_factor}
+          </div>
+        ) : null}
+            </div>
+           
+         <div className="my-16 grid grid-cols-5 gap-5 ">
+            <button
+              onClick={props.onClose}
+              className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="text-white  bg-primary tracking-wide leading-loose text-sm font-normal py-3 border border-primary rounded-md col-span-3"
+            >
+              {props.currentStep === props.steps.length ? "Submit" : "Proceed"}
+            </button>
             </div>
           </Form>
         )}
       </Formik>
+
+      {/* <form className="w-full flex flex-col">
+            <label className="mb-3">Facility name</label>
+            <Input
+            // onChange={handleChange}
+            // value={facilityData["hospitalName"] || ""}
+            type="text"
+            name="hospitalName"
+            placeholder="John Doe Hospital"
+            className="px-4 py-4 bg-gray outline-none rounded-md"
+            
+            />
+            </form> */}
     </div>
   );
 }
