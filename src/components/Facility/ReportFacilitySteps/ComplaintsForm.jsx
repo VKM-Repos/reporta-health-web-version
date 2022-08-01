@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { AiOutlineWarning } from "react-icons/ai";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import validationSchema from "@hooks/formValidations/reportFacilityFormValidation/validationSchema";
 
@@ -14,7 +16,7 @@ export default function FacilityInfoForm(props) {
   const {reportFacilityFormData, setReportFacilityFormData } = useForm()
   const handleSetFormData = (data) => {
     setReportFacilityFormData(data)
-    props.handleNextStep('next')
+    notify("facility has been reported")
   }
   const {
     formField: {
@@ -22,8 +24,32 @@ export default function FacilityInfoForm(props) {
     }
   } = props;
   const [validationError, setValidationError] = useState(false)
+  
+    const notify = (data) => {
+    const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+        toast.promise(
+            resolveAfter3Sec,
+            {
+              pending: 'Promise is pending',
+              success: data,
+              error: 'Promise rejected 🤯'
+            }
+        )
+    }
   return (
     <div className="w-full flex flex-col">
+            <ToastContainer 
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+
       <h2 className="text-xl font-bold">Facility information</h2>
       <Formik
         initialValues={{ 
@@ -37,6 +63,10 @@ export default function FacilityInfoForm(props) {
           return errors
         }}
         onSubmit={(values, { setSubmitting }) => {
+          for(let i = 0; i < values.complaints_factor.length; i++) {
+
+          }
+          console.log(values)
           const data = {...reportFacilityFormData, ...values}
           handleSetFormData(data)
         }}
@@ -142,7 +172,6 @@ export default function FacilityInfoForm(props) {
             >
               Cancel
             </button>
-
             <button
               type="submit"
               className="text-white  bg-primary tracking-wide leading-loose text-sm font-normal py-3 border border-primary rounded-md col-span-3"

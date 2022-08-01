@@ -30,9 +30,9 @@ export default function FacilityInfoForm(props) {
       <h2 className="text-xl font-bold">Facility information</h2>
       <Formik
         initialValues={{ 
-          facilityName: reportFacilityFormData.facilityName,
-          facilityType: reportFacilityFormData.facilityType, 
-          facilityAddress: reportFacilityFormData.facilityAddress,
+          facility_name: reportFacilityFormData.facility_name,
+          facility_category: reportFacilityFormData.facility_category, 
+          location: reportFacilityFormData.location,
         }}
         validationSchema={currentValidationSchema}
         onSubmit={values => {
