@@ -1,4 +1,5 @@
-import React, {useEffect, useState, useRef} from "react"
+import React, { useContext, useEffect, useState, useRef } from "react";
+import {FormContext} from '@components/Facility/RegisterFacilityModal'
 
 
 export default function Stepper(props) {
@@ -80,11 +81,9 @@ export default function Stepper(props) {
 
 
 
-
-            <div className="py-5 flex lg:w-1/3 w-1/2 justify-between items-center"> 
-            {displaySteps}
-            </div>
-        </div>
-        
-    )
+      <div className="py-5 flex w-1/2 lg:w-1/2 justify-between items-center">
+        {displaySteps}
+      </div>
+    </div>
+  );
 }
