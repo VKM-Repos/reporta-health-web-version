@@ -74,7 +74,6 @@ export default function RegisterFacility(props) {
       default:
         return <div>Not Found</div>
     }
-  }
 
 
   function handleClick(direction) {
@@ -84,7 +83,7 @@ export default function RegisterFacility(props) {
     newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
   }
 
-  if (!props.visible) return null;
+    if(!props.visible) return null
 
   return (
     <div className="fixed lg:p-40  inset-0 bg-black bg-opacity-30 backdrop-blur-md flex justify-center items-center">
@@ -111,5 +110,5 @@ export default function RegisterFacility(props) {
       </div>
       
     </div>
-  );
+  )
 }
