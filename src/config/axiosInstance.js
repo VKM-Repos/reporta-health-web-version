@@ -1,12 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import axios from "axios";
 import { backendApiURL } from "@config/index";
+import { useUserCredentialsStore } from "@store/authStore.store";
 
 const instanceSettings = {
   baseURL: backendApiURL,
   timeout: 300000,
 };
-let jwt = "ghvdnjklmvlkmdflkvmvkmd";
+let jwt = useUserCredentialsStore.getState()?.jwt;
 
 function formatResponseError({ response, ...rest }) {
   let formatedError = {
@@ -26,8 +27,9 @@ function formatResponseError({ response, ...rest }) {
 
 let authInstanceAxios = axios.create({
   ...instanceSettings,
-  headers: { Authorization: `Bearer ${jwt}` },
+  headers: jwt ? { Authorization: `Bearer ${jwt}` } : undefined,
 });
+
 let publicInstanceAxios = axios.create(instanceSettings);
 
 publicInstanceAxios.interceptors.response.use(null, formatResponseError);

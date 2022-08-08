@@ -90,7 +90,7 @@ const SearchForm = () => {
         <input
           type="submit"
           value="Find facility"
-          className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary text-white"
+          className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
         />
       </div>
     </form>

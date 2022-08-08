@@ -16,7 +16,7 @@ export const useCreateUser = () => {
     mutationFn: submitSignupData,
     onSuccess: (returnedData) => {
       populateUserInfoAndJwt(returnedData?.data);
-      Router.replace("/search-results");
+      Router.replace("/");
     },
     onError: () => {},
   });
