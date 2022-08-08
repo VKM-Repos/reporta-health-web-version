@@ -16,9 +16,15 @@ export const useLogin = () => {
     mutationFn: loginData,
     onSuccess: (returnedData) => {
       populateUserInfoAndJwt(returnedData?.data);
-      Router.replace("/search-results");
+      data = returnedData?.data;
+      // add toast here
+
+      Router.replace("/");
     },
-    onError: () => {},
+    onError: () => {
+      // add error toast
+      return console.log("An error occured");
+    },
   });
 
   return {

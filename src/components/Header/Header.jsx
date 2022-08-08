@@ -2,6 +2,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
+import { useUserCredentialsStore } from "@store/authStore.store";
+import shallow from "zustand/shallow";
+import { useLogoutUser } from "@hooks/useLogoutUser.hook";
+
 import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 
@@ -9,6 +13,20 @@ import Image from "next/image";
 import logo from "@assets/images/logo.svg";
 
 const Header = () => {
+  const { isAuthenticated, userDetails } = useUserCredentialsStore(
+    (state) => ({
+      isAuthenticated: state.isAuthenticated,
+      userDetails: state.userDetails,
+    }),
+    shallow
+  );
+
+  let userName = userDetails?.user?.username;
+
+  const router = useRouter();
+
+  const { logoutHandler } = useLogoutUser();
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -22,7 +40,6 @@ const Header = () => {
     setShowReportModal(false);
   };
 
-  const router = useRouter();
   return (
     <header className="w-full relative bg-transparent z-50">
       <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between px-8 py-4 ">
@@ -40,7 +57,7 @@ const Header = () => {
               className={
                 router.pathname === "/"
                   ? "text-accent mx-4 font-extrabold"
-                  : "trackingWide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Home
@@ -51,7 +68,7 @@ const Header = () => {
               className={
                 router.pathname === "/about"
                   ? "text-accent mx-4 font-extrabold"
-                  : "trackingWide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               About
@@ -59,14 +76,14 @@ const Header = () => {
           </Link>
 
           <button
-            className="trackingWide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+            className="tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
             onClick={() => setShowReportModal(true)}
           >
             Report a facility
           </button>
 
           <button
-            className="trackingWide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
+            className="tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
             onClick={() => setShowModal(true)}
           >
             Register a facility
@@ -74,13 +91,26 @@ const Header = () => {
         </div>
 
         <div className="relative">
-          {/* contact us btn */}
+          {isAuthenticated ? (
+            <div className="flex items-center justify-between">
+              <p className="hidden lg:flex">Hello, {userName}</p>
 
-          <Link href="login">
-            <button className="hidden text-primary trackingWide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300">
-              Login
-            </button>
-          </Link>
+              <button
+                onClick={logoutHandler}
+                className="mx-4 hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300"
+              >
+                logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link href="login">
+                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300">
+                  Login
+                </button>
+              </Link>
+            </>
+          )}
 
           {/* hamburger button*/}
           <div className="mobile absolute right-5 lg:hidden">
@@ -120,7 +150,7 @@ const Header = () => {
                 className={
                   router.pathname === "/"
                     ? "flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
-                    : "trackingWide leading-loose my-2 flex items-center justify-start "
+                    : "tracking-wide leading-loose my-2 flex items-center justify-start "
                 }
               >
                 <svg
@@ -146,7 +176,7 @@ const Header = () => {
                 className={
                   router.pathname === "/about"
                     ? "flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
-                    : "trackingWide leading-loose my-2 flex items-center justify-start "
+                    : "tracking-wide leading-loose my-2 flex items-center justify-start "
                 }
               >
                 <svg
@@ -186,7 +216,7 @@ const Header = () => {
               className={
                 router.pathname === "/report-facility"
                   ? "flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
-                  : "trackingWide leading-loose my-2 flex items-center justify-start "
+                  : "tracking-wide leading-loose my-2 flex items-center justify-start "
               }
               onClick={() => {
                 setShowSidebar(!showSidebar);
@@ -229,7 +259,7 @@ const Header = () => {
               className={
                 router.pathname === "/register-facility"
                   ? "flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
-                  : "trackingWide leading-loose my-2 flex items-center justify-start"
+                  : "tracking-wide leading-loose my-2 flex items-center justify-start"
               }
               onClick={() => {
                 setShowSidebar(!showSidebar);
@@ -272,40 +302,84 @@ const Header = () => {
           </div>
 
           <div className="w-full mb-[4rem]">
-            <Link href="/login">
-              <a className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+            {isAuthenticated ? (
+              <div className="flex flex-col items-start justify-center">
+                <p className="lg:hidden flex">Hello, {userName}</p>
+
+                <a
+                  onClick={logoutHandler}
+                  className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
                 >
-                  <path
-                    d="M8.8999 7.55999C9.2099 3.95999 11.0599 2.48999 15.1099 2.48999H15.2399C19.7099 2.48999 21.4999 4.27999 21.4999 8.74999V15.27C21.4999 19.74 19.7099 21.53 15.2399 21.53H15.1099C11.0899 21.53 9.2399 20.08 8.9099 16.54"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M15.0001 12H3.62012"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M5.85 8.6499L2.5 11.9999L5.85 15.3499"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                &nbsp; &nbsp; Login
-              </a>
-            </Link>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.8999 7.55999C9.2099 3.95999 11.0599 2.48999 15.1099 2.48999H15.2399C19.7099 2.48999 21.4999 4.27999 21.4999 8.74999V15.27C21.4999 19.74 19.7099 21.53 15.2399 21.53H15.1099C11.0899 21.53 9.2399 20.08 8.9099 16.54"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M15.0001 12H3.62012"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M5.85 8.6499L2.5 11.9999L5.85 15.3499"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  &nbsp; &nbsp; Logout
+                </a>
+              </div>
+            ) : (
+              <>
+                <Link href="/login">
+                  <a className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.8999 7.55999C9.2099 3.95999 11.0599 2.48999 15.1099 2.48999H15.2399C19.7099 2.48999 21.4999 4.27999 21.4999 8.74999V15.27C21.4999 19.74 19.7099 21.53 15.2399 21.53H15.1099C11.0899 21.53 9.2399 20.08 8.9099 16.54"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M15.0001 12H3.62012"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M5.85 8.6499L2.5 11.9999L5.85 15.3499"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    &nbsp; &nbsp; Login
+                  </a>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
