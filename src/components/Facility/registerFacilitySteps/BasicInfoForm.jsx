@@ -1,107 +1,146 @@
-import React, { useContext } from 'react'
-import {stepperContext} from "@context/StepperContext"
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, {useContext} from 'react'
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import { AiOutlineWarning } from "react-icons/ai";
 
-import Input from "@components/Input/Input"
+import * as Yup from 'yup';
 
-export default function BasicInfoForm() {
-    const [facilityData, setFacilityData] = useContext(stepperContext)
-    const handleChange = (event) => {
-        const {name, type, value, checked} = event.target
-        setFacilityData({
-            ...facilityData,
-            [name]: value
-        })
+import validationSchema from "@hooks/formValidations/registerFacilityFormValidation/validationSchema";
+import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
+import {useForm} from "../../../context/StepperContext"
+export default function BasicInfoForm(props) {
+  const {formData, setFormData } = useForm()
+  const currentValidationSchema = validationSchema[0]
+
+  const handleSetFormData = (data) => {
+    setFormData(data)
+    props.handleNextStep('next')
+  }
+  const {
+    formField: {
+      hospitalName,
+      facilityType,
+      country,
+      state,
+      lga
     }
+  } = props;
+
     return (
-        <div className="w-full flex flex-col">
-            <h2 className="text-xl font-bold">Basic information</h2>
-            <Formik
-      initialValues={{ hospitalName: '', hospitalType: '' }}
-       validate={values => {
-         const errors = {};
-         if (!values.hospitalName) {
-           errors.hospitalName = 'Required';
-         }
-         return errors;
+        <div >
+          <h2 className="text-xl font-bold">Basic information</h2>
+          <Formik
+       initialValues={{
+        name: formData.name,
+        type: formData.type,
+        country: formData.country,
+        state: formData.state,
+        lga: formData.lga
        }}
-       onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
+       validationSchema={currentValidationSchema}
+       onSubmit={values => {
+         // same shape as initial values
+         const data = {...formData, ...values}
+         handleSetFormData(data)
        }}
      >
-       {({ isSubmitting }) => (
+       {({ errors, touched }) => (
          <Form className="w-full flex flex-col">
-
-            <label className="mb-3 mt-5">Facility name</label>
-           <Field 
+           <label className="mb-3 mt-5">{hospitalName.label}</label>
+            <Field 
             type="text" 
-            name="hospitalName"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={hospitalName.name}
+            placeholder={hospitalName.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.name ? 'border border-danger' : ''}`}
             />
-           <ErrorMessage name="name" component="div" />
+           {/* {errors.name && touched.name ? (
+             <div className="text-danger">{errors.name}</div>
+           ) : null} */}
+           {errors.name && touched.name ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.name}
+          </div>
+        ) : null}
 
-           <label className="mb-3 mt-4">Facility type</label>
-           <Field 
+           <label className="mb-3 mt-4">{facilityType.label}</label>
+            <Field 
             type="text" 
-            name="type"
-            placeholder="Hospital/Clinic"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-           <ErrorMessage name="type" component="div" />
-
-           <label className="mb-3 mt-4">Country</label>
-           <Field 
-            type="text" 
-            name="country"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-
-            <label className="mb-3 mt-4">State</label>
-           <Field 
-            type="text" 
-            name="state"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={facilityType.name}
+            placeholder={facilityType.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.type ? 'border border-danger' : ''}`}
             />
 
-            <label className="mb-3 mt-4">LGA</label>
-           <Field 
+           {errors.type && touched.type ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.type}
+          </div>
+        ) : null}
+           <label className="mb-3 mt-4">{country.label}</label>
+            <Field 
             type="text" 
-            name="lga"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={country.name}
+            placeholder={country.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.country ? 'border border-danger' : ''}`}
             />
-           <ErrorMessage name="lga" component="div" />
-           {/* <button type="submit" disabled={isSubmitting}>
-             Submit
-           </button> */}
+           {errors.country && touched.country ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.country}
+          </div>
+        ) : null}
+
+           <label className="mb-3 mt-4">{state.label}</label>
+            <Field 
+            type="text" 
+            name={state.name}
+            placeholder={state.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.state ? 'border border-danger' : ''}`}
+            />
+            {errors.state && touched.state ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.state}
+          </div>
+        ) : null}
+
+            <label className="mb-3 mt-4">{lga.label}</label>
+            <Field 
+            type="text" 
+            name={lga.name}
+            placeholder={lga.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.lga ? 'border border-danger' : ''}`}
+            /> 
+            {errors.lga && touched.lga ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.lga}
+          </div>
+        ) : null}
+            <div className="my-16 grid grid-cols-5 gap-5 ">
+            <button
+              onClick={props.onClose}
+              className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="text-white  bg-primary tracking-wide leading-loose text-sm font-normal py-3 border border-primary rounded-md col-span-3"
+            >
+              {props.currentStep === props.steps.length ? "Submit" : "Proceed"}
+            </button>
+            </div>
          </Form>
        )}
      </Formik>
-
-
-
-
-
-
-
-            {/* <form className="w-full flex flex-col">
-            <label className="mb-3">Facility name</label>
-            <Input
-            // onChange={handleChange}
-            // value={facilityData["hospitalName"] || ""}
-            type="text"
-            name="hospitalName"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            
-            />
-            </form> */}
         </div>
     )
 }

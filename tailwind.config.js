@@ -26,17 +26,10 @@ module.exports = {
         jarkata: ["Plus Jakarta Sans"],
       },
       width: {
-<<<<<<< HEAD
-        '128': '33rem',
-        '130': '36rem',
-        '120': '29rem'
-      }
-=======
         128: "33rem",
         130: "36rem",
         120: "29rem",
       },
->>>>>>> 0b1dbbb1b0893a0f15bd13f9b7c8b8355a62f9d8
     },
   },
   plugins: [],

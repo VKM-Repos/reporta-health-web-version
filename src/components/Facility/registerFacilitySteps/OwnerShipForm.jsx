@@ -1,90 +1,163 @@
-import React, { useContext } from 'react'
-import {stepperContext} from "@context/StepperContext"
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, {useContext} from 'react'
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import { AiOutlineWarning } from "react-icons/ai";
 
-import Input from "@components/Input/Input"
+import * as Yup from 'yup';
 
-export default function OwnerShipForm() {
-    const [facilityData, setFacilityData] = useContext(stepperContext)
-    const handleChange = (event) => {
-        const {name, type, value, checked} = event.target
-        setFacilityData({
-            ...facilityData,
-            [name]: value
-        })
-    }
+import validationSchema from "@hooks/formValidations/registerFacilityFormValidation/validationSchema";
+import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
+import {useForm} from "../../../context/StepperContext"
+
+export default function AddressForm(props) {
+  const {formData, setFormData } = useForm()
+  const currentValidationSchema = validationSchema[2]
+  const handleSetFormData = (data) => {
+    setFormData(data)
+    props.handleNextStep('next')
+  }
+
+    const {
+      formField: {
+        ownership,
+        facilityLevel,
+        operationHours,
+        licenceStatus,
+        registrationStatus,
+        premisesStatus
+      }
+    } = props;
+
     return (
         <div className="w-full flex flex-col">
             <h2 className="text-xl font-bold">Basic information</h2>
-            <Formik
-      initialValues={{ hospitalName: '', hospitalType: '' }}
-       validate={values => {
-         const errors = {};
-         if (!values.hospitalName) {
-           errors.hospitalName = 'Required';
-         }
-         return errors;
+            
+      <Formik
+       initialValues={{
+        ownership: formData.ownership,
+        level: formData.level,
+        operationHours: formData.operationHours,
+        licenceStatus: formData.licenceStatus,
+        registrationStatus: formData.registrationStatus,
+        premisesStatus: formData.premisesStatus
        }}
-       onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
+       validationSchema={currentValidationSchema}
+       onSubmit={values => {
+         // same shape as initial values
+         const data = {...formData, ...values}
+         handleSetFormData(data)
        }}
      >
-       {({ isSubmitting }) => (
+       {({ errors, touched }) => (
          <Form className="w-full flex flex-col">
+           <label className="mb-3 mt-5">{ownership.label}</label>
+            <Field 
+            type="text" 
+            name={ownership.name}
+            placeholder={ownership.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.ownership ? 'border border-danger' : ''}`}
+            />
+           {/* {errors.ownership && touched.ownership ? (
+             <div classownership="text-danger">{errors.ownership}</div>
+           ) : null} */}
+           {errors.ownership && touched.ownership ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.ownership}
+          </div>
+        ) : null}
 
-            <label className="mb-3 mt-5">Ownership</label>
-           <Field 
+           <label className="mb-3 mt-4">{facilityLevel.label}</label>
+            <Field 
             type="text" 
-            name="onership"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-           <ErrorMessage name="onership" component="div" />
-
-           <label className="mb-3 mt-4">Facility level</label>
-           <Field 
-            type="text" 
-            name="level"
-            placeholder="Hospital/Clinic"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-           <ErrorMessage name="facilityLevel" component="div" />
-
-           <label className="mb-3 mt-4">Operational hours</label>
-           <Field 
-            type="text" 
-            name="operationHours"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={facilityLevel.name}
+            placeholder={facilityLevel.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.level ? 'border border-danger' : ''}`}
             />
 
-            <label className="mb-3 mt-4">Licence status</label>
-           <Field 
+           {errors.level && touched.level ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.level}
+          </div>
+        ) : null}
+           <label className="mb-3 mt-4">{operationHours.label}</label>
+            <Field 
             type="text" 
-            name="licenceStatus"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={operationHours.name}
+            placeholder={operationHours.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.operationHours ? 'border border-danger' : ''}`}
             />
-             <label className="mb-3 mt-4">Rgistration status</label>
-           <Field 
+
+           {errors.operationHours && touched.operationHours ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.operationHours}
+          </div>
+         
+        ) : null}
+           <label className="mb-3 mt-4">{licenceStatus.label}</label>
+            <Field 
             type="text" 
-            name="licenceStatus"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={licenceStatus.name}
+            placeholder={licenceStatus.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.licenceStatus ? 'border border-danger' : ''}`}
             />
-             <label className="mb-3 mt-4">Premises status</label>
-           <Field 
+            {errors.licenceStatus && touched.licenceStatus ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.licenceStatus}
+          </div>
+        ) : null}
+
+            <label className="mb-3 mt-4">{registrationStatus.label}</label>
+            <Field 
             type="text" 
-            name="licenceStatus"
-            placeholder="John Doe Street"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
+            name={registrationStatus.name}
+            placeholder={registrationStatus.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.registrationStatus ? 'border border-danger' : ''}`}
             />
-           {/* <button type="submit" disabled={isSubmitting}>
-             Submit
-           </button> */}
+            {errors.registrationStatus && touched.registrationStatus ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.registrationStatus}
+          </div>
+        ) : null}
+
+            <label className="mb-3 mt-4">{premisesStatus.label}</label>
+            <Field 
+            type="text" 
+            name={premisesStatus.name}
+            placeholder={premisesStatus.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.premisesStatus ? 'border border-danger' : ''}`}
+            />
+            {errors.premisesStatus && touched.premisesStatus ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.premisesStatus}
+          </div>
+        ) : null}
+            <div className="my-16 grid grid-cols-5 gap-5 ">
+            <button
+              onClick={props.onClose}
+              className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="text-white  bg-primary tracking-wide leading-loose text-sm font-normal py-3 border border-primary rounded-md col-span-3"
+            >
+              {props.currentStep === props.steps.length ? "Submit" : "Proceed"}
+            </button>
+            </div>
          </Form>
        )}
      </Formik>
