@@ -8,7 +8,7 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { AiOutlineWarning } from "react-icons/ai";
 import logo from "@assets/images/logo-white.svg";
 
-import Input from "@components/Input/Input";
+import Input from "@components/input/Input";
 import Button from "@components/Button/Button";
 import Image from "next/image";
 

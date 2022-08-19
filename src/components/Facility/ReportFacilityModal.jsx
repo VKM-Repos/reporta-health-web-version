@@ -18,7 +18,6 @@ export default function ReportFacility(props) {
   const [facilityData, setFacilityData] = useState("");
   const [addressData, setAddressData] = useState([]);
 
-  console.log('Report facility form:', reportFacilityFormData)
   const {formField } = reportFacilityFormModel;
 
   const steps = ["Facility information", "Complaints about information"];
@@ -46,7 +45,6 @@ export default function ReportFacility(props) {
   }
 
   function handleClick(direction) {
-    console.log(direction);
     const newStep = currentStep;
 
     direction === "next" ? newStep++ : newStep--;
