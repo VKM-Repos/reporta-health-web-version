@@ -7,6 +7,8 @@ export const FormContext = createContext({
     setFormData: async (formData)=> null,
     reportFacilityFormData: undefined,
     setReportFacilityFormData: async (reportFacilityFormData)=> null,
+    reportFacilityLastStep: false,
+    setReportFacilityLastStep:async(reportFacilityLastStep)=> null,
     lastStep: false,
     setLastStep: async (lastStep)=> null
 });
@@ -14,7 +16,8 @@ export const useForm = () => useContext(FormContext)
 export const FormProvider = ({ children }) => {
     const [formData, setFormData] = useState(formInitialValues);
     const [lastStep, setLastStep] = useState(false)
+    const [reportFacilityLastStep, setReportFacilityLastStep] = useState(false)
     const [reportFacilityFormData, setReportFacilityFormData] = useState(reportFacilityFormInitialValues)
   
-    return <FormContext.Provider value={{ formData, setFormData, reportFacilityFormData, setReportFacilityFormData, lastStep, setLastStep }}>{children}</FormContext.Provider>
+    return <FormContext.Provider value={{ formData, setFormData, reportFacilityFormData, setReportFacilityFormData, reportFacilityLastStep, setReportFacilityLastStep, lastStep, setLastStep }}>{children}</FormContext.Provider>
   }
