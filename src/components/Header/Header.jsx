@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useUserCredentialsStore } from "@store/authStore.store";
@@ -13,19 +13,25 @@ import Image from "next/image";
 import logo from "@assets/images/logo.svg";
 
 const Header = () => {
-  const { isAuthenticated, userDetails } = useUserCredentialsStore(
-    (state) => ({
-      isAuthenticated: state.isAuthenticated,
-      userDetails: state.userDetails,
-    }),
-    shallow
-  );
+  const [userData, setUserData] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  let userName = userDetails?.user?.username;
+  useEffect(() => {
+    setUserData(useUserCredentialsStore.getState().userDetails);
+    setIsAuthenticated(useUserCredentialsStore.getState().isAuthenticated);
+  }, []);
+
+  let userName = userData?.user?.username;
 
   const router = useRouter();
 
   const { logoutHandler } = useLogoutUser();
+
+  const clearUserAuth = () => {
+    setUserData({});
+    setIsAuthenticated(false);
+    logoutHandler;
+  };
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -96,20 +102,20 @@ const Header = () => {
               <p className="hidden lg:flex">Hello, {userName}</p>
 
               <button
-                onClick={logoutHandler}
+                onClick={clearUserAuth}
                 className="mx-4 hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300"
               >
                 logout
               </button>
             </div>
           ) : (
-            <>
+            <div>
               <Link href="login">
                 <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300">
                   Login
                 </button>
               </Link>
-            </>
+            </div>
           )}
 
           {/* hamburger button*/}
@@ -307,7 +313,7 @@ const Header = () => {
                 <p className="lg:hidden flex">Hello, {userName}</p>
 
                 <a
-                  onClick={logoutHandler}
+                  onClick={clearUserAuth}
                   className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
                 >
                   <svg
