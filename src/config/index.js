@@ -5,3 +5,7 @@ export const backendApiURL =
 export const authStoreName = "REPORTA_HEALTH_AUTH_STORE";
 
 export const authStoreVersion = 1.0;
+
+export const searchFacilityStoreName = "REPORTA_HEALTH_SEARCH_STORE";
+
+export const searchFacilityVersion = 1.0;

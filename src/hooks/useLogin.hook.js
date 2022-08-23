@@ -18,7 +18,7 @@ export const useLogin = () => {
       populateUserInfoAndJwt(returnedData?.data);
       data = returnedData?.data;
       // add toast here
-
+      console.log(returnedData?.data);
       Router.replace("/");
     },
     onError: () => {

@@ -1,10 +1,45 @@
+import {useState, useEffect} from 'react'
 import SearchHeader from "@components/SearchHeader/SearchHeader";
 import SearchQueryResult from "@components/SearchQueryResult/SearchQueryResult";
+import { useSearchFacilityStore } from "@store/searchFacility.store";
+import { set } from 'lodash';
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+
+import { useSearchFacility } from '@hooks/useSearchFacility'
 
 export default function SearchResult() {
+  const searchResults = useSearchFacilityStore.getState()?.searchResults?.data;
+  const [location, setLocation] = useState(null)
+  const [filteredResults, setFilteredResults] = useState(useSearchFacilityStore.getState()?.searchResults?.data)
+  const [query, setQuery] = useState('')
+  
+  const handeleChangeLocation = (location) => {
+    setLocation(location)
+  }
+  useEffect(()=> {
+    if(location !== null) {
+      let filteredItems = searchResults.filter(result=> result.statename === location)
+    setFilteredResults([...filteredItems])
+    } else {
+      setFilteredResults(useSearchFacilityStore.getState()?.searchResults?.data)
+    }
+  }, [location, setLocation])
+
+  const { mutate, isLoading } = useSearchFacility();
+
+  const handleChange = (events)=> {
+    setQuery(events.target.value);
+  }
+  const searchFacility = () =>{
+    mutate(query)
+    setLocation(null)
+    // setFilteredResults(searchResults)
+    isLoading? console.log('loading') : console.log('loaded')
+  }
+
   return (
     <section className="w-full bg-background min-h-screen font-jarkata relative overflow-hidden select-none">
-      <SearchHeader />
+      <SearchHeader handeleChangeLocation={handeleChangeLocation} />
       <div className="w-[90vw] my-8 mx-auto">
         <p className="text-xs lg:text-sm text-secondary">Search results for:</p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 justify-items-stretch">
@@ -42,17 +77,23 @@ export default function SearchResult() {
                 className="w-full px-2 py-4 bg-gray focus:outline-none text-xs lg:text-sm"
                 type="text"
                 placeholder="Search"
+                name="query"
+                onChange={handleChange}
               />
             </div>
-            <input
-              type="submit"
-              value="Find facility"
-              className="w-full  py-4 text-xs lg:text-sm rounded-md bg-primary text-white"
-            />
+           <button
+            type="button"
+            value="Find facility"
+            className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
+            disabled={isLoading}
+            onClick={searchFacility}
+            >
+            {isLoading ? <LoadingSpinner text="Searching for facility..." /> : "Find facility"}
+            </button>
           </div>
         </div>
         <div className="my-8 lg:my-16">
-          <SearchQueryResult />
+          <SearchQueryResult  searchResults={filteredResults || searchResults}/>
         </div>
       </div>
     </section>

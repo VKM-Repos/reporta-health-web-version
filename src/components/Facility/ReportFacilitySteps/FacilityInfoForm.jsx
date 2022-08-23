@@ -106,19 +106,6 @@ export default function FacilityInfoForm(props) {
           </Form>
         )}
       </Formik>
-
-      {/* <form className="w-full flex flex-col">
-            <label className="mb-3">Facility name</label>
-            <Input
-            // onChange={handleChange}
-            // value={facilityData["hospitalName"] || ""}
-            type="text"
-            name="hospitalName"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            
-            />
-            </form> */}
     </div>
   );
 }

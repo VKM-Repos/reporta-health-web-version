@@ -2,59 +2,22 @@ import Image from "next/image";
 import React from "react";
 import map from "@assets/images/map.svg";
 
-const SearchQueryResult = () => {
-  const searchResultData = [
-    {
-      id: 1,
-      hospitalName: "John Quincy Adams Hospital ",
-      rating: 4.5,
-      numberRated: 200,
-      facilityType: "General hospital",
-      address: "Platinum plaza, Gwarimpa, Abuja",
-      openHours: 24,
-    },
-    {
-      id: 2,
-      hospitalName: "John Quincy Memorial Center",
-      rating: 4.2,
-      numberRated: 419,
-      facilityType: "Pediatric hospital",
-      address: "27 Banex Way, Mabushi, Abuja",
-      openHours: 24,
-    },
-    {
-      id: 3,
-      hospitalName: "John Quincy Adams Hospital and Clinic",
-      rating: 3.9,
-      numberRated: 67,
-      facilityType: "General hospital",
-      address: "Platinum plaza, Gwarimpa, Abuja",
-      openHours: 24,
-    },
-    {
-      id: 4,
-      hospitalName: "Suleiman Hauwa Hospital",
-      rating: 4.7,
-      numberRated: 25,
-      facilityType: "General hospital",
-      address: "Platinum plaza, Gwarimpa, Abuja",
-      openHours: 24,
-    },
-  ];
+const SearchQueryResult = (props) => {
+  const searchResultData = props.searchResults
   return (
     <section className="grid bg-white grid-cols-1 lg:grid-cols-2 gap-2 justify-items-stretch">
       <div className="lg:p-4 flex flex-col  items-start justify-start">
-        {searchResultData.map((result, id) => (
+        {searchResultData?.map((result, id) => (
           <div
             key={id}
             className="w-full bg-transparent hover:bg-background px-4 py-4 cursor-pointer rounded-md flex flex-row "
           >
             <div className="basis-4/5 flex flex-col items-start justify-start">
               <h3 className="font-extrabold text-sm lg:text-xl">
-                {result.hospitalName}
+                {result.reg_fac_name}
               </h3>
               <span className="my-2 flex flex-row font-semibold items-center justify-between text-primary text-xs lg:text-lg">
-                <span className="mr-2">{result.rating}</span>
+                <span className="mr-2">{result.average_rating || 5.8}</span>
                 <span className="mr-2">
                   <svg
                     width="14"
@@ -73,15 +36,15 @@ const SearchQueryResult = () => {
                     />
                   </svg>
                 </span>
-                <span className="mr-2">({result.numberRated})</span>
+                <span className="mr-2">({result.average_rating || 200})</span>
                 &bull;
-                <span className="mx-2">{result.facilityType}</span>
+                <span className="mx-2">{result.facility_level}</span>
               </span>
               <h6 className="text-primary text-xs lg:text-sm">
-                {result.address}
+               {result.street_name? result.street_name +', ': null }  {' ' + result.statename}
               </h6>
               <h6 className="my-2 text-primary text-xs lg:text-sm">
-                Open {result.openHours} hours
+                Open {result.operational_hours || 24} hours
               </h6>
             </div>
             <div className="basis-1/5 flex flex-col items-end lg:items-center justify-start">

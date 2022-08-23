@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AiOutlineDown } from "react-icons/ai";
 
@@ -9,7 +9,7 @@ import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import Image from "next/image";
 import logo from "@assets/images/logo.svg";
 
-const SearchHeader = () => {
+const SearchHeader = (props) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -26,23 +26,30 @@ const SearchHeader = () => {
   const router = useRouter();
 
   const options = [
-    "Abuja",
+    "FCT",
     "Lagos",
     "Calabar",
     "Kaduna",
     "Port Harcourt",
     "Benin City",
+    "Plateau",
+    "Taraba",
+    "Delta State",
+    "Rivers",
   ];
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const toggling = () => setIsOpen(!isOpen);
-
+  
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
   };
+  useEffect(()=> {
+    props.handeleChangeLocation(selectedOption)
+  }, [selectedOption, setSelectedOption])
   return (
     <header>
       <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between  px-6 py-4 ">
