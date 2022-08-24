@@ -13,10 +13,13 @@ export default function FacilityInfoForm(props) {
 
   const currentValidationSchema = validationSchema[1]
 
-  const {reportFacilityFormData, setReportFacilityFormData } = useForm()
+  const {reportFacilityFormData, setReportFacilityFormData, setReportFacilityLastStep } = useForm()
   const handleSetFormData = (data) => {
     setReportFacilityFormData(data)
-    notify("facility has been reported")
+    setReportFacilityLastStep(true)
+    // notify("facility has been reported")
+    // console.log(reportFacilityFormData)
+
   }
   const {
     formField: {
@@ -66,7 +69,6 @@ export default function FacilityInfoForm(props) {
           for(let i = 0; i < values.complaints_factor.length; i++) {
 
           }
-          console.log(values)
           const data = {...reportFacilityFormData, ...values}
           handleSetFormData(data)
         }}
@@ -182,19 +184,6 @@ export default function FacilityInfoForm(props) {
           </Form>
         )}
       </Formik>
-
-      {/* <form className="w-full flex flex-col">
-            <label className="mb-3">Facility name</label>
-            <Input
-            // onChange={handleChange}
-            // value={facilityData["hospitalName"] || ""}
-            type="text"
-            name="hospitalName"
-            placeholder="John Doe Hospital"
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            
-            />
-            </form> */}
     </div>
   );
 }

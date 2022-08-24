@@ -12,12 +12,10 @@ export default function FacilityInfoForm(props) {
   const currentValidationSchema = validationSchema[0]
 
   const {reportFacilityFormData, setReportFacilityFormData } = useForm()
-  console.log(reportFacilityFormData);
   const handleSetFormData = (data) => {
     setReportFacilityFormData(data)
     props.handleNextStep('next')
   }
-  console.log(currentValidationSchema)
   const {
     formField: {
       facilityName,
@@ -47,28 +45,32 @@ export default function FacilityInfoForm(props) {
               type="text"
               name={facilityName.name}
               placeholder="John Doe Hospital"
-              className="px-4 py-4 bg-gray outline-none rounded-md"
+              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_name ? 'border border-danger' : ''}`}
             />
-            {errors.facilityName && touched.facilityName ? (
+            {errors.facility_name && touched.facility_name ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.facilityName}
+            {errors.facility_name}
           </div>
         ) : null}
 
             <label className="mb-3 mt-4">{facilityType.label}</label>
             <Field
-              type="text"
+              as="select"
               name={facilityType.name}
               placeholder="Hospital/Clinic"
-              className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-            {errors.facilityType && touched.facilityType ? (
+              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_category ? 'border border-danger' : ''}`}
+            >
+              <option value=""></option>
+              <option value="Hospital">Hospital</option>
+              <option value="Clinic">Clinic</option>
+            </Field>
+            {errors.facility_category && touched.facility_category ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.facilityType}
+            {errors.facility_category}
           </div>
         ) : null}
 
@@ -77,13 +79,13 @@ export default function FacilityInfoForm(props) {
               type="text"
               name={facilityAddress.name}
               placeholder="Hospital/Clinic"
-              className="px-4 py-4 bg-gray outline-none rounded-md"
+              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.location ? 'border border-danger' : ''}`}
             />
-             {errors.facilityAddress && touched.facilityAddress ? (
+             {errors.location && touched.location ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.facilityAddress}
+            {errors.location}
           </div>
         ) : null}
          <div className="my-16 grid grid-cols-5 gap-5 ">
