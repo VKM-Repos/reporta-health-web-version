@@ -106,31 +106,31 @@ export default function Signup() {
               ) : null}
             </div>
           </div>
-          <label htmlFor="email" className="mb-1 mt-5">
+          <label htmlFor="username" className="mb-1 mt-5">
             Email
           </label>
           <Input
-            id="email"
-            name="email"
+            id="username"
+            name="username"
             type="email"
             placeholder="Janedoe@gmail.com"
             className={
-              formik.touched.email && formik.errors.email
+              formik.touched.username && formik.errors.username
                 ? "p-3 bg-gray outline-none sm:w-128 rounded-md border-danger leading-tight focus:outline-none focus:bg-white focus:border-danger animate-wiggle"
                 : "p-3 bg-gray outline-none sm:w-128 rounded-md"
             }
-            inputMode="email"
+            inputMode="username"
             required
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.email}
+            value={formik.values.username}
           />
-          {/* email error div */}
-          {formik.touched.email && formik.errors.email ? (
+          {/* username error div */}
+          {formik.touched.username && formik.errors.username ? (
             <div className="flex flex-row items-center text-danger text-xs italic">
               {" "}
               <AiOutlineWarning className="w-4 h-4" />
-              {formik.errors.email}
+              {formik.errors.username}
             </div>
           ) : null}
 
@@ -147,7 +147,7 @@ export default function Signup() {
                 ? "p-3 bg-gray outline-none sm:w-128 rounded-md border-danger leading-tight focus:outline-none focus:bg-white focus:border-danger animate-wiggle"
                 : "p-3 bg-gray outline-none sm:w-128 rounded-md"
             }
-            inputMode="email"
+            inputMode="username"
             required
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

@@ -6,7 +6,7 @@ export const useUserSignupFormValidation = (onSubmitHandler) => {
     initialValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      username: "",
       phone: "",
       password: "",
     },
@@ -17,7 +17,7 @@ export const useUserSignupFormValidation = (onSubmitHandler) => {
       lastName: Yup.string()
         // .min(5, "Must be 5 characters or more")
         .required("This field is empty!"),
-      email: Yup.string()
+      username: Yup.string()
         .email("Invalid email address")
         .required("This field is empty!"),
       phone: Yup.string()

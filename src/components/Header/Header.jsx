@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useUserCredentialsStore } from "@store/authStore.store";
-import shallow from "zustand/shallow";
+// import shallow from "zustand/shallow";
 import { useLogoutUser } from "@hooks/useLogoutUser.hook";
 
 import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
