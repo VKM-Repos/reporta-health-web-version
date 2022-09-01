@@ -4,42 +4,42 @@ import map from "@assets/images/map.svg";
 
 const SearchQueryResult = () => {
   const searchResultData = [
-    {
-      id: 1,
-      hospitalName: "John Quincy Adams Hospital ",
-      rating: 4.5,
-      numberRated: 200,
-      facilityType: "General hospital",
-      address: "Platinum plaza, Gwarimpa, Abuja",
-      openHours: 24,
-    },
-    {
-      id: 2,
-      hospitalName: "John Quincy Memorial Center",
-      rating: 4.2,
-      numberRated: 419,
-      facilityType: "Pediatric hospital",
-      address: "27 Banex Way, Mabushi, Abuja",
-      openHours: 24,
-    },
-    {
-      id: 3,
-      hospitalName: "John Quincy Adams Hospital and Clinic",
-      rating: 3.9,
-      numberRated: 67,
-      facilityType: "General hospital",
-      address: "Platinum plaza, Gwarimpa, Abuja",
-      openHours: 24,
-    },
-    {
-      id: 4,
-      hospitalName: "Suleiman Hauwa Hospital",
-      rating: 4.7,
-      numberRated: 25,
-      facilityType: "General hospital",
-      address: "Platinum plaza, Gwarimpa, Abuja",
-      openHours: 24,
-    },
+    // {
+    //   id: 1,
+    //   hospitalName: "John Quincy Adams Hospital ",
+    //   rating: 4.5,
+    //   numberRated: 200,
+    //   facilityType: "General hospital",
+    //   address: "Platinum plaza, Gwarimpa, Abuja",
+    //   openHours: 24,
+    // },
+    // {
+    //   id: 2,
+    //   hospitalName: "John Quincy Memorial Center",
+    //   rating: 4.2,
+    //   numberRated: 419,
+    //   facilityType: "Pediatric hospital",
+    //   address: "27 Banex Way, Mabushi, Abuja",
+    //   openHours: 24,
+    // },
+    // {
+    //   id: 3,
+    //   hospitalName: "John Quincy Adams Hospital and Clinic",
+    //   rating: 3.9,
+    //   numberRated: 67,
+    //   facilityType: "General hospital",
+    //   address: "Platinum plaza, Gwarimpa, Abuja",
+    //   openHours: 24,
+    // },
+    // {
+    //   id: 4,
+    //   hospitalName: "Suleiman Hauwa Hospital",
+    //   rating: 4.7,
+    //   numberRated: 25,
+    //   facilityType: "General hospital",
+    //   address: "Platinum plaza, Gwarimpa, Abuja",
+    //   openHours: 24,
+    // },
   ];
   return (
     <section className="grid bg-white grid-cols-1 lg:grid-cols-2 gap-2 justify-items-stretch">
