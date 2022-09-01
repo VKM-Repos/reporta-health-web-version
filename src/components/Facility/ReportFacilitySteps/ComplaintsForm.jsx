@@ -28,30 +28,20 @@ export default function FacilityInfoForm(props) {
   } = props;
   const [validationError, setValidationError] = useState(false)
   
-    const notify = (data) => {
-    const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
-        toast.promise(
-            resolveAfter3Sec,
-            {
-              pending: 'Promise is pending',
-              success: data,
-              error: 'Promise rejected 🤯'
-            }
-        )
-    }
+    // const notify = (data) => {
+    // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+    //     toast.promise(
+    //         resolveAfter3Sec,
+    //         {
+    //           pending: 'Promise is pending',
+    //           success: data,
+    //           error: 'Promise rejected 🤯'
+    //         }
+    //     )
+    // }
   return (
     <div className="w-full flex flex-col">
-            <ToastContainer 
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
+           
 
       <h2 className="text-xl font-bold">Facility information</h2>
       <Formik

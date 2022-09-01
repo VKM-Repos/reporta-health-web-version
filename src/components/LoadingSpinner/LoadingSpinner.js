@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const LoadingSpinner = (props) => {
   return (
-    <span>
+    <div>
       <svg
         role="status"
         className="inline mr-2 w-4 h-4 animate-spin "
@@ -21,7 +21,7 @@ const LoadingSpinner = (props) => {
         />
       </svg>
       {props.text}
-    </span>
+    </div>
   );
 };
 

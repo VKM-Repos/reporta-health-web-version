@@ -7,7 +7,7 @@ const instanceSettings = {
   baseURL: backendApiURL,
   timeout: 300000,
 };
-let jwt = useUserCredentialsStore.getState()?.jwt;
+let jwt = useUserCredentialsStore.getState()?.userDetails?.accessToken;
 
 function formatResponseError({ response, ...rest }) {
   let formatedError = {
@@ -34,5 +34,6 @@ let publicInstanceAxios = axios.create(instanceSettings);
 
 publicInstanceAxios.interceptors.response.use(null, formatResponseError);
 authInstanceAxios.interceptors.response.use(null, formatResponseError);
+authInstanceAxios.interceptors.request.use(null, formatResponseError);
 
 export { publicInstanceAxios, authInstanceAxios };

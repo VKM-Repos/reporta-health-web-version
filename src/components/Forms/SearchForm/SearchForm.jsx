@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import Router from "next/router";
 import { AiOutlineDown } from "react-icons/ai";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+
+import { useSearchFacility } from '@hooks/useSearchFacility'
 
 const SearchForm = () => {
   const options = [
@@ -13,6 +17,7 @@ const SearchForm = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [query, setQuery] = useState('')
 
   const toggling = () => setIsOpen(!isOpen);
 
@@ -21,9 +26,17 @@ const SearchForm = () => {
     setIsOpen(false);
     console.log(selectedOption);
   };
+  const { mutate, isLoading } = useSearchFacility();
+  const handleChange = (events)=> {
+    setQuery(events.target.value);
+  }
+  const searchFacility = (e) =>{
+    e.preventDefault() 
+    mutate(query)
+  }
 
   return (
-    <form className="">
+    <form className="" onSubmit={searchFacility}>
       <div className="w-[80vw] bg-white grid grid-cols-2 lg:grid-cols-5 gap-5 py-2 justify-items-stretch px-4 rounded-md">
         {/* select field */}
         <div className="lg:max-w-[12rem] flex flex-col">
@@ -85,13 +98,23 @@ const SearchForm = () => {
             className="w-full px-2 py-4 bg-gray focus:outline-none text-xs lg:text-sm"
             type="text"
             placeholder="Search by specialty or name of facility"
+            name="query"
+            onChange={handleChange}
           />
         </div>
-        <input
+        {/* <input
           type="submit"
           value="Find facility"
           className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
-        />
+        /> */}
+        <button
+        type="submit"
+        value="Find facility"
+        className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
+        disabled={isLoading}
+        >
+        {isLoading ? <LoadingSpinner text="Searching for facility..." /> : "Find facility"}
+        </button>
       </div>
     </form>
   );

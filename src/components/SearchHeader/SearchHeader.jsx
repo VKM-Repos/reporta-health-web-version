@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useUserCredentialsStore } from "@store/authStore.store";
@@ -48,23 +49,30 @@ const SearchHeader = () => {
   };
 
   const options = [
-    "Abuja",
+    "FCT",
     "Lagos",
     "Calabar",
     "Kaduna",
     "Port Harcourt",
     "Benin City",
+    "Plateau",
+    "Taraba",
+    "Delta State",
+    "Rivers",
   ];
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const toggling = () => setIsOpen(!isOpen);
-
+  
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
   };
+  useEffect(()=> {
+    props.handeleChangeLocation(selectedOption)
+  }, [selectedOption, setSelectedOption])
   return (
     <header>
       <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between  px-6 py-4 ">
