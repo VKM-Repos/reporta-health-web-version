@@ -2,15 +2,45 @@ import Image from "next/image";
 import React, {useState} from "react";
 import map from "@assets/images/map.svg";
 
-const SearchQueryResult = (props) => {
-  const searchResultData = props.searchResults
-  const [currentPage, setCurrentPage] = useState(1)
-  const [resultPerPage, setResultPerPage] = useState(4)
-
-  const indexOfLastItem = currentPage * resultPerPage
-  const indexOfFirstItem = indexOfLastItem - resultPerPage
-  const currentResults = searchResultData.slice(indexOfFirstItem, indexOfLastItem)
-
+const SearchQueryResult = () => {
+  const searchResultData = [
+    // {
+    //   id: 1,
+    //   hospitalName: "John Quincy Adams Hospital ",
+    //   rating: 4.5,
+    //   numberRated: 200,
+    //   facilityType: "General hospital",
+    //   address: "Platinum plaza, Gwarimpa, Abuja",
+    //   openHours: 24,
+    // },
+    // {
+    //   id: 2,
+    //   hospitalName: "John Quincy Memorial Center",
+    //   rating: 4.2,
+    //   numberRated: 419,
+    //   facilityType: "Pediatric hospital",
+    //   address: "27 Banex Way, Mabushi, Abuja",
+    //   openHours: 24,
+    // },
+    // {
+    //   id: 3,
+    //   hospitalName: "John Quincy Adams Hospital and Clinic",
+    //   rating: 3.9,
+    //   numberRated: 67,
+    //   facilityType: "General hospital",
+    //   address: "Platinum plaza, Gwarimpa, Abuja",
+    //   openHours: 24,
+    // },
+    // {
+    //   id: 4,
+    //   hospitalName: "Suleiman Hauwa Hospital",
+    //   rating: 4.7,
+    //   numberRated: 25,
+    //   facilityType: "General hospital",
+    //   address: "Platinum plaza, Gwarimpa, Abuja",
+    //   openHours: 24,
+    // },
+  ];
   return (
     <div>
       <section className="grid bg-white grid-cols-1 lg:grid-cols-2 gap-2 justify-items-stretch">
