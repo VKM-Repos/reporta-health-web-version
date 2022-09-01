@@ -1,13 +1,21 @@
 import Image from "next/image";
-import React from "react";
+import React, {useState} from "react";
 import map from "@assets/images/map.svg";
 
 const SearchQueryResult = (props) => {
   const searchResultData = props.searchResults
+  const [currentPage, setCurrentPage] = useState(1)
+  const [resultPerPage, setResultPerPage] = useState(4)
+
+  const indexOfLastItem = currentPage * resultPerPage
+  const indexOfFirstItem = indexOfLastItem - resultPerPage
+  const currentResults = searchResultData.slice(indexOfFirstItem, indexOfLastItem)
+
   return (
-    <section className="grid bg-white grid-cols-1 lg:grid-cols-2 gap-2 justify-items-stretch">
+    <div>
+      <section className="grid bg-white grid-cols-1 lg:grid-cols-2 gap-2 justify-items-stretch">
       <div className="lg:p-4 flex flex-col  items-start justify-start">
-        {searchResultData?.map((result, id) => (
+        {currentResults?.map((result, id) => (
           <div
             key={id}
             className="w-full bg-transparent hover:bg-background px-4 py-4 cursor-pointer rounded-md flex flex-row "
@@ -102,6 +110,7 @@ const SearchQueryResult = (props) => {
         <Image src={map} alt="google maps" />
       </div>
     </section>
+    </div>
   );
 };
 
