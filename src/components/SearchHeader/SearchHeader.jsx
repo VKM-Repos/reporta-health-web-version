@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useUserCredentialsStore } from "@store/authStore.store";
@@ -14,7 +13,7 @@ import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import Image from "next/image";
 import logo from "@assets/images/logo.svg";
 
-const SearchHeader = () => {
+const SearchHeader = (props) => {
   const [userData, setUserData] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
