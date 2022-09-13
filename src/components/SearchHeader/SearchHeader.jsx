@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { useUserCredentialsStore } from "@store/authStore.store";
-// import shallow from "zustand/shallow";
 import { useLogoutUser } from "@hooks/useLogoutUser.hook";
 import { AiOutlineDown } from "react-icons/ai";
 

@@ -35,7 +35,6 @@ export default function SearchResult() {
   const searchFacility = () =>{
     mutate(query)
     setLocation(null)
-    // setFilteredResults(searchResults)
     isLoading? console.log('loading') : console.log('loaded')
   }
 
