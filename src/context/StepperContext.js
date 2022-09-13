@@ -10,7 +10,9 @@ export const FormContext = createContext({
     reportFacilityLastStep: false,
     setReportFacilityLastStep:async(reportFacilityLastStep)=> null,
     lastStep: false,
-    setLastStep: async (lastStep)=> null
+    setLastStep: async (lastStep)=> null,
+    seachFacilityQuery: undefined,
+    setSeachFacilityQuery: async (seachFacilityQuery) => null,
 });
 export const useForm = () => useContext(FormContext)
 export const FormProvider = ({ children }) => {
@@ -18,6 +20,7 @@ export const FormProvider = ({ children }) => {
     const [lastStep, setLastStep] = useState(false)
     const [reportFacilityLastStep, setReportFacilityLastStep] = useState(false)
     const [reportFacilityFormData, setReportFacilityFormData] = useState(reportFacilityFormInitialValues)
+    const [seachFacilityQuery,setSeachFacilityQuery] = useState("")
   
-    return <FormContext.Provider value={{ formData, setFormData, reportFacilityFormData, setReportFacilityFormData, reportFacilityLastStep, setReportFacilityLastStep, lastStep, setLastStep }}>{children}</FormContext.Provider>
+    return <FormContext.Provider value={{ formData, setFormData, reportFacilityFormData, setReportFacilityFormData, reportFacilityLastStep, setReportFacilityLastStep, lastStep, setLastStep, seachFacilityQuery,setSeachFacilityQuery }}>{children}</FormContext.Provider>
   }

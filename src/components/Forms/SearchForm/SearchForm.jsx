@@ -4,7 +4,7 @@ import { AiOutlineDown } from "react-icons/ai";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 import { useSearchFacility } from '@hooks/useSearchFacility'
-
+import { useForm } from "@context/StepperContext";
 const SearchForm = () => {
   const options = [
     "Abuja",
@@ -19,6 +19,8 @@ const SearchForm = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [query, setQuery] = useState('')
 
+  const {seachFacilityQuery,setSeachFacilityQuery} = useForm()
+
   const toggling = () => setIsOpen(!isOpen);
 
   const onOptionClicked = (value) => () => {
@@ -31,6 +33,7 @@ const SearchForm = () => {
     setQuery(events.target.value);
   }
   const searchFacility = (e) =>{
+    setSeachFacilityQuery(query)
     e.preventDefault() 
     mutate(query)
   }
@@ -111,7 +114,7 @@ const SearchForm = () => {
         type="submit"
         value="Find facility"
         className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
-        disabled={isLoading}
+        disabled={!query ? true : false}
         >
         {isLoading ? <LoadingSpinner text="Searching for facility..." /> : "Find facility"}
         </button>
