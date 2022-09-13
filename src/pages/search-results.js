@@ -46,7 +46,7 @@ export default function SearchResult() {
         <p className="text-xs lg:text-sm text-secondary">{searchResults.length} search results for:</p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 justify-items-stretch">
           <h2 className="lg:col-span-2 text-[1.4rem] lg:text-[1.8rem] text-black font-extrabold">
-            {searchResults.length > 0 ? seachFacilityQuery: `No search rusult for ${seachFacilityQuery} `}
+            {searchResults.length > 0 ? seachFacilityQuery: `No search result for ${seachFacilityQuery} `}
           </h2>
           <div className="grid grid-cols-2 gap-5 justify-items-stretch bg-white p-2 rounded-md">
             {/* search input */}
