@@ -2,9 +2,10 @@ import Image from "next/image";
 import React, {useState} from "react";
 import map from "@assets/images/map.svg";
 
+
 const SearchQueryResult = (props) => {
   const searchResultData = props.searchResults
-  const [currentPage, setCurrentPage] = useState(3)
+  const [currentPage, setCurrentPage] = useState(1)
   const [resultPerPage, setResultPerPage] = useState(4)
 
   const indexOfLastItem = currentPage * resultPerPage
@@ -25,7 +26,7 @@ const SearchQueryResult = (props) => {
     <section>
       <div className=" grid bg-white grid-cols-1 lg:grid-cols-2 gap-2 justify-items-stretch">
       <div className="lg:p-4">
-        <div className="max-h-[80vh] flex flex-col  items-start justify-start">
+        <div className="max-h-[90vh] flex flex-col  items-start justify-start">
           {currentResults?.map((result, id) => (
             <div
               key={id}
