@@ -3,9 +3,9 @@ import Router from "next/router";
 import { AiOutlineDown } from "react-icons/ai";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
-import { useSearchFacility } from "@hooks/useSearchFacility";
-
-const SearchForm = (props) => {
+import { useSearchFacility } from '@hooks/useSearchFacility'
+import { useForm } from "@context/StepperContext";
+const SearchForm = () => {
   const options = [
     "FCT",
     "Lagos",
@@ -22,6 +22,8 @@ const SearchForm = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
+  const {seachFacilityQuery,setSeachFacilityQuery} = useForm()
+
   const toggling = () => setIsOpen(!isOpen);
 
   const onOptionClicked = (value) => () => {
@@ -37,11 +39,12 @@ const SearchForm = (props) => {
   const { mutate, isLoading } = useSearchFacility();
   const handleChange = (events) => {
     setQuery(events.target.value);
-  };
-  const searchFacility = (e) => {
-    e.preventDefault();
-    mutate(query);
-  };
+  }
+  const searchFacility = (e) =>{
+    setSeachFacilityQuery(query)
+    e.preventDefault() 
+    mutate(query)
+  }
 
   return (
     <form className="" onSubmit={searchFacility}>
@@ -112,10 +115,10 @@ const SearchForm = (props) => {
           />
         </div>
         <button
-          type="submit"
-          value="Find facility"
-          className="w-full lg:col-span-1 col-span-3  py-4 text-xs border border-transparent lg:text-sm rounded-md transition ease-in-out bg-primary hover:bg-white hover:text-primary hover:border hover:border-primary cursor-pointer text-white"
-          disabled={isLoading}
+        type="submit"
+        value="Find facility"
+        className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
+        disabled={!query ? true : false}
         >
           {isLoading ? (
             <LoadingSpinner text="Searching for facility..." />

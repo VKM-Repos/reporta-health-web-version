@@ -6,6 +6,7 @@ import { set } from 'lodash';
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 import { useSearchFacility } from '@hooks/useSearchFacility'
+import { useForm } from "@context/StepperContext";
 
 export default function SearchResult() {
   const searchResults = useSearchFacilityStore.getState()?.searchResults?.data;
@@ -13,6 +14,7 @@ export default function SearchResult() {
   const [filteredResults, setFilteredResults] = useState(useSearchFacilityStore.getState()?.searchResults?.data)
   const [query, setQuery] = useState('')
   
+  const {seachFacilityQuery,setSeachFacilityQuery} = useForm()
   const handeleChangeLocation = (location) => {
     setLocation(location)
   }
@@ -39,12 +41,12 @@ export default function SearchResult() {
 
   return (
     <section className="w-full bg-background min-h-screen font-jarkata relative overflow-hidden select-none">
-      <SearchHeader handeleChangeLocation={handeleChangeLocation} />
+      <SearchHeader searchResults={searchResults} handeleChangeLocation={handeleChangeLocation} />
       <div className="w-[90vw] my-8 mx-auto">
-        <p className="text-xs lg:text-sm text-secondary">Search results for:</p>
+        <p className="text-xs lg:text-sm text-secondary">{searchResults.length} search results for:</p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 justify-items-stretch">
           <h2 className="lg:col-span-2 text-[1.4rem] lg:text-[1.8rem] text-black font-extrabold">
-            John Quincy Adams Hospital and Clinic
+            {searchResults.length > 0 ? seachFacilityQuery: `No search result for ${seachFacilityQuery} `}
           </h2>
           <div className="grid grid-cols-2 gap-5 justify-items-stretch bg-white p-2 rounded-md">
             {/* search input */}
