@@ -11,10 +11,11 @@ import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 
 import Image from "next/image";
 import logo from "@assets/images/logo.svg";
+import DialogueBox from "@components/DialogueBox/DialogueBox";
 
 const Header = () => {
   const [userData, setUserData] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState();
 
   useEffect(() => {
     setUserData(useUserCredentialsStore.getState().userDetails);
@@ -22,33 +23,35 @@ const Header = () => {
   }, []);
 
   let userName = userData?.user?.username;
-
   const router = useRouter();
 
+// logout function
   const { logoutHandler } = useLogoutUser();
 
-  const clearUserAuth = () => {
-    setUserData({});
-    setIsAuthenticated(false);
-    logoutHandler;
-  };
-
+  // Modals
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
   const closeModal = () => {
     setShowModal(false);
   };
 
   const [showReportModal, setShowReportModal] = useState(false);
-
   const closeReportModal = () => {
     setShowReportModal(false);
   };
 
+// dialogue box function to log out users
+  const [showDialogue, setShowDialogue] = useState(false)
+  const confirmLogout = () => {
+    logoutHandler()
+  }
+  const confirmCancel = () => {
+    setShowDialogue(false)
+  }
+ 
   return (
     <header className="w-full relative bg-transparent z-50">
-      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between px-8 py-4 ">
+      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between lg:px-8 px-4 py-4 ">
         {/* logo */}
         <Link href="/">
           <a className="lg:px-2 ">
@@ -63,7 +66,7 @@ const Header = () => {
               className={
                 router.pathname === "/"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Home
@@ -74,7 +77,7 @@ const Header = () => {
               className={
                 router.pathname === "/about"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               About
@@ -82,14 +85,14 @@ const Header = () => {
           </Link>
 
           <button
-            className="tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+            className="tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
             onClick={() => setShowReportModal(true)}
           >
             Report a facility
           </button>
 
           <button
-            className="tracking-wide mx-4 hover:font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
+            className="tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
             onClick={() => setShowModal(true)}
           >
             Register a facility
@@ -102,7 +105,7 @@ const Header = () => {
               <p className="hidden lg:flex">Hello, {userName}</p>
 
               <button
-                onClick={clearUserAuth}
+                onClick={() => {setShowDialogue(true)}}
                 className="mx-4 hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300"
               >
                 logout
@@ -142,7 +145,7 @@ const Header = () => {
       {/* sidebar menu content */}
 
       <div
-        className={`top-0 w-full bg-black bg-opacity-10 fixed h-full z-40 ease-in-out duration-300 ${
+        className={`top-0 w-full bg-black bg-opacity-10 fixed h-full z-50 ease-in-out duration-300 ${
           showSidebar ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -313,7 +316,7 @@ const Header = () => {
                 <p className="lg:hidden flex">Hello, {userName}</p>
 
                 <a
-                  onClick={clearUserAuth}
+                  onClick={() => {setShowSidebar(!showSidebar); setShowDialogue(true)}}
                   className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
                 >
                   <svg
@@ -394,6 +397,7 @@ const Header = () => {
         onClose={closeReportModal}
         visible={showReportModal}
       />
+       <DialogueBox show={showDialogue} confirmLogout={confirmLogout} confirmCancel={confirmCancel} title="Log out" message={`Hey ${userName}, are you sure you want to log out?`} />
     </header>
   );
 };

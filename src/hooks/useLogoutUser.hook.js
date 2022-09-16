@@ -1,9 +1,17 @@
 import shallow from "zustand/shallow";
-import { useUserCredentialsStore } from "@store/authStore.store";
 
-import Router from "next/router";
+import { useUserCredentialsStore } from "@store/authStore.store";
+import { useEffect, useState } from "react";
 
 export const useLogoutUser = () => {
+  const [userData, setUserData] = useState({});
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+     setUserData(useUserCredentialsStore.getState().userDetails);
+    setIsAuthenticated(useUserCredentialsStore.getState().isAuthenticated);
+  }, []);
+
   const { reset } = useUserCredentialsStore(
     (state) => ({
       reset: state.reset,
@@ -13,7 +21,9 @@ export const useLogoutUser = () => {
 
   const logoutHandler = () => {
     reset();
-    Router.replace("/");
+    setUserData({});
+    setIsAuthenticated(!isAuthenticated)
+    window.location.replace("/")
   };
 
   return {

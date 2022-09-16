@@ -1,6 +1,5 @@
 import { LOGIN_MUTATION_KEY } from "@config/queryKeys";
 import { useMutation } from "react-query";
-import Router from "next/router";
 import { useUserCredentialsStore } from "@store/authStore.store";
 import shallow from "zustand/shallow";
 import { loginData } from "@services/mutation/login.service";
@@ -18,11 +17,13 @@ export const useLogin = () => {
       populateUserInfoAndJwt(returnedData?.data);
       data = returnedData?.data;
       // add toast here
+      alert("login success")
       console.log(returnedData?.data);
-      Router.replace("/");
+      window.location.replace("/") 
     },
     onError: () => {
       // add error toast
+      alert("login error")
       return console.log("An error occured");
     },
   });
