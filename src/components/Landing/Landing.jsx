@@ -1,10 +1,22 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import pattern from "@assets/images/pattern.svg";
 import landing from "@assets/images/landing.png";
 import SearchForm from "@components/Forms/SearchForm/SearchForm";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import { useFetchNearestFacility } from "@hooks/useFetchNearestFacility.hook";
 
 const Landing = () => {
+  const [query, setQuery] = useState("");
+  const { mutate, isLoading } = useFetchNearestFacility();
+  const handleChange = (events) => {
+    setQuery(events.target.value);
+  };
+  const fetchFacility = (e) => {
+    e.preventDefault();
+    mutate(query);
+  };
+
   return (
     <section className="-mt-[20%] w-[100vw] font-jarkata">
       <div className="w-full lg:w-2/3 bg-background h-full py-[20%]">
@@ -18,9 +30,23 @@ const Landing = () => {
             facilities to you. It also allows you report unregistered facilities
             to the supervising authorities.
           </p>
+
+          <button
+            type="submit"
+            value="Find facility"
+            className="w-full lg:w-1/3 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300 cursor-pointer text-white"
+            disabled={isLoading}
+            onClick={fetchFacility}
+          >
+            {isLoading ? (
+              <LoadingSpinner text="Searching facilities..." />
+            ) : (
+              "Search nearest facility"
+            )}
+          </button>
           {/* search bar */}
           <div className="bg-transparent my-12 z-30">
-            <SearchForm />
+            {/* <SearchForm /> */}
           </div>
 
           <div className="hidden lg:block absolute z-20 top-[10%] lg:-right-[25%] ">

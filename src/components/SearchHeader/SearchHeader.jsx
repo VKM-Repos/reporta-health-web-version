@@ -12,6 +12,7 @@ import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 
 import Image from "next/image";
 import logo from "@assets/images/logo.svg";
+import DialogueBox from "@components/DialogueBox/DialogueBox";
 
 const SearchHeader = (props) => {
   const [userData, setUserData] = useState({});
@@ -28,11 +29,6 @@ const SearchHeader = (props) => {
 
   const { logoutHandler } = useLogoutUser();
 
-  const clearUserAuth = () => {
-    setUserData({});
-    setIsAuthenticated(false);
-    logoutHandler;
-  };
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -47,31 +43,15 @@ const SearchHeader = (props) => {
     setShowReportModal(false);
   };
 
-  const options = [
-    "FCT",
-    "Lagos",
-    "Calabar",
-    "Kaduna",
-    "Port Harcourt",
-    "Benin City",
-    "Plateau",
-    "Taraba",
-    "Delta State",
-    "Rivers",
-  ];
+  // dialogue box function to log out users
+  const [showDialogue, setShowDialogue] = useState(false)
+  const confirmLogout = () => {
+    logoutHandler()
+  }
+  const confirmCancel = () => {
+    setShowDialogue(false)
+  }
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const toggling = () => setIsOpen(!isOpen);
-  
-  const onOptionClicked = (value) => () => {
-    setSelectedOption(value);
-    setIsOpen(false);
-  };
-  useEffect(()=> {
-    props.handeleChangeLocation(selectedOption)
-  }, [selectedOption, setSelectedOption])
   return (
     <header>
       <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between  px-6 py-4 ">
@@ -84,49 +64,15 @@ const SearchHeader = (props) => {
           </Link>
 
           {/* filter by country */}
-          <div className="hidden lg:block z-30 mx-8">
-            <div className="lg:max-w-[12rem] flex flex-col relative">
-              <label
-                className="cursor-pointer flex flex-row items-center  justify-start text-xs lg:text-sm text-secondary "
-                onClick={toggling}
-              >
-                {" "}
-                {selectedOption || "Abuja"}, Nigeria
-                <AiOutlineDown className="ml-4 text-black" />{" "}
-              </label>
-              <div className="relative flex flex-col">
-                {isOpen && (
-                  <div className="fixed px-2 py-4 min-w-[15rem] max-h-[10rem] shadow-xl bg-white overflow-auto">
-                    <div className=" py-4 text-secondary text-xs lg:text-sm">
-                      {options.map((option) => (
-                        <span
-                          className="flex flex-col px-1 py-1 hover:bg-background"
-                          onClick={onOptionClicked(option)}
-                          key={Math.random()}
-                        >
-                          {option}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="relative flex flex-row items-center justify-between">
-          <Link href="report-facility">
-            <button className="hidden mx-8 text-white bg-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300">
-              Report a facility
-            </button>
-          </Link>
           {isAuthenticated ? (
             <div className="flex items-center justify-between">
               <p className="hidden lg:flex">Hello, {userName}</p>
 
               <button
-                onClick={clearUserAuth}
+                onClick={() => {setShowDialogue(true)}}
                 className="mx-4 hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300"
               >
                 logout
@@ -336,7 +282,7 @@ const SearchHeader = (props) => {
                 <p className="lg:hidden flex">Hello, {userName}</p>
 
                 <a
-                  onClick={clearUserAuth}
+                  onClick={() => {setShowSidebar(!showSidebar); setShowDialogue(true)}}
                   className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
                 >
                   <svg
@@ -417,6 +363,7 @@ const SearchHeader = (props) => {
         onClose={closeReportModal}
         visible={showReportModal}
       />
+       <DialogueBox  show={showDialogue} confirmLogout={confirmLogout} confirmCancel={confirmCancel} title="Log out" message={`Hey ${userName}, are you sure you want to log out?`} />
     </header>
   );
 };

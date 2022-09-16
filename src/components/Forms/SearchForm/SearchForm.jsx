@@ -1,62 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import { AiOutlineDown } from "react-icons/ai";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
-import { useSearchFacility } from '@hooks/useSearchFacility'
+import { useSearchFacility } from "@hooks/useSearchFacility";
 
-const SearchForm = () => {
+const SearchForm = (props) => {
   const options = [
-    "Abuja",
+    "FCT",
     "Lagos",
     "Calabar",
     "Kaduna",
     "Port Harcourt",
     "Benin City",
+    "Plateau",
+    "Taraba",
+    "Delta State",
+    "Rivers",
   ];
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [query, setQuery] = useState('')
 
   const toggling = () => setIsOpen(!isOpen);
 
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    console.log(selectedOption);
   };
+  // useEffect(() => {
+  //   props.handeleChangeLocation(selectedOption);
+  // }, [selectedOption, setSelectedOption]);
+
+  const [query, setQuery] = useState("");
+
   const { mutate, isLoading } = useSearchFacility();
-  const handleChange = (events)=> {
+  const handleChange = (events) => {
     setQuery(events.target.value);
-  }
-  const searchFacility = (e) =>{
-    e.preventDefault() 
-    mutate(query)
-  }
+  };
+  const searchFacility = (e) => {
+    e.preventDefault();
+    mutate(query);
+  };
 
   return (
     <form className="" onSubmit={searchFacility}>
-      <div className="w-[80vw] bg-white grid grid-cols-2 lg:grid-cols-5 gap-5 py-2 justify-items-stretch px-4 rounded-md">
+      <div className="w-[90vw] mx-auto bg-white grid grid-cols-3 lg:grid-cols-5 gap-2 py-2 justify-items-stretch px-4 rounded-md">
         {/* select field */}
-        <div className="lg:max-w-[12rem] flex flex-col">
+        <div className="w-full flex flex-col border shadow-sm border-background rounded-md py-2 px-1 lg:px-4">
           <label
-            className="cursor-pointer flex flex-row items-center justify-start text-xs lg:text-sm text-secondary "
+            className="cursor-pointer flex flex-row items-start justify-start text-[0.6rem] lg:text-sm font-semibold text-secondary "
             onClick={toggling}
           >
             {" "}
-            select location <AiOutlineDown className="ml-4 text-black" />{" "}
+            select state{" "}
+            <AiOutlineDown className="lg:block hidden ml-4 text-black" />{" "}
           </label>
           <div className="relative flex flex-col ">
-            <div className="flex py-2 items-start text-xs lg:text-sm">
+            <div className="flex py-2  items-start text-xs lg:text-sm">
               {selectedOption || "Abuja"}
             </div>
             {isOpen && (
-              <div className="absolute left-0 w-full h-[7rem] shadow-xl bg-white overflow-auto">
-                <div className=" py-4 text-secondary text-xs lg:text-sm">
+              <div className="absolute left-0 top-[100%] py-2 min-w-[100%] px-4 max-h-[12rem] border border-background shadow-xl bg-white overflow-auto">
+                <div className=" py-4 text-secondary text-sm lg:text-sm">
                   {options.map((option) => (
                     <span
-                      className="flex flex-col px-1 py-1 hover:bg-background"
+                      className="flex flex-col px-1 py-1 text-lg hover:bg-primary hover:text-white cursor-pointer"
                       onClick={onOptionClicked(option)}
                       key={Math.random()}
                     >
@@ -69,7 +78,7 @@ const SearchForm = () => {
           </div>
         </div>
         {/* search input */}
-        <div className="lg:col-span-3 flex flex-row items-center justify-start lg:w-[39rem] px-2 lg:px-4 rounded-md bg-gray">
+        <div className="w-full lg:col-span-3 col-span-2 flex flex-row items-center justify-start px-2 lg:px-4 rounded-md bg-gray">
           <span>
             <svg
               width="24"
@@ -95,25 +104,24 @@ const SearchForm = () => {
             </svg>
           </span>
           <input
-            className="w-full px-2 py-4 bg-gray focus:outline-none text-xs lg:text-sm"
+            className="w-full px-2 bg-gray focus:outline-none text-xs lg:text-sm"
             type="text"
             placeholder="Search by specialty or name of facility"
             name="query"
             onChange={handleChange}
           />
         </div>
-        {/* <input
+        <button
           type="submit"
           value="Find facility"
-          className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
-        /> */}
-        <button
-        type="submit"
-        value="Find facility"
-        className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
-        disabled={isLoading}
+          className="w-full lg:col-span-1 col-span-3  py-4 text-xs border border-transparent lg:text-sm rounded-md transition ease-in-out bg-primary hover:bg-white hover:text-primary hover:border hover:border-primary cursor-pointer text-white"
+          disabled={isLoading}
         >
-        {isLoading ? <LoadingSpinner text="Searching for facility..." /> : "Find facility"}
+          {isLoading ? (
+            <LoadingSpinner text="Searching for facility..." />
+          ) : (
+            "Find facility"
+          )}
         </button>
       </div>
     </form>

@@ -9,7 +9,7 @@ import validationSchema from "@hooks/formValidations/registerFacilityFormValidat
 import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
 import {useForm} from "../../../context/StepperContext"
   
-export default function OwnerShipForm(props) {
+export default function OperationForm(props) {
     const {formData, setFormData, setLastStep } = useForm()
     const currentValidationSchema = validationSchema[3]
 

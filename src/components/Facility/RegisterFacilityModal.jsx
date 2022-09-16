@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 import StepperController from "@components/FormStepper/StepperController";
 import Stepper from "@components/FormStepper/Stepper";
@@ -15,15 +16,24 @@ import { useForm } from "../../context/StepperContext";
 import { set } from "lodash";
 
 export default function RegisterFacility(props) {
-  const { formData, setFormData, lastStep, setLastStep } = useForm();
+  const {
+    registerFacilityFormData,
+    setRegisterFacilityFormData,
+    registerFacilityLastStep,
+    setRegisterFacilityLastStep,
+  } = useForm();
+  // const { formData, setFormData, lastStep, setLastStep } = useForm();
+
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
-    if (lastStep) {
-      console.log("Submitting Facility data");
-      setLastStep(false);
+    if (registerFacilityLastStep) {
+      console.log("Submitting Report Facility data");
+      console.log(registerFacilityFormData);
+      notify("facility has been reported");
+      setRegisterFacilityLastStep(false);
     }
-  }, [lastStep, setLastStep]);
-  const [currentStep, setCurrentStep] = useState(1);
+  }, [registerFacilityLastStep, setRegisterFacilityLastStep]);
 
   const steps = [
     "Basic information",
@@ -83,17 +93,39 @@ export default function RegisterFacility(props) {
   }
 
   function handleClick(direction) {
-    console.log(direction);
     const newStep = currentStep;
+
     direction === "next" ? newStep++ : newStep--;
     newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
   }
+
+  const notify = (data) => {
+    const resolveAfter3Sec = new Promise((resolve) =>
+      setTimeout(resolve, 3000)
+    );
+    toast.promise(resolveAfter3Sec, {
+      pending: "Promise is pending",
+      success: data,
+      error: "Promise rejected 🤯",
+    });
+  };
 
   if (!props.visible) return null;
 
   return (
     <div className="fixed lg:p-40  inset-0 bg-black bg-opacity-30 backdrop-blur-md flex justify-center items-center">
-      <div className="bg-white lg:my-40 p-2 px-5 lg:px-20 bac rounded-md lg:w-1/2 w-[90vw] h-[98vh] overflow-y-auto ">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <div className="bg-white lg:my-40 p-2 px-5 lg:px-10 bac rounded-md lg:w-2/3 w-[90vw] h-[98vh] overflow-y-auto ">
         <div>
           <Stepper
             handleClick={handleClick}
@@ -102,9 +134,7 @@ export default function RegisterFacility(props) {
           />
         </div>
 
-        <div className="my-5">
-          {currentStep > 4 ? <h1>Success!</h1> : displayStep(currentStep)}
-        </div>
+        <div className="my-5">{displayStep(currentStep)}</div>
       </div>
     </div>
   );
