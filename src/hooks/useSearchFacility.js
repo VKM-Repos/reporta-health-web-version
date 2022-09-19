@@ -16,7 +16,7 @@ export const useSearchFacility = () => {
     onSuccess: (returnedData) => {
       populateSearchResult(returnedData?.data)
       console.log(returnedData?.data)
-      Router.replace("/search-results");
+      window.location.replace("/search-results");
 
     },
   })

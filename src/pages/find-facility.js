@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import SearchHeader from "@components/SearchHeader/SearchHeader";
 import SearchQueryResult from "@components/SearchQueryResult/SearchQueryResult";
 import { useFetchNearestFacilityStore } from "@store/fetchNearestFacility.store";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
-
-import { useFetchNearestFacility } from "@hooks/useFetchNearestFacility.hook";
 import SearchForm from "@components/Forms/SearchForm/SearchForm";
 
 export default function FetchResult() {
@@ -14,7 +11,6 @@ export default function FetchResult() {
   const [filteredResults, setFilteredResults] = useState(
     useFetchNearestFacilityStore.getState()?.fetchResults?.data
   );
-  const [query, setQuery] = useState("");
 
   const handeleChangeLocation = (location) => {
     setLocation(location);
@@ -32,17 +28,7 @@ export default function FetchResult() {
     }
   }, [location, setLocation]);
 
-  const { mutate, isLoading } = useFetchNearestFacility();
 
-  const handleChange = (events) => {
-    setQuery(events.target.value);
-  };
-  const fetchNearestFacility = () => {
-    mutate(query);
-    setLocation(null);
-    // setFilteredResults(fetchResults)
-    isLoading ? console.log("loading") : console.log("loaded");
-  };
 
   return (
     <section className="w-full bg-background min-h-screen font-jarkata relative overflow-hidden select-none">

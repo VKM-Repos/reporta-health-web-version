@@ -34,7 +34,7 @@ const Landing = () => {
           <button
             type="submit"
             value="Find facility"
-            className="w-full lg:w-1/3 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-110 duration-300 cursor-pointer text-white"
+            className="w-full lg:w-1/3 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer text-white"
             disabled={isLoading}
             onClick={fetchFacility}
           >
