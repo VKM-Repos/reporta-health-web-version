@@ -5,9 +5,12 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 import { useSearchFacility } from '@hooks/useSearchFacility'
 import { useForm } from "@context/StepperContext";
+import Link from "next/link";
+
+
 const SearchForm = () => {
   const options = [
-    "FCT",
+    "Abuja",
     "Lagos",
     "Calabar",
     "Kaduna",
@@ -22,7 +25,7 @@ const SearchForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const {seachFacilityQuery,setSeachFacilityQuery} = useForm()
+  const {searchFacilityQuery,setSearchFacilityQuery} = useForm()
 
   const toggling = () => setIsOpen(!isOpen);
 
@@ -40,35 +43,36 @@ const SearchForm = () => {
   const handleChange = (events) => {
     setQuery(events.target.value);
   }
-  const searchFacility = (e) =>{
-    setSeachFacilityQuery(query)
+  const searchFacility = (e) => {
+    // setSeachFacilityQuery(query)
     e.preventDefault() 
     mutate(query)
+     console.log("query",query)
   }
 
   return (
     <form className="" onSubmit={searchFacility}>
       <div className="w-[90vw] mx-auto bg-white grid grid-cols-3 lg:grid-cols-5 gap-2 py-2 justify-items-stretch px-4 rounded-md">
         {/* select field */}
-        <div className="w-full flex flex-col border shadow-sm border-background rounded-md py-2 px-1 lg:px-4">
+        <div className="w-full flex flex-col border shadow-sm border-background rounded-md py-2 px-1 ">
           <label
-            className="cursor-pointer flex flex-row items-start justify-start text-[0.6rem] lg:text-sm font-semibold text-secondary "
+            className="cursor-pointer flex flex-row items-center traking-wide justify-between border-b border-background py-1 text-[0.6rem] lg:text-sm font-semibold text-secondary "
             onClick={toggling}
           >
             {" "}
-            select state{" "}
+            Select state{" "}
             <AiOutlineDown className="lg:block hidden ml-4 text-black" />{" "}
           </label>
           <div className="relative flex flex-col ">
-            <div className="flex py-2  items-start text-xs lg:text-sm">
+            <div className="flex py-2 items-start text-xs font-semibold tracking-wide lg:text-sm">
               {selectedOption || "Abuja"}
             </div>
             {isOpen && (
-              <div className="absolute left-0 top-[100%] py-2 min-w-[100%] px-4 max-h-[12rem] border border-background shadow-xl bg-white overflow-auto">
-                <div className=" py-4 text-secondary text-sm lg:text-sm">
+              <div className="absolute z-30 left-0 top-[100%] py-2 min-w-[100%] max-h-[12rem] border border-background  shadow-xl rounded-md bg-white overflow-auto">
+                <div className=" py-1 text-secondary text-sm lg:text-sm">
                   {options.map((option) => (
                     <span
-                      className="flex flex-col px-1 py-1 text-lg hover:bg-primary hover:text-white cursor-pointer"
+                      className="flex flex-col px-1 py-1 text-md hover:bg-primary rounded-sm hover:text-white cursor-pointer"
                       onClick={onOptionClicked(option)}
                       key={Math.random()}
                     >
@@ -114,18 +118,20 @@ const SearchForm = () => {
             onChange={handleChange}
           />
         </div>
-        <button
-        type="submit"
-        value="Find facility"
-        className="w-full lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary hover:bg-opacity-90 cursor-pointer text-white"
-        disabled={!query ? true : false}
-        >
-          {isLoading ? (
-            <LoadingSpinner text="Searching for facility..." />
-          ) : (
-            "Find facility"
-          )}
-        </button>
+      
+                 <button
+                  type="submit"
+                  value="Find facility"
+                  className={`w-full lg:col-span-1 col-span-3 py-4 flex items-center justify-center text-xs lg:text-sm rounded-md  cursor-pointer text-white ${!query ? "bg-secondary focus:none cursor-not-allowed" : "bg-primary hover:scale-95 ease-out duration-300"}`}
+                  disabled={!query ? true : false}
+                  >
+                    {isLoading ? (
+                      <LoadingSpinner text="Searching for facility..." />
+                    ) : (
+                      "Find facility"
+                    )}
+                </button>
+    
       </div>
     </form>
   );

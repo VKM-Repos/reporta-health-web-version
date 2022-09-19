@@ -21,11 +21,11 @@ export default function Maps(props) {
   },[facility])
 
   return (
-  
+    <div className="w-full min-h-screen z-20">
     <MapContainer
       center={position}
       zoom={10}
-      style={{ width: "100%", height: "100vh" }}
+      style={{ width: "100%", height: "100%" }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -46,5 +46,6 @@ export default function Maps(props) {
         </Marker>
       ))}
     </MapContainer>
+  </div>
   );
 }

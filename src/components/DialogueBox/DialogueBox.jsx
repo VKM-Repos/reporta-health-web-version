@@ -8,7 +8,7 @@ const DialogueBox = ({ show, title, message, confirmCancel, confirmLogout }) => 
 
   return (
     <section className='w-screen h-screen fixed inset-0 z-40'>
-          <main className="antialiased bg-black bg-opacity-10 overflow-x-hidden">
+          <main className="antialiased backdrop-blur-sm overflow-x-hidden">
       <div className="relative px-4 min-h-screen md:flex md:items-center md:justify-center">
         <div className="bg-black opacity-25 w-full h-full absolute z-10 inset-0"></div>
         <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-8 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
