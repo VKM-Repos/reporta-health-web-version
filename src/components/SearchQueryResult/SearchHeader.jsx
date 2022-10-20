@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useUserCredentialsStore } from "@store/authStore.store";
 import { useLogoutUser } from "@hooks/useLogoutUser.hook";
 import { AiOutlineDown } from "react-icons/ai";
+import healthWorker from "@assets/images/health-worker.svg";
 
 import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
@@ -12,6 +13,7 @@ import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import Image from "next/image";
 import logo from "@assets/images/logo.svg";
 import DialogueBox from "@components/DialogueBox/DialogueBox";
+import ProfileDropdown from "@components/Dropdown/ProfileDropdown";
 
 const SearchHeader = (props) => {
   const [userData, setUserData] = useState({});
@@ -28,9 +30,13 @@ const SearchHeader = (props) => {
 
   const { logoutHandler } = useLogoutUser();
 
-
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
+  const closeProfile = () => {
+    setShowProfile(false);
+  };
 
   const closeModal = () => {
     setShowModal(false);
@@ -43,21 +49,21 @@ const SearchHeader = (props) => {
   };
 
   // dialogue box function to log out users
-  const [showDialogue, setShowDialogue] = useState(false)
+  const [showDialogue, setShowDialogue] = useState(false);
   const confirmLogout = () => {
-    logoutHandler()
-  }
+    logoutHandler();
+  };
   const confirmCancel = () => {
-    setShowDialogue(false)
-  }
+    setShowDialogue(false);
+  };
 
   return (
-    <header className="border-b border-black border-opacity-20 bg-white shadow-sm">
-      <nav className=" w-[95vw] mx-auto flex flex-row items-center justify-between   px-6 py-4 ">
+    <header className="fixed top-0 w-full z-40 border-b border-black border-opacity-20 bg-white shadow-sm">
+      <nav className=" w-full mx-auto flex flex-row items-center justify-between   px-6 py-2 ">
         <div className="flex items-center justify-start">
           {/* logo */}
           <Link href="/">
-            <a className="lg:px-2">
+            <a className="w-[5rem] h-[2rem]">
               <Image src={logo} alt="reporta-health-logo" />
             </a>
           </Link>
@@ -67,20 +73,26 @@ const SearchHeader = (props) => {
 
         <div className="relative flex flex-row items-center justify-between">
           {isAuthenticated ? (
-            <div className="flex items-center justify-between">
-              <p className="hidden lg:flex">Hello, {userName}</p>
-
+            <div className="hidden lg:flex text-xs items-center justify-between">
+              {/* user icon */}
+              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray mx-2 shadow-sm">
+                <Image src={healthWorker} height={25} width={25} />
+              </div>
               <button
-                onClick={() => {setShowDialogue(true)}}
-                className="mx-4 hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out lg:hover:scale-95 duration-300"
+                onClick={() => {
+                  setShowProfile(!showProfile);
+                }}
+                className="flex items-center  lg:font-semibold mx-2 lg:bg-gray px-2 py-2 rounded-md border border-gray"
               >
-                logout
+                Hello,{" "}
+                <span className="mx-2 mr-6 lg:text-primary">{userName}</span>
+                <AiOutlineDown />
               </button>
             </div>
           ) : (
             <div>
               <Link href="login">
-                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out lg:hover:scale-95 duration-300">
+                <button className="text-xs hidden text-black text-opacity-70 tracking-wide leading-loose lg:flex items-center text-sm font-normal px-4 border border-primary rounded-sm lg:transition ease-in-out lg:hover:scale-95 duration-300">
                   Login
                 </button>
               </Link>
@@ -281,7 +293,10 @@ const SearchHeader = (props) => {
                 <p className="lg:hidden flex">Hello, {userName}</p>
 
                 <a
-                  onClick={() => {setShowSidebar(!showSidebar); setShowDialogue(true)}}
+                  onClick={() => {
+                    setShowSidebar(!showSidebar);
+                    setShowDialogue(true);
+                  }}
                   className="flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
                 >
                   <svg
@@ -358,11 +373,22 @@ const SearchHeader = (props) => {
         </div>
       </div>
       <RegisterFacilityModal onClose={closeModal} visible={showModal} />
+      <ProfileDropdown
+        onClose={closeProfile}
+        show={showProfile}
+        onLogout={setShowDialogue}
+      />
       <ReportFacilityModal
         onClose={closeReportModal}
         visible={showReportModal}
       />
-       <DialogueBox  show={showDialogue} confirmLogout={confirmLogout} confirmCancel={confirmCancel} title="Log out" message={`Hey ${userName}, are you sure you want to log out?`} />
+      <DialogueBox
+        show={showDialogue}
+        confirmLogout={confirmLogout}
+        confirmCancel={confirmCancel}
+        title="Log out"
+        message={`Hey ${userName}, are you sure you want to log out?`}
+      />
     </header>
   );
 };

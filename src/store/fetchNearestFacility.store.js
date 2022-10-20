@@ -5,23 +5,81 @@ import {
   fetchNearestFacilityVersion,
 } from "@config/index";
 
-let fetchNearestFacilityStore = (set) => ({
-  fetchResults: null,
+// export const fetchNearestFacilityStore = create(
+//   persist(
+//     (set, get) => ({
+//       nearestFacilities: null,
+//       currentPage: 1,
+//       // updateNearestFacilityStore: (data) => {
+//       //   return set((state) => {
+//       //     state.nearestFacilities = [
+//       //       ...get().nearestFacilities,
+//       //       ...data?.results,
+//       //     ];
+//       //   });
+//       // },
+//       updateNearestFacilityStore: (result) => {
+//         set(() => ({
+//           nearestFacilities: result,
+//         }));
+//       },
 
-  populateSearchResult: (payload) => {
+//       updateCurrentPage: (result, pageNum) => {
+//         if (result !== null && get()?.currentPage < result?.total) {
+//           return set((state) => {
+//             state.currentPage = pageNum;
+//           });
+//         }
+//         return set((state) => {
+//           state.currentPage = pageNum;
+//         });
+//       },
+//     }),
+//     {
+//       name: fetchNearestFacilityStoreName,
+//       version: fetchNearestFacilityVersion,
+//     }
+//   )
+// );
+
+// import create from "zustand";
+// import { persist, devtools } from "zustand/middleware";
+// import { searchFacilityStoreName, searchFacilityVersion } from "@config/index";
+
+let fetchNearestFacilityStore = (set, get) => ({
+  nearestFacilities: null,
+
+  updateNearestFacilityStore: (result) => {
     set(() => ({
-      fetchResults: payload,
+      nearestFacilities: result,
     }));
   },
 
-  refreshSearchFacilityResults: (payload) => {
+  updateCurrentPage: (result, pageNum) => {
+    if (
+      result !== null &&
+      get()?.nearestFacilities?.current_page < result?.nearestFacilities?.total
+    ) {
+      return set((state) => {
+        state.current_page = pageNum;
+      });
+    }
+    return set((state) => {
+      state.current_page = pageNum;
+    });
+    //  set(() => ({
+    //    nearestFacilities: result,
+    //  }));
+  },
+
+  refreshSearchFacilityResults: (results) => {
     set(() => ({
-      fetchResults: payload,
+      nearestFacilities: results,
     }));
   },
 
   reset: () => {
-    set(() => ({ fetchResults: null }));
+    set(() => ({ nearestFacilities: null }));
   },
 });
 

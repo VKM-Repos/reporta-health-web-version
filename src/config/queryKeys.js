@@ -1,8 +1,10 @@
 // Query keys
 
 // Mutation Keys
-export const SIGNUP_MUTATION_KEY = "SIGNUP_MUTATION_KEY"; //This Key is for access to signup
+export const SIGNUP_MUTATION_KEY = "SIGNUP_MUTATION_KEY"; //signup key
 
-export const LOGIN_MUTATION_KEY = "LOGIN_MUTATION_KEY"; //This Key is for access to login
+export const LOGIN_MUTATION_KEY = "LOGIN_MUTATION_KEY"; // login key
 
-export const USER_QUERY_KEY = "USER_QUERY_KEY"; //This Key is for access
+export const USER_QUERY_KEY = "USER_QUERY_KEY"; // fetch user details key
+
+export const FETCH_NEAREST_FACILITY_KEY = "FETCH_NEAREST_FACILITY_KEY"; // fetch nearest facility key

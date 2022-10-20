@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import { useLogin } from "@hooks/useLogin.hook";
 import { useLoginFormValidation } from "@hooks/formValidations/loginFormValidation.schema";
@@ -8,14 +8,24 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { AiOutlineWarning } from "react-icons/ai";
 import logo from "@assets/images/logo-white.svg";
 
-import Input from "@components/input/Input";
+import Input from "@components/Input/Input";
 import Button from "@components/Button/Button";
 import Image from "next/image";
+import ToastBox from "@components/ToastBox/ToastBox";
 
 export default function Login() {
+  // dialogue box function to log out users
+  const [showDialogue, setShowDialogue] = useState(false);
+  const confirmOkay = () => {
+    logoutHandler();
+  };
+  const confirmCancel = () => {
+    setShowDialogue(false);
+  };
+
   const { mutate, isLoading } = useLogin();
   const onSubmitHandler = (values) => {
-    mutate(values);
+    mutate(values, { onSuccess: setShowDialogue });
   };
 
   const formik = useLoginFormValidation(onSubmitHandler);
@@ -28,6 +38,14 @@ export default function Login() {
 
   return (
     <div className="max-w-screen max-h-screen flex">
+      <ToastBox
+        show={showDialogue}
+        confirmOkay={confirmOkay}
+        confirmCancel={confirmCancel}
+        title="Prompt"
+        message="Login successful"
+        okayMessage="okay"
+      />
       <div className="hidden lg:block login-image w-6/12 h-screen bg-blend-darken bg-black bg-opacity-70 relative">
         <Link href="/">
           <a className="absolute top-10 left-[10%] ">
