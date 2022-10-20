@@ -1,11 +1,9 @@
 import { authInstanceAxios } from "@config/axiosInstance";
-// import { useUserCredentialsStore } from "@store/authStore.store";
 
 /**
- * @desc gets fresh user details..
+ * @desc gets the data for facilities based on query param
  * @returns {Object}
  */
-// let jwt = useUserCredentialsStore.getState()?.jwt;
 
 export const searchFacilityData = async (query) => {
   const user = await authInstanceAxios.get(`/search/?query=${query}`);

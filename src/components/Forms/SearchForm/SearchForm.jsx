@@ -1,137 +1,74 @@
-import React, { useState, useEffect } from "react";
-import Router from "next/router";
-import { AiOutlineDown } from "react-icons/ai";
+import React, { useState } from "react";
+
+import { useSearchFacility } from "@hooks/useSearchFacility";
+// import { useSearchFacilityStore } from "@store/searchFacility.store";
+
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import InputField from "@components/FormFields/InputField";
+import SelectDropdown from "@components/FormFields/SelectDropdown";
 
-import { useSearchFacility } from '@hooks/useSearchFacility'
-import { useForm } from "@context/StepperContext";
-import Link from "next/link";
-
+import nigerianStates from "@libs/nigerian-states.json";
+import facilityTypes from "@libs/facility-types.json";
 
 const SearchForm = () => {
-  const options = [
-    "Abuja",
-    "Lagos",
-    "Calabar",
-    "Kaduna",
-    "Port Harcourt",
-    "Benin City",
-    "Plateau",
-    "Taraba",
-    "Delta State",
-    "Rivers",
-  ];
+  const { mutate, isError, isLoading } = useSearchFacility();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
-  const {searchFacilityQuery,setSearchFacilityQuery} = useForm()
+  const locationOptions = nigerianStates;
 
-  const toggling = () => setIsOpen(!isOpen);
+  const facilityOptions = facilityTypes;
 
-  const onOptionClicked = (value) => () => {
-    setSelectedOption(value);
-    setIsOpen(false);
+  const handleChange = (event) => {
+    console.log(event.target.value);
   };
-  // useEffect(() => {
-  //   props.handeleChangeLocation(selectedOption);
-  // }, [selectedOption, setSelectedOption]);
 
-  const [query, setQuery] = useState("");
-
-  const { mutate, isLoading } = useSearchFacility();
-  const handleChange = (events) => {
-    setQuery(events.target.value);
-  }
-  const searchFacility = (e) => {
-    // setSeachFacilityQuery(query)
-    e.preventDefault() 
-    mutate(query)
-     console.log("query",query)
-  }
+  const submitSearch = (event) => {
+    event.preventDefault();
+    mutate(filteredResults);
+  };
 
   return (
-    <form className="" onSubmit={searchFacility}>
-      <div className="w-[90vw] mx-auto bg-white grid grid-cols-3 lg:grid-cols-5 gap-2 py-2 justify-items-stretch px-4 rounded-md">
-        {/* select field */}
-        <div className="w-full flex flex-col border shadow-sm border-background rounded-md py-2 px-1 ">
-          <label
-            className="cursor-pointer flex flex-row items-center traking-wide justify-between border-b border-background py-1 text-[0.6rem] lg:text-sm font-semibold text-secondary "
-            onClick={toggling}
-          >
-            {" "}
-            Select state{" "}
-            <AiOutlineDown className="lg:block hidden ml-4 text-black" />{" "}
-          </label>
-          <div className="relative flex flex-col ">
-            <div className="flex py-2 items-start text-xs font-semibold tracking-wide lg:text-sm">
-              {selectedOption || "Abuja"}
-            </div>
-            {isOpen && (
-              <div className="absolute z-30 left-0 top-[100%] py-2 min-w-[100%] max-h-[12rem] border border-background  shadow-xl rounded-md bg-white overflow-auto">
-                <div className=" py-1 text-secondary text-sm lg:text-sm">
-                  {options.map((option) => (
-                    <span
-                      className="flex flex-col px-1 py-1 text-md hover:bg-primary rounded-sm hover:text-white cursor-pointer"
-                      onClick={onOptionClicked(option)}
-                      key={Math.random()}
-                    >
-                      {option}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+    <form className="" onSubmit={submitSearch}>
+      <div className="min-w-fit mx-12 mx-auto bg-white grid lg:grid-cols-5 grid-cols-2 gap-2 py-2 justify-items-stretch px-2 rounded-md">
         {/* search input */}
-        <div className="w-full lg:col-span-3 col-span-2 flex flex-row items-center justify-start px-2 lg:px-4 rounded-md bg-gray">
-          <span>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20Z"
-                stroke="#9F9F9F"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M18.9299 20.6898C19.4599 22.2898 20.6699 22.4498 21.5999 21.0498C22.4499 19.7698 21.8899 18.7198 20.3499 18.7198C19.2099 18.7098 18.5699 19.5998 18.9299 20.6898Z"
-                stroke="#9F9F9F"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <input
-            className="w-full px-2 bg-gray focus:outline-none text-xs lg:text-sm"
-            type="text"
-            placeholder="Search by specialty or name of facility"
-            name="query"
-            onChange={handleChange}
-          />
-        </div>
-      
-                 <button
-                  type="submit"
-                  value="Find facility"
-                  className={`w-full lg:col-span-1 col-span-3 py-4 flex items-center justify-center text-xs lg:text-sm rounded-md  cursor-pointer text-white ${!query ? "bg-secondary focus:none cursor-not-allowed" : "bg-primary hover:scale-95 ease-out duration-300"}`}
-                  disabled={!query ? true : false}
-                  >
-                    {isLoading ? (
-                      <LoadingSpinner text="Searching for facility..." />
-                    ) : (
-                      "Find facility"
-                    )}
-                </button>
-    
+        <InputField
+          type="text"
+          placeholder="Search by specialty or name of facility"
+          name="query"
+          value={searchInput}
+          handleChange={handleChange}
+        />
+        {/* dropdown fields */}
+        <SelectDropdown
+          className="col-span-2"
+          options={locationOptions}
+          selectTitle="location"
+        />
+
+        <SelectDropdown
+          className="col-span-2"
+          options={facilityOptions}
+          selectTitle="facility type"
+        />
+
+        <button
+          type="submit"
+          value="Find facility"
+          className={`w-full lg:col-span-1 col-span-2 py-2 flex items-center justify-center text-xs rounded-md  cursor-pointer text-white 
+          ${
+            !searchInput
+              ? "bg-secondary focus:none cursor-not-allowed"
+              : "bg-primary hover:scale-95 ease-out duration-300"
+          }`}
+          disabled={!searchInput ? true : false}
+        >
+          {isLoading ? (
+            <LoadingSpinner text="Searching for facility..." />
+          ) : (
+            "Find facility"
+          )}
+        </button>
       </div>
     </form>
   );

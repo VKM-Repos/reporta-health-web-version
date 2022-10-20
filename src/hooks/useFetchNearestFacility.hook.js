@@ -1,33 +1,53 @@
-import { useMutation } from "react-query";
-import Router from "next/router";
-import { fetchNearestFacilityData } from "@services/query/fetchNearestFacility.service";
-import shallow from "zustand/shallow";
+import { useQuery } from "react-query";
+import { fetchNearestFacility } from "@services/query/fetchNearestFacility.service";
 import { useFetchNearestFacilityStore } from "@store/fetchNearestFacility.store";
+import { FETCH_NEAREST_FACILITY_KEY } from "@config/queryKeys";
+import shallow from "zustand/shallow";
 
-export const useFetchNearestFacility = () => {
-  const [populateSearchResult] = useFetchNearestFacilityStore(
-    (state) => [state.populateSearchResult],
+export const useFetchNearestFacilities = (param) => {
+  const [updateNearestFacilityStore] = useFetchNearestFacilityStore(
+    (state) => [state?.updateNearestFacilityStore],
     shallow
   );
 
-  const { mutate, data, isLoading, error, isFetching } = useMutation({
-    mutationFn: fetchNearestFacilityData,
-    onSuccess: (returnedData) => {
-      populateSearchResult(returnedData?.data);
-      console.log(returnedData?.data);
-      Router.replace("/find-facility");
-    },
-     onError: () => {
-      // add error toast
-      alert("An error occured")
-      return console.log("error fetching facility");
-    },
-  });
-  return {
-    mutate,
-    data,
+  const [updateCurrentPage] = useFetchNearestFacilityStore(
+    (state) => [state?.updateNearestFacilityStore],
+    shallow
+  );
+  const [currentPage] = useFetchNearestFacilityStore(
+    (state) => [state?.currentPage],
+    shallow
+  );
+  const {
     isLoading,
+    isError,
     error,
+    data,
     isFetching,
+    isPreviousData,
+    isFetched,
+  } = useQuery(
+    [FETCH_NEAREST_FACILITY_KEY, currentPage],
+    fetchNearestFacility,
+    {
+      onSuccess: (result) => {
+        updateNearestFacilityStore(result?.data);
+        console.log("feeee", updateNearestFacilityStore);
+        if (param?.fetchMore === true && currentPage < result?.page) {
+          const newPage = result?.page + 1;
+          updateCurrentPage(newPage);
+        }
+      },
+    }
+  );
+
+  return {
+    isError,
+    error,
+    data,
+    isFetching,
+    isPreviousData,
+    isLoading,
+    isFetched,
   };
 };

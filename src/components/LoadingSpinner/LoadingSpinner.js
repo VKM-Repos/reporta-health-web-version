@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const LoadingSpinner = (props) => {
+const LoadingSpinner = ({ text }) => {
   return (
     <div>
       <svg
@@ -20,7 +20,7 @@ const LoadingSpinner = (props) => {
           fill="#1C64F2"
         />
       </svg>
-      {props.text}
+      {text}
     </div>
   );
 };

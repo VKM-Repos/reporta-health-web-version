@@ -22,7 +22,10 @@
       "@components/*": [
         "src/components/*"
       ],
-      "@libs/*": [
+      "@actions/*": [
+        "src/actions/*"
+      ],
+        "@libs/*": [
         "src/libs/*"
       ],
       "@pages/*": [

@@ -1,9 +1,9 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import Router from "next/router";
 import { useSearchFacilityStore } from "@store/searchFacility.store";
-import { searchFacilityData } from "@services/query/searchFacility.service"
-import { USER_QUERY_KEY } from "@config/queryKeys";
+import { searchFacilityData } from "@services/query/searchFacility.service";
 import shallow from "zustand/shallow";
+import DialogueBox from "@components/DialogueBox/DialogueBox";
 
 export const useSearchFacility = () => {
   const [populateSearchResult] = useSearchFacilityStore(
@@ -11,20 +11,24 @@ export const useSearchFacility = () => {
     shallow
   );
 
-  const { mutate, data, isLoading, error, isFetching } = useMutation({
+  const { mutate, data, isLoading, isError, isFetching } = useMutation({
     mutationFn: searchFacilityData,
     onSuccess: (returnedData) => {
-      populateSearchResult(returnedData?.data)
-      console.log(returnedData?.data)
-      window.location.replace("/search-results");
+      populateSearchResult(returnedData?.data?.data);
+      console.log("returned data", returnedData);
 
+      // window.location.replace("/search-results");
     },
-  })
+
+    onError: () => {
+      // add error toast
+    },
+  });
   return {
     mutate,
     data,
     isLoading,
-    error,
+    isError,
     isFetching,
   };
 };
