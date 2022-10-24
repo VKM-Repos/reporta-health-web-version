@@ -9,26 +9,21 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useFetchNearestFacilityStore } from "@store/fetchNearestFacility.store";
+
 import { FETCH_NEAREST_FACILITY_KEY } from "@config/queryKeys";
 import { fetchNearestFacility } from "@services/query/fetchNearestFacility.service";
+import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 const Map = dynamic(() => import("@components/SearchQueryResult/Map"), {
   ssr: false,
 });
 
 export default function SearchResult() {
-  const nearestFacility =
-    useFetchNearestFacilityStore()?.nearestFacilities?.data;
-
   const [showFacilityList, setShowFacilityList] = useState(true);
   return (
     <section className="w-full flex flex-col relative overflow-x-hidden">
       <SearchHeader />
 
-      <Map
-        facilityInfo={nearestFacility}
-        className={`w-screen h-screen z-10 pt-12 `}
-      />
+      <Map className={`w-screen h-screen z-10 pt-12 `} />
 
       <div className="w-full absolute z-20">
         <div className="w-full relative flex flex-row">
