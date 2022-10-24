@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import pattern from "@assets/images/pattern.svg";
 import landing from "@assets/images/landing.png";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
@@ -9,16 +9,15 @@ import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import { useRouter } from "next/router";
 
 const Landing = () => {
-  const router = useRouter();
-
   const [query, setQuery] = useState(null);
   const { data, isLoading, isError, isFetching, isFetched } =
     useFetchNearestFacilities();
+  // console.log("data", data);
 
   const fetchFacility = (e) => {
     e.preventDefault();
     // setQuery(data);
-    if (data) {
+    if (data !== undefined) {
       window.location.replace("/search-results");
     } else {
       console.log("error, there is no data");
@@ -31,7 +30,7 @@ const Landing = () => {
     : isLoading
     ? console.log("fetching", data)
     : isError
-    ? console.log("error")
+    ? console.log("error fetching data")
     : isFetched
     ? console.log("fetched oo", data)
     : null;
@@ -51,7 +50,7 @@ const Landing = () => {
         show={showDialogue}
         confirmCancel={confirmCancel}
         title="Network error"
-        message="Please log in to search for facility"
+        message="There has been an error, please refresh page and try again"
       />
       <div className="w-full lg:w-2/3 bg-background h-full py-[20%]">
         <div className="w-5/6 mx-auto relative flex flex-col items-start justify-center ">
@@ -70,14 +69,10 @@ const Landing = () => {
               type="submit"
               value="Find facility"
               className="w-full lg:w-1/3 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer text-white"
-              disabled={isLoading}
+              // disabled={isLoading}
               onClick={fetchFacility}
             >
-              {isFetching ? (
-                <LoadingSpinner text="Searching facilities..." />
-              ) : (
-                "Search nearest facility "
-              )}
+              Search nearest facility
             </button>
           )}
 
