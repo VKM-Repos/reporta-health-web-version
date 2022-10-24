@@ -51,7 +51,6 @@ export default function AddressForm(props) {
             placeholder={email.placeholder}
             className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.email_address ? 'border border-danger' : ''}`}
             />
-            {console.log(touched)}
            {errors.email_address && touched.email_address ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}

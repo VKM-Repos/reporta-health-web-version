@@ -38,7 +38,7 @@ export default [
     [lga.name]: Yup.string().required(`${lga.requiredErrorMsg}`),
   }),
   Yup.object().shape({
-    [email.name]: Yup.string().required(`${email.requiredErrorMsg}`),
+    [email.name]: Yup.string().required(`${email.requiredErrorMsg}`).email('valid email is required!'),
     [cac_reg.name]: Yup.string().required(`${cac_reg.requiredErrorMsg}`),
     [website.name]: Yup.string().required(`${website.requiredErrorMsg}`),
   }),

@@ -26,7 +26,6 @@ export default function OwnershipForm(props) {
       registrationStatus,
     },
   } = props;
-  console.log(props)
   return (
     <div className="w-full flex flex-col">
       <h2 className="text-xl font-bold">Basic information</h2>
@@ -77,7 +76,6 @@ export default function OwnershipForm(props) {
                 errors.facility_level ? "border border-danger" : ""
               }`}
             />
-            {console.log(errors, touched)}
             {errors.facility_level && touched.facility_level ? (
               <div className="flex flex-row items-center text-danger text-xs italic">
                 {" "}

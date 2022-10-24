@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { AiOutlineWarning } from "react-icons/ai";
@@ -9,7 +9,9 @@ import validationSchema from "@hooks/formValidations/registerFacilityFormValidat
 import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
 import {useForm} from "../../../context/StepperContext"
 import facilityTypes from "@libs/facility-types.json";
+import state_lgas from '@libs/statesAndLgas.json'
 import registerFacilityFormInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
+import { values } from 'lodash';
 
 
 
@@ -17,7 +19,9 @@ import registerFacilityFormInitialValues from "@hooks/formValidations/registerFa
 export default function BasicInfoForm(props) {
   const {formData, setFormData } = useForm()
   const currentValidationSchema = validationSchema[0]
-
+  const [lgas, setLgas] = useState([])
+  const [selectedLga, setselectedLga] = useState('')
+  const states = state_lgas.sort()
   const handleSetFormData = async (data) => {
     await setFormData(data)
     // console.log(data)
@@ -31,31 +35,42 @@ export default function BasicInfoForm(props) {
       lga
     }
   } = props;
+  const handleSetLgas = (event) =>{
+    setLgas([])
+    const {value, name} = event.target
+    if(name === 'state' && value !== '') {
+      const stateData = state_lgas.filter(state => state.alias === value)
+      const stateLgas = stateData[0].lgas
+      setLgas(stateLgas)
+    } 
+    // console.log(event.target.name)
+    
+  }
     return (
         <div >
           <h2 className="text-xl font-bold">Basic information</h2>
           <Formik
-       initialValues={{
-        reg_fac_name: formData.reg_fac_name,
-        facility_type_name: formData.facility_type_name,
-        state: formData.state,
-        lganame: formData.lganame
-       }}
-       validationSchema={currentValidationSchema}
-       onSubmit={values => {
-         // same shape as initial values
-         const data = {...formData, ...values}
-         handleSetFormData(data)
-       }}
+            initialValues={{
+              reg_fac_name: formData.reg_fac_name,
+              facility_type_name: formData.facility_type_name,
+              state: formData.state,
+              lganame: formData.lganame
+            }}
+            validationSchema={currentValidationSchema}
+            onSubmit={values => {
+              // same shape as initial values
+              const data = {...formData, ...values}
+              handleSetFormData(data)
+            }}
      >
-       {({ errors, touched }) => (
-         <Form className="w-full flex flex-col">
+          {({ errors, touched }) => (
+            <Form className="w-full flex flex-col" onChange={handleSetLgas}>
            <label className="mb-3 mt-5">{facility.label}</label>
             <Field 
             type="text" 
             name={facility.name}
             placeholder={facility.placeholder}
-                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.reg_fac_name ? 'border border-danger' : ''}`}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.reg_fac_name ? 'border border-danger' : ''}`}
             />
            {/* {errors.name && touched.name ? (
              <div className="text-danger">{errors.name}</div>
@@ -73,9 +88,9 @@ export default function BasicInfoForm(props) {
             as="select" 
             name={facilityType.name}
             placeholder={facilityType.placeholder}
-                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_type_name ? 'border border-danger' : ''}`}
+            className={`px-4 py-4 bg-gray outline-none  rounded-md ${errors.facility_type_name ? 'border border-danger' : ''}`}
             >
-              <option value="">Select facility type</option>
+              <option value="" className='text-white'>Select facility type</option>
               {
                   facilityTypes.map(FacilityType=>(
                     <option key={FacilityType} value={FacilityType}>{FacilityType}</option>
@@ -93,12 +108,23 @@ export default function BasicInfoForm(props) {
            
 
            <label className="mb-3 mt-4">{state.label}</label>
-            <Field 
-            type="text" 
-            name={state.name}
-            placeholder={state.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.state ? 'border border-danger' : ''}`}
-            />
+              <Field
+              as="select" 
+              name={state.name}
+              placeholder={state.placeholder}
+              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.state ? 'border border-danger' : ''}`}
+                // onChange={(e) => {
+                //   handleSetLgas(e)
+                // }}
+             >
+                <option value="">Select state</option>
+                {
+                  state_lgas.map(({ state, alias }) => (
+                    <option key={alias} value={alias}>{state}</option>
+                  ))
+                }
+              </Field>
+              {/* {console.log(values.state)} */}
             {errors.state && touched.state ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
@@ -108,12 +134,19 @@ export default function BasicInfoForm(props) {
         ) : null}
 
             <label className="mb-3 mt-4">{lga.label}</label>
-            <Field 
-            type="text" 
+            <Field
+            as="select"  
             name={lga.name}
             placeholder={lga.placeholder}
             className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.lganame ? 'border border-danger' : ''}`}
-            /> 
+            >
+              <option value=''>Select Lga</option>
+              {
+                lgas &&  lgas.map((lga, index) =>(
+                  <option key={index} value={lga}>{lga}</option>
+                ))
+              }
+            </Field> 
             {errors.lganame && touched.lganame ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}

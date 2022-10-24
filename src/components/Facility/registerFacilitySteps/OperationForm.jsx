@@ -10,13 +10,13 @@ import formInitialValues from "@hooks/formValidations/registerFacilityFormValida
 import {useForm} from "../../../context/StepperContext"
   
 export default function OperationForm(props) {
-    const {formData, setFormData, setLastStep } = useForm()
+    const {formData, setFormData, setRegisterFacilityLastStep } = useForm()
     const currentValidationSchema = validationSchema[3]
 
     const handleSetFormData = (data) => {
         setFormData(data)
         console.log(data)
-        setLastStep(true)
+        setRegisterFacilityLastStep(true)
       }
 
     const {
@@ -35,7 +35,6 @@ export default function OperationForm(props) {
             dentalTechnicians
         }
       } = props;
-    console.log(formData)
 
     return (
         <div className="w-full flex flex-col">
@@ -60,6 +59,7 @@ export default function OperationForm(props) {
                     // same shape as initial values
                     const data = {...formData, ...values}
                     handleSetFormData(data)
+                    // console.log(data)
                 }}
                 >
                 {({ errors, touched }) => (
@@ -67,7 +67,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col mt-10">
                     <label className="mb-3">{operationStatus.label}</label>
                     <Field
-                    type="text"
+                    type="number"
                     name={operationStatus.name}
                     placeholder={operationStatus.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_op_status ? 'border border-danger' : ''}`}
@@ -80,14 +80,13 @@ export default function OperationForm(props) {
                         </div>
                     ) : null}
                 </div>
-                {console.log(errors)}
            <h2 className="text-xl font-bold my-10">Human resource information</h2>
            <div className="grid grid-cols-2 gap-5">
                 <div className="flex flex-col">
                 <label className="mb-3">{medicalDoctors.label}</label>
                 
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={medicalDoctors.name}
                     placeholder={medicalDoctors.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_doctors ? 'border border-danger' : ''}`}
@@ -104,7 +103,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3">{dentists.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={dentists.name}
                     placeholder={dentists.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_dentist ? 'border border-danger' : ''}`}
@@ -123,7 +122,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{nurses.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={nurses.name}
                     placeholder={nurses.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_single_qualified_nurses ? 'border border-danger' : ''}`}
@@ -140,7 +139,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{midwives.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={midwives.name}
                     placeholder={midwives.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_single_qualified_midwives ? 'border border-danger' : ''}`}
@@ -158,7 +157,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col col-span-2">
                 <label className="mb-3 mt-5">{communityHealthExtensionWorker.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={communityHealthExtensionWorker.name}
                     placeholder={communityHealthExtensionWorker.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_comm_health_ext_officer ? 'border border-danger' : ''}`}
@@ -194,7 +193,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{communityHealthOfficer.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={communityHealthOfficer.name}
                     placeholder="John Doe Hospital"
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_comm_health_officer ? 'border border-danger' : ''}`}
@@ -211,7 +210,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{enviromentHealthOfficer.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={enviromentHealthOfficer.name}
                     placeholder={enviromentHealthOfficer.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_env_health_officer ? 'border border-danger' : ''}`}
@@ -231,7 +230,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{pharmacyTechnicians.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={pharmacyTechnicians.name}
                     placeholder={pharmacyTechnicians.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_pharm_tech ? 'border border-danger' : ''}`}
@@ -248,7 +247,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{labScientists.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={labScientists.name}
                     placeholder={labScientists.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_lab_sc ? 'border border-danger' : ''}`}
@@ -267,7 +266,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{phamacists.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={phamacists.name}
                     placeholder={phamacists.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_pharm ? 'border border-danger' : ''}`}
@@ -284,7 +283,7 @@ export default function OperationForm(props) {
                 <div className="flex flex-col">
                 <label className="mb-3 mt-5">{dentalTechnicians.label}</label>
                 <Field 
-                    type="text" 
+                    type="number" 
                     name={dentalTechnicians.name}
                     placeholder={dentalTechnicians.placeholder}
                     className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_dental_tech ? 'border border-danger' : ''}`}
