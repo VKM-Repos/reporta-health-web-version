@@ -8,34 +8,38 @@ import * as Yup from 'yup';
 import validationSchema from "@hooks/formValidations/registerFacilityFormValidation/validationSchema";
 import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
 import {useForm} from "../../../context/StepperContext"
+import facilityTypes from "@libs/facility-types.json";
+import registerFacilityFormInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
+
+
+
+
 export default function BasicInfoForm(props) {
   const {formData, setFormData } = useForm()
   const currentValidationSchema = validationSchema[0]
 
-  const handleSetFormData = (data) => {
-    setFormData(data)
+  const handleSetFormData = async (data) => {
+    await setFormData(data)
+    // console.log(data)
     props.handleNextStep('next')
   }
   const {
     formField: {
-      hospitalName,
+      facility,
       facilityType,
-      country,
       state,
       lga
     }
   } = props;
-
     return (
         <div >
           <h2 className="text-xl font-bold">Basic information</h2>
           <Formik
        initialValues={{
-        name: formData.name,
-        type: formData.type,
-        country: formData.country,
+        reg_fac_name: formData.reg_fac_name,
+        facility_type_name: formData.facility_type_name,
         state: formData.state,
-        lga: formData.lga
+        lganame: formData.lganame
        }}
        validationSchema={currentValidationSchema}
        onSubmit={values => {
@@ -46,53 +50,47 @@ export default function BasicInfoForm(props) {
      >
        {({ errors, touched }) => (
          <Form className="w-full flex flex-col">
-           <label className="mb-3 mt-5">{hospitalName.label}</label>
+           <label className="mb-3 mt-5">{facility.label}</label>
             <Field 
             type="text" 
-            name={hospitalName.name}
-            placeholder={hospitalName.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.name ? 'border border-danger' : ''}`}
+            name={facility.name}
+            placeholder={facility.placeholder}
+                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.reg_fac_name ? 'border border-danger' : ''}`}
             />
            {/* {errors.name && touched.name ? (
              <div className="text-danger">{errors.name}</div>
            ) : null} */}
-           {errors.name && touched.name ? (
+              {errors.reg_fac_name && touched.reg_fac_name ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.name}
+                  {errors.reg_fac_name}
           </div>
         ) : null}
 
            <label className="mb-3 mt-4">{facilityType.label}</label>
             <Field 
-            type="text" 
+            as="select" 
             name={facilityType.name}
             placeholder={facilityType.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.type ? 'border border-danger' : ''}`}
-            />
+                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_type_name ? 'border border-danger' : ''}`}
+            >
+              <option value="">Select facility type</option>
+              {
+                  facilityTypes.map(FacilityType=>(
+                    <option key={FacilityType} value={FacilityType}>{FacilityType}</option>
+                ))
+              }
+            </Field>
 
-           {errors.type && touched.type ? (
+              {errors.facility_type_name && touched.facility_type_name ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.type}
+                  {errors.facility_type_name}
           </div>
         ) : null}
-           <label className="mb-3 mt-4">{country.label}</label>
-            <Field 
-            type="text" 
-            name={country.name}
-            placeholder={country.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.country ? 'border border-danger' : ''}`}
-            />
-           {errors.country && touched.country ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.country}
-          </div>
-        ) : null}
+           
 
            <label className="mb-3 mt-4">{state.label}</label>
             <Field 
@@ -114,13 +112,13 @@ export default function BasicInfoForm(props) {
             type="text" 
             name={lga.name}
             placeholder={lga.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.lga ? 'border border-danger' : ''}`}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.lganame ? 'border border-danger' : ''}`}
             /> 
-            {errors.lga && touched.lga ? (
+            {errors.lganame && touched.lganame ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.lga}
+            {errors.lganame}
           </div>
         ) : null}
             <div className="my-16 grid grid-cols-5 gap-5 ">

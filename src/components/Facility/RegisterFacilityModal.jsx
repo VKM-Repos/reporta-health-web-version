@@ -17,15 +17,15 @@ import { set } from "lodash";
 
 export default function RegisterFacility(props) {
   const {
+    formData,
     registerFacilityFormData,
     setRegisterFacilityFormData,
     registerFacilityLastStep,
     setRegisterFacilityLastStep,
   } = useForm();
   // const { formData, setFormData, lastStep, setLastStep } = useForm();
-
+  console.log(formData)
   const [currentStep, setCurrentStep] = useState(1);
-
   useEffect(() => {
     if (registerFacilityLastStep) {
       console.log("Submitting Report Facility data");

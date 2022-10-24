@@ -1,23 +1,17 @@
 export default {
     formId: 'checkoutForm',
     formField: {
-      hospitalName: {
-        name: 'name',
+      facility: {
+        name: 'reg_fac_name',
         label: 'Facility name',
         placeholder: 'John Doe Hospital',
         requiredErrorMsg: 'Facility name is required'
       },
       facilityType: {
-        name: 'type',
+        name: 'facility_type_name',
         label: 'Facility type',
         placeholder: 'Hospital/Clinic',
         requiredErrorMsg: 'Facility type is required'
-      },
-      country: {
-        name: 'country',
-        label: 'Country',
-        placeholder: 'John Doe Street',
-        requiredErrorMsg: 'Country is required'
       },
       state: {
         name: 'state',
@@ -26,29 +20,23 @@ export default {
         requiredErrorMsg: 'State is required'
       },
       lga: {
-        name: 'lga',
+        name: 'lganame',
         label: 'LGA',
         placeholder: 'John Doe Street',
         requiredErrorMsg: 'LGA is required'
       },
       email: {
-        name: 'email',
+        name: 'email_address',
         label: 'Facility email',
         placeholder: 'Janedoehospital@gmail.com',
         requiredErrorMsg: 'Email is required',
         invalidErrorMsg: 'Invalid email address'
       },
-      councilRegistrationNumber: {
-        name: 'councilRegistrationNumber',
+      cac_reg: {
+        name: 'cac_reg',
         label: 'Council of Nigeria registration number',
         placeholder: 'Hospital/Clinic',
         requiredErrorMsg: 'Council registration Number is required'
-      },
-      facilityAddress: {
-        name: 'address',
-        label: 'Facility address',
-        placeholder: 'John Doe Street',
-        requiredErrorMsg: 'Facility address is required'
       },
       website: {
         name: 'website',
@@ -63,37 +51,31 @@ export default {
         requiredErrorMsg: 'Ownership is required',
       },
       facilityLevel: {
-        name: 'level',
+        name: 'facility_level',
         label: 'Facility Level',
         placeholder: 'Facility/Clinic',
         requiredErrorMsg: 'Facility level is required'
       },
       operationHours: {
-        name: 'operationHours',
+        name: 'operational_hours',
         label: 'Operational hours',
         placeholder: 'Hospital/Clinic',
         requiredErrorMsg: 'Operational hours is required',
       },
       licenceStatus:{
-        name: 'licenceStatus',
+        name: 'hs_lic_status',
         label: 'License status',
         placeholder: 'Hospital/Clinic',
         requiredErrorMsg: 'License status required'
       },
       registrationStatus:{
-        name: 'registrationStatus',
+        name: 'hs_reg_status',
         label: 'Registration status',
         placeholder: 'Hospital/Clinic',
         requiredErrorMsg: 'Registration status required'
       },
-      premisesStatus:{
-        name: 'premisesStatus',
-        label: 'Premises Status',
-        placeholder: 'Hospital/Clinic',
-        requiredErrorMsg: 'Premises Status required'
-      },
-      daysOfOperation:{
-        name: 'daysOfOperation',
+      operationStatus:{
+        name: 'hs_op_status',
         label: 'Days of Operation',
         placeholder: 'Hospital/Clinic',
         requiredErrorMsg: 'Days of Operation required'
@@ -105,76 +87,70 @@ export default {
         requiredErrorMsg: 'Type of is required'
       },
       medicalDoctors: {
-        name: 'medicalDoctors',
+        name: 'hs_no_doctors',
         label: 'Medical doctors',
         placeholder: 'Hospital/Clinic',
-        requiredErrorMsg: 'Medical doctors is required'
+        requiredErrorMsg: 'Number of Medical doctors is required'
       },
       dentists: {
-        name: 'dentists',
+        name: 'hs_no_dentist',
         label: 'Dentists',
         placeholder: 'Hospita/Clinic',
-        requiredErrorMsg: 'Dentists is required'
+        requiredErrorMsg: 'Number of Dentists is required'
       },
       nurses: {
-        name: 'nurses',
+        name: 'hs_no_single_qualified_nurses',
         label: 'Nurses',
         placeholder: 'Hospital/CLinic',
-        requiredErrorMsg: 'Nurses is required'
+        requiredErrorMsg: 'Number of Nurses is required'
       },
       midwives: {
-        name: 'midwives',
+        name: 'hs_no_single_qualified_midwives',
         label: 'Midwives',
         placeholder: 'Hospital/Clinic',
-        requiredErrorMsg: 'Midwives is required'
+        requiredErrorMsg: 'Number of Midwives is required'
       },
-      juniorCommunityHealthExtensionWorker: {
-        name: 'juniorCommunityHealthExtensionWorker',
-        label: 'Junior communicty health extension worker',
+      communityHealthExtensionWorker: {
+        name: 'hs_no_comm_health_ext_officer',
+        label: 'Communicty health extension worker',
         placeholder: 'Hospital/Clinic',
-        requiredErrorMsg: 'Junior communicty health extension worker is required'
-      },
-      healthInformationManagementOfficers: {
-        name: 'healthInformationManagementOfficers',
-        label: 'Health information management officers',
-        placeholder: 'Hospital/Clinic',
-        requiredErrorMsg: 'Health information management officers is required'
+        requiredErrorMsg: 'Number of Communicty health extension worker is required'
       },
       communityHealthOfficer: {
-        name: 'communityHealthOfficer',
+        name: 'hs_no_comm_health_officer',
         label: 'Community Health Officer',
         placeholder: 'Community/Clinic',
-        requiredErrorMsg: 'Community Health Officer is required'
+        requiredErrorMsg: 'Number of Community Health Officer is required'
       },
       enviromentHealthOfficer:{
-        name: 'enviromentHealthOfficer',
+        name: 'hs_no_env_health_officer',
         label: 'Environment health officer',
         placeholder: 'Environment/Clinic',
-        requiredErrorMsg: 'Environment health Officer is required'
+        requiredErrorMsg: 'Number of Environment health Officer is required'
       },
       pharmacyTechnicians: {
-        name: 'pharmacyTechnicians',
+        name: 'hs_no_pharm_tech',
         label: 'Pharmacy technicians',
         placeholder: 'Pharmacist/hospital',
-        requiredErrorMsg: 'Pharmacy technicians is required'
+        requiredErrorMsg: 'Number of Pharmacy technicians is required'
       },
       labScientists: {
-        name: 'labScientists',
+        name: 'hs_no_lab_sc',
         label: 'Lab scientist',
         placeholder: 'Lab/Clinic',
-        requiredErrorMsg: 'Lab scientist is required'
+        requiredErrorMsg: 'Number of Lab scientist is required'
       },
       phamacists: {
-        name: 'phamacists',
+        name: 'hs_no_pharm',
         label: 'Phamacists',
         placeholder: 'Phamacists/Clinic',
-        requiredErrorMsg: 'Phamacists is required'
+        requiredErrorMsg: 'Number of Phamacists is required'
       },
       dentalTechnicians: {
-        name: 'dentalTechnicians',
+        name: 'hs_no_dental_tech',
         label: 'Dental technicians',
         placeholder: 'Hospital/CLinic',
-        requiredErrorMsg: 'Dental technician is required'
+        requiredErrorMsg: 'Number of Dental technician is required'
       }
     }
   };

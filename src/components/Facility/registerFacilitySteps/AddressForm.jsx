@@ -20,9 +20,8 @@ export default function AddressForm(props) {
     const {
       formField: {
         email,
-        councilRegistrationNumber,
-        facilityAddress,
-        website
+        cac_reg,
+        website,
       }
     } = props;
     return (
@@ -31,9 +30,8 @@ export default function AddressForm(props) {
             
       <Formik
        initialValues={{
-        email: formData.email,
-        councilRegistrationNumber: formData.councilRegistrationNumber,
-        address: formData.address,
+        email_address: formData.email_address,
+        cac_reg: formData.cac_reg,
         website: formData.website,
        }}
        validationSchema={currentValidationSchema}
@@ -51,47 +49,33 @@ export default function AddressForm(props) {
             type="text" 
             name={email.name}
             placeholder={email.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.email ? 'border border-danger' : ''}`}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.email_address ? 'border border-danger' : ''}`}
             />
-           {errors.email && touched.email ? (
+            {console.log(touched)}
+           {errors.email_address && touched.email_address ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.email}
+            {errors.email_address}
           </div>
         ) : null}
 
-           <label className="mb-3 mt-4">{councilRegistrationNumber.label}</label>
+           <label className="mb-3 mt-4">{cac_reg.label}</label>
             <Field 
             type="text" 
-            name={councilRegistrationNumber.name}
-            placeholder={councilRegistrationNumber.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.councilRegistrationNumber ? 'border border-danger' : ''}`}
+            name={cac_reg.name}
+            placeholder={cac_reg.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.cac_reg ? 'border border-danger' : ''}`}
             />
 
-           {errors.councilRegistrationNumber && touched.councilRegistrationNumber ? (
+           {errors.cac_reg && touched.cac_reg ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.councilRegistrationNumber}
+            {errors.cac_reg}
           </div>
         ) : null}
-           <label className="mb-3 mt-4">{facilityAddress.label}</label>
-            <Field 
-            type="text" 
-            name={facilityAddress.name}
-            placeholder={facilityAddress.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.address ? 'border border-danger' : ''}`}
-            />
-
-           {errors.address && touched.address ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.address}
-          </div>
-         
-        ) : null}
+           
            <label className="mb-3 mt-4">{website.label}</label>
             <Field 
             type="text" 

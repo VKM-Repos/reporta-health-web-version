@@ -24,10 +24,9 @@ export default function OwnershipForm(props) {
       operationHours,
       licenceStatus,
       registrationStatus,
-      premisesStatus,
     },
   } = props;
-
+  console.log(props)
   return (
     <div className="w-full flex flex-col">
       <h2 className="text-xl font-bold">Basic information</h2>
@@ -35,11 +34,10 @@ export default function OwnershipForm(props) {
       <Formik
         initialValues={{
           ownership: formData.ownership,
-          level: formData.level,
-          operationHours: formData.operationHours,
-          licenceStatus: formData.licenceStatus,
-          registrationStatus: formData.registrationStatus,
-          premisesStatus: formData.premisesStatus,
+          facility_level: formData.facility_level,
+          operational_hours: formData.operational_hours,
+          hs_lic_status: formData.hs_lic_status,
+          hs_reg_status: formData.hs_reg_status,
         }}
         validationSchema={currentValidationSchema}
         onSubmit={(values) => {
@@ -76,15 +74,15 @@ export default function OwnershipForm(props) {
               name={facilityLevel.name}
               placeholder={facilityLevel.placeholder}
               className={`px-4 py-4 bg-gray outline-none rounded-md ${
-                errors.level ? "border border-danger" : ""
+                errors.facility_level ? "border border-danger" : ""
               }`}
             />
-
-            {errors.level && touched.level ? (
+            {console.log(errors, touched)}
+            {errors.facility_level && touched.facility_level ? (
               <div className="flex flex-row items-center text-danger text-xs italic">
                 {" "}
                 <AiOutlineWarning className="w-4 h-4" />
-                {errors.level}
+                {errors.facility_level}
               </div>
             ) : null}
             <label className="mb-3 mt-4">{operationHours.label}</label>
@@ -93,15 +91,15 @@ export default function OwnershipForm(props) {
               name={operationHours.name}
               placeholder={operationHours.placeholder}
               className={`px-4 py-4 bg-gray outline-none rounded-md ${
-                errors.operationHours ? "border border-danger" : ""
+                errors.operational_hours ? "border border-danger" : ""
               }`}
             />
 
-            {errors.operationHours && touched.operationHours ? (
+            {errors.operational_hours && touched.operational_hours ? (
               <div className="flex flex-row items-center text-danger text-xs italic">
                 {" "}
                 <AiOutlineWarning className="w-4 h-4" />
-                {errors.operationHours}
+                {errors.operational_hours}
               </div>
             ) : null}
             <label className="mb-3 mt-4">{licenceStatus.label}</label>
@@ -110,14 +108,14 @@ export default function OwnershipForm(props) {
               name={licenceStatus.name}
               placeholder={licenceStatus.placeholder}
               className={`px-4 py-4 bg-gray outline-none rounded-md ${
-                errors.licenceStatus ? "border border-danger" : ""
+                errors.hs_lic_status ? "border border-danger" : ""
               }`}
             />
-            {errors.licenceStatus && touched.licenceStatus ? (
+            {errors.hs_lic_status && touched.hs_lic_status ? (
               <div className="flex flex-row items-center text-danger text-xs italic">
                 {" "}
                 <AiOutlineWarning className="w-4 h-4" />
-                {errors.licenceStatus}
+                {errors.hs_lic_status}
               </div>
             ) : null}
 
@@ -127,33 +125,18 @@ export default function OwnershipForm(props) {
               name={registrationStatus.name}
               placeholder={registrationStatus.placeholder}
               className={`px-4 py-4 bg-gray outline-none rounded-md ${
-                errors.registrationStatus ? "border border-danger" : ""
+                errors.hs_reg_status ? "border border-danger" : ""
               }`}
             />
-            {errors.registrationStatus && touched.registrationStatus ? (
+            {errors.hs_reg_status && touched.hs_reg_status ? (
               <div className="flex flex-row items-center text-danger text-xs italic">
                 {" "}
                 <AiOutlineWarning className="w-4 h-4" />
-                {errors.registrationStatus}
+                {errors.hs_reg_status}
               </div>
             ) : null}
 
-            <label className="mb-3 mt-4">{premisesStatus.label}</label>
-            <Field
-              type="text"
-              name={premisesStatus.name}
-              placeholder={premisesStatus.placeholder}
-              className={`px-4 py-4 bg-gray outline-none rounded-md ${
-                errors.premisesStatus ? "border border-danger" : ""
-              }`}
-            />
-            {errors.premisesStatus && touched.premisesStatus ? (
-              <div className="flex flex-row items-center text-danger text-xs italic">
-                {" "}
-                <AiOutlineWarning className="w-4 h-4" />
-                {errors.premisesStatus}
-              </div>
-            ) : null}
+            
             <div className="my-16 grid grid-cols-5 gap-5 ">
               <button
                 onClick={props.onClose}
