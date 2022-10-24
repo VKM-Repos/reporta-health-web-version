@@ -42,7 +42,6 @@ export const FormProvider = ({ children }) => {
         setReportFacilityFormData,
         reportFacilityLastStep,
         setReportFacilityLastStep,
-
         registerFacilityFormData,
         setRegisterFacilityFormData,
         registerFacilityLastStep,

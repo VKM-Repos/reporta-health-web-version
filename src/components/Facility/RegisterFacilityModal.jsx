@@ -17,21 +17,37 @@ import { set } from "lodash";
 
 export default function RegisterFacility(props) {
   const {
+    formData,
     registerFacilityFormData,
     setRegisterFacilityFormData,
     registerFacilityLastStep,
     setRegisterFacilityLastStep,
   } = useForm();
   // const { formData, setFormData, lastStep, setLastStep } = useForm();
-
+  // console.log(formData)
   const [currentStep, setCurrentStep] = useState(1);
-
   useEffect(() => {
     if (registerFacilityLastStep) {
-      console.log("Submitting Report Facility data");
-      console.log(registerFacilityFormData);
-      notify("facility has been reported");
-      setRegisterFacilityLastStep(false);
+       console.log("Submitting Report Facility data");
+        console.log(formData);
+        notify("Facility has been successfully registered");
+        toast.done('done')
+        setRegisterFacilityLastStep(false);
+      // try {
+      //   // console.log("Submitting Report Facility data");
+      //   // console.log(formData);
+      //   // notify("Facility has been successfully registered");
+      //   // toast.done('done')
+      //   // setRegisterFacilityLastStep(false);
+      //   toast.promise(resolveAfter3Sec, {
+      //     pending: "Please wait ....",
+      //     success: "Facility has been successfully registered",
+      //     error: "Error failed to register facility! 🤯",
+      //   });
+
+      // } catch (error) {
+      //   toast.error(error)
+      // }
     }
   }, [registerFacilityLastStep, setRegisterFacilityLastStep]);
 
@@ -104,9 +120,9 @@ export default function RegisterFacility(props) {
       setTimeout(resolve, 3000)
     );
     toast.promise(resolveAfter3Sec, {
-      pending: "Promise is pending",
+      pending: "Please wait ....",
       success: data,
-      error: "Promise rejected 🤯",
+      error: "Error failed to register facility! 🤯",
     });
   };
 
