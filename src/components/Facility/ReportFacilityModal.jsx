@@ -23,6 +23,9 @@ export default function ReportFacility(props) {
       console.log("Submitting Report Facility data");
       console.log(reportFacilityFormData)
       notify("facility has been reported")
+      // toast.success('Facility has been reported', {
+      //   icon: "🚀"
+      // })
       setReportFacilityLastStep(false);
     }
   }, [reportFacilityLastStep, setReportFacilityLastStep]);
@@ -62,10 +65,16 @@ export default function ReportFacility(props) {
         toast.promise(
             resolveAfter3Sec,
             {
-              pending: 'Promise is pending',
-              success: data,
-              error: 'Promise rejected 🤯'
-            }
+              pending: 'Please wait .....',
+              success:{
+                render({data}){
+                  return 'Facility has been registered'
+                },
+                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#242F9B" ><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
+              },
+              error: 'Promise rejected 🤯',
+            },
+            
         )
     }
 
@@ -83,9 +92,11 @@ export default function ReportFacility(props) {
               pauseOnFocusLoss
               draggable
               pauseOnHover
+              progressStyle={{ backgroundColor: '#242F9B', color: '#242F9B'}}
             />
-      <div className="bg-white py-4 px-5 lg:px-10 rounded-md lg:w-2/5 w-[90vw] h-[80vh] overflow-y-auto ">
-        <div>
+      <div className="bg-white px-5 lg:px-10 rounded-md lg:w-2/5 w-[90vw] h-[85vh] max-h-[85vh]">
+        <div className="fixed w-[430px] xl:w-[650px] bg-white py-5">
+          
           <Stepper
             handleClick={handleClick}
             steps={steps}
@@ -93,7 +104,7 @@ export default function ReportFacility(props) {
           />
         </div>
 
-        <div className="my-5">
+        <div className="my-5 pt-14">
           
             {displayStep(currentStep)}
         </div>

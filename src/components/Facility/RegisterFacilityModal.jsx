@@ -30,8 +30,10 @@ export default function RegisterFacility(props) {
     if (registerFacilityLastStep) {
        console.log("Submitting Report Facility data");
         console.log(formData);
-        notify("Facility has been successfully registered");
-        toast.done('done')
+        // notify("Facility has been successfully registered");
+        toast('Facility registered',{
+          className: "black-background"
+        })
         setRegisterFacilityLastStep(false);
       // try {
       //   // console.log("Submitting Report Facility data");
@@ -141,8 +143,8 @@ export default function RegisterFacility(props) {
         draggable
         pauseOnHover
       />
-      <div className="bg-white lg:my-40 p-2 px-5 lg:px-10 bac rounded-md lg:w-2/3 w-[90vw] h-[98vh] overflow-y-auto ">
-        <div>
+      <div className={`bg-white px-5 lg:px-10 rounded-md lg:w-[55%] w-[92vw] h-[85vh] max-h-[85vh] `}>
+        <div className="fixed w-[450px] xl:w-[650px] bg-white py-5">
           <Stepper
             handleClick={handleClick}
             steps={steps}
@@ -150,7 +152,7 @@ export default function RegisterFacility(props) {
           />
         </div>
 
-        <div className="my-5">{displayStep(currentStep)}</div>
+        <div className="my-5  pt-14">{displayStep(currentStep)}</div>
       </div>
     </div>
   );

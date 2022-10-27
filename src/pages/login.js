@@ -12,6 +12,8 @@ import Input from "@components/Input/Input";
 import Button from "@components/Button/Button";
 import Image from "next/image";
 import ToastBox from "@components/ToastBox/ToastBox";
+import { ToastContainer, toast } from "react-toastify";
+
 
 export default function Login() {
   // dialogue box function to log out users
@@ -25,7 +27,20 @@ export default function Login() {
 
   const { mutate, isLoading } = useLogin();
   const onSubmitHandler = (values) => {
-    mutate(values, { onSuccess: setShowDialogue });
+    mutate(values, {
+      onSuccess: (data) => {
+        
+      },
+      onError: (error) => {
+        toast.error('Login error try agian!')
+      },
+      onSettled: (data) => {
+        toast.success('Login successful',{
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#242F9B" ><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
+        })
+        window.location.replace("/") 
+      }
+    });
   };
 
   const formik = useLoginFormValidation(onSubmitHandler);
@@ -38,14 +53,14 @@ export default function Login() {
 
   return (
     <div className="max-w-screen max-h-screen flex">
-      <ToastBox
+      {/* <ToastBox
         show={showDialogue}
         confirmOkay={confirmOkay}
         confirmCancel={confirmCancel}
         title="Prompt"
         message="Login successful"
         okayMessage="okay"
-      />
+      /> */}
       <div className="hidden lg:block login-image w-6/12 h-screen bg-blend-darken bg-black bg-opacity-70 relative">
         <Link href="/">
           <a className="absolute top-10 left-[10%] ">
@@ -191,6 +206,18 @@ export default function Login() {
           </Link>{" "}
         </p>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        progressStyle={{ backgroundColor: '#242F9B', color: '#242F9B' }}
+      />
     </div>
   );
 }
