@@ -20,8 +20,9 @@ export default function AddressForm(props) {
     const {
       formField: {
         email,
-        cac_reg,
-        website,
+        councilRegistrationNumber,
+        facilityAddress,
+        website
       }
     } = props;
     return (
@@ -30,8 +31,9 @@ export default function AddressForm(props) {
             
       <Formik
        initialValues={{
-        email_address: formData.email_address,
-        cac_reg: formData.cac_reg,
+        email: formData.email,
+        councilRegistrationNumber: formData.councilRegistrationNumber,
+        address: formData.address,
         website: formData.website,
        }}
        validationSchema={currentValidationSchema}
@@ -49,32 +51,47 @@ export default function AddressForm(props) {
             type="text" 
             name={email.name}
             placeholder={email.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.email_address ? 'border border-danger' : ''}`}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.email ? 'border border-danger' : ''}`}
             />
-           {errors.email_address && touched.email_address ? (
+           {errors.email && touched.email ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.email_address}
+            {errors.email}
           </div>
         ) : null}
 
-           <label className="mb-3 mt-4">{cac_reg.label}</label>
+           <label className="mb-3 mt-4">{councilRegistrationNumber.label}</label>
             <Field 
             type="text" 
-            name={cac_reg.name}
-            placeholder={cac_reg.placeholder}
-            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.cac_reg ? 'border border-danger' : ''}`}
+            name={councilRegistrationNumber.name}
+            placeholder={councilRegistrationNumber.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.councilRegistrationNumber ? 'border border-danger' : ''}`}
             />
 
-           {errors.cac_reg && touched.cac_reg ? (
+           {errors.councilRegistrationNumber && touched.councilRegistrationNumber ? (
           <div className="flex flex-row items-center text-danger text-xs italic">
             {" "}
             <AiOutlineWarning className="w-4 h-4" />
-            {errors.cac_reg}
+            {errors.councilRegistrationNumber}
           </div>
         ) : null}
-           
+           <label className="mb-3 mt-4">{facilityAddress.label}</label>
+            <Field 
+            type="text" 
+            name={facilityAddress.name}
+            placeholder={facilityAddress.placeholder}
+            className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.address ? 'border border-danger' : ''}`}
+            />
+
+           {errors.address && touched.address ? (
+          <div className="flex flex-row items-center text-danger text-xs italic">
+            {" "}
+            <AiOutlineWarning className="w-4 h-4" />
+            {errors.address}
+          </div>
+         
+        ) : null}
            <label className="mb-3 mt-4">{website.label}</label>
             <Field 
             type="text" 
