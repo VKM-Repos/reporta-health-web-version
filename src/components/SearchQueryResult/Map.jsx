@@ -37,9 +37,25 @@ export default function Maps({ className }) {
                   position={[facility.latitude, facility.longitude]}
                   icon={icon}
                 >
-                  <Popup>
-                    <div className="text-sm lowercase font-semibold">
-                      {facility.reg_fac_name}
+                  <Popup maxWidth={500} minWidth={480}>
+                    <div className="text-sm lowercase font-semibold px-5">
+                      <div>
+                        <div className="flex gap-4 items-center w-[]">
+                          <div className="w-20">
+                            <svg width="80" height="80" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="2.36108" y="2.26904" width="77" height="77" rx="38.5" fill="white" />
+                              <path d="M28.1461 57.769V25.9856H33.1803V39.9788H47.8988V25.9856H52.8903V57.769H47.8988V44.4584H33.1803V57.769H28.1461Z" fill="#242F9B" />
+                              <rect x="2.36108" y="2.26904" width="77" height="77" rx="38.5" stroke="#242F9B" stroke-width="3" />
+                            </svg>
+                          </div>
+                          <p className="text-primary font-medium text-xl w-full"> {facility.reg_fac_name}</p>
+                        </div>
+                        <div className="flex justify-items-center text-primary gap-5">
+                          <p>4.1 start (200)</p>
+                          <button className="border text-light text-xs rounded-md h-5 px-3">Reviews</button>
+                        </div>
+                      </div>
+                     
                     </div>
                   </Popup>
                 </Marker>
