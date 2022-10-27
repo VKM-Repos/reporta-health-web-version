@@ -65,97 +65,99 @@ export default function FacilityInfoForm(props) {
       >
         {({ isSubmitting, errors }) => (
           <Form className="w-full flex flex-col">
-           <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Long delay before recieving care
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="1"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
-            </div>
+            <div className="w-full flex flex-col h-80 px-4 overflow-y-auto">
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Long delay before recieving care
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="1"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
+              </div>
 
-            <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Cost of service recieved
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="2"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Cost of service recieved
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="2"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
 
-            </div>
-            <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Care recieved was suboptimal
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="3"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
-            </div>
+              </div>
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Care recieved was suboptimal
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="3"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
+              </div>
 
-            <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Unregistered health facility
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="4"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
-              
-            </div>
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Unregistered health facility
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="4"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
 
-            <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Poor medical equipment
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="5"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
-            </div>
+              </div>
 
-            <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Uncoordinated medical staff
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="6"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
-            </div>
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Poor medical equipment
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="5"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
+              </div>
 
-            <div className="">
-              <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
-                Other
-                <Field
-                  type="checkbox"
-                  name="complaints_factor"
-                  value="7"
-                  className=" w-6 h-6 rounded-full"
-                />
-              </label>
-              {errors.complaints_factor ? (
-          <div className="flex flex-row items-center text-danger text-sm italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.complaints_factor}
-          </div>
-        ) : null}
-            </div>
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Uncoordinated medical staff
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="6"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
+              </div>
+
+              <div className="">
+                <label className="mb-3 mt-5 flex flex-row items-center text-accent justify-between px-4 py-4 selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                  Other
+                  <Field
+                    type="checkbox"
+                    name="complaints_factor"
+                    value="7"
+                    className=" w-6 h-6 rounded-full"
+                  />
+                </label>
+                {errors.complaints_factor ? (
+                  <div className="flex flex-row items-center text-danger text-sm italic">
+                    {" "}
+                    <AiOutlineWarning className="w-4 h-4" />
+                    {errors.complaints_factor}
+                  </div>
+                ) : null}
+              </div>
+           </div>
            
          <div className="my-16 grid grid-cols-5 gap-5 ">
             <button

@@ -1,9 +1,8 @@
 import { useInfiniteQuery } from "react-query";
-import { fetchNearestFacility } from "@services/query/fetchNearestFacility.service";
+import { searchFacility } from "@services/query/searchFacility.service";
+import { SEARCH_FACILITY_KEY } from "@config/queryKeys";
 
-import { FETCH_NEAREST_FACILITY_KEY } from "@config/queryKeys";
-
-export const useFetchNearestFacilities = () => {
+export const useSearchFacility = () => {
   const {
     isLoading,
     isError,
@@ -15,8 +14,8 @@ export const useFetchNearestFacilities = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    FETCH_NEAREST_FACILITY_KEY,
-    fetchNearestFacility,
+    SEARCH_FACILITY_KEY,
+    searchFacility,
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage?.next_page_url) {

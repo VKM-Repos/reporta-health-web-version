@@ -59,11 +59,14 @@ export default function Stepper(props) {
     return (
       <div
         key={index}
-        className={
-          index !== newStep.length - 1
-            ? "w-full flex items-center"
-            : "flex items-center"
-        }
+        className={`
+            
+            ${
+            index !== newStep.length - 1
+              ? "w-full flex items-center"
+              : "flex items-center"
+            }
+        `}
       >
         <div className="relative flex flex-col items-center text-accent">
           <div

@@ -9,25 +9,24 @@ import validationSchema from "@hooks/formValidations/registerFacilityFormValidat
 import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
 import {useForm} from "../../../context/StepperContext"
   
-export default function OwnerShipForm(props) {
-    const {formData, setFormData, setLastStep } = useForm()
+export default function OperationForm(props) {
+    const {formData, setFormData, setRegisterFacilityLastStep } = useForm()
     const currentValidationSchema = validationSchema[3]
 
     const handleSetFormData = (data) => {
         setFormData(data)
-        setLastStep(true)
+        console.log(data)
+        setRegisterFacilityLastStep(true)
       }
 
     const {
         formField: {
-            daysOfOperation,
-            typesOfService,
+            operationStatus,
             medicalDoctors,
             dentists,
             nurses,
             midwives,
-            juniorCommunityHealthExtensionWorker,
-            healthInformationManagementOfficers,
+            communityHealthExtensionWorker,
             communityHealthOfficer,
             enviromentHealthOfficer,
             pharmacyTechnicians,
@@ -42,150 +41,138 @@ export default function OwnerShipForm(props) {
             <h2 className="text-xl font-bold">Basic information</h2>
             <Formik
                 initialValues={{
-                    daysOfOperation: formData.daysOfOperation,
-                    typesOfService: formData.typesOfService,
-                    medicalDoctors: formData.medicalDoctors,
-                    dentists: formData.dentists,
-                    nurses: formData.nurses,
-                    midwives: formData.midwives,
-                    juniorCommunityHealthExtensionWorker: formData.juniorCommunityHealthExtensionWorker,
-                    healthInformationManagementOfficers: formData.healthInformationManagementOfficers,
-                    communityHealthOfficer: formData.communityHealthOfficer,
-                    enviromentHealthOfficer: formData.enviromentHealthOfficer,
-                    pharmacyTechnicians: formData.pharmacyTechnicians,
-                    labScientists: formData.labScientists,
-                    phamacists: formData.phamacists,
-                    dentalTechnicians: formData.dentalTechnicians
+                    hs_op_status: formData.hs_op_status,
+                    hs_no_doctors: formData.hs_no_doctors,
+                    hs_no_dentist: formData.hs_no_dentist,
+                    hs_no_single_qualified_nurses: formData.hs_no_single_qualified_nurses,
+                    hs_no_single_qualified_midwives: formData.hs_no_single_qualified_midwives,
+                    hs_no_comm_health_ext_officer: formData.hs_no_comm_health_ext_officer,
+                    hs_no_comm_health_officer: formData.hs_no_comm_health_officer,
+                    hs_no_env_health_officer: formData.hs_no_env_health_officer,
+                    hs_no_pharm_tech: formData.hs_no_pharm_tech,
+                    hs_no_lab_sc: formData.hs_no_lab_sc,
+                    hs_no_pharm: formData.hs_no_pharm,
+                    hs_no_dental_tech: formData.hs_no_dental_tech
                 }}
                 validationSchema={currentValidationSchema}
                 onSubmit={values => {
                     // same shape as initial values
                     const data = {...formData, ...values}
                     handleSetFormData(data)
+                    // console.log(data)
                 }}
                 >
                 {({ errors, touched }) => (
             <Form className="w-full flex flex-col">
-            <label className="mb-3 mt-5">{daysOfOperation.label}</label>
-           <Field 
-            type="text" 
-            name={daysOfOperation.name}
-            placeholder={daysOfOperation.placeholder}
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-            {errors.daysOfOperation && touched.daysOfOperation ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.daysOfOperation}
-          </div>
-        ) : null}
+                        <div className="w-full flex flex-col h-80 px-4 overflow-y-auto">
+                            <div className="flex flex-col mt-10">
+                                <label className="mb-3">{operationStatus.label}</label>
+                                <Field
+                                    type="number"
+                                    name={operationStatus.name}
+                                    placeholder={operationStatus.placeholder}
+                                    className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_op_status ? 'border border-danger' : ''}`}
+                                />
+                                {errors.hs_op_status && touched.hs_op_status ? (
+                                    <div className="flex flex-row items-center text-danger text-xs italic">
+                                        {" "}
+                                        <AiOutlineWarning className="w-4 h-4" />
+                                        {errors.hs_op_status}
+                                    </div>
+                                ) : null}
+                            </div>
+                            <h2 className="text-xl font-bold my-10">Human resource information</h2>
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="flex flex-col">
+                                    <label className="mb-3">{medicalDoctors.label}</label>
 
-           <label className="mb-3 mt-4">{typesOfService.label}</label>
-           <Field 
-            type="text" 
-            name={typesOfService.name}
-            placeholder={typesOfService.placeholder}
-            className="px-4 py-4 bg-gray outline-none rounded-md"
-            />
-            {errors.typesOfService && touched.typesOfService ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.typesOfService}
-          </div>
-        ) : null}
-           <h2 className="text-xl font-bold my-10">Human resource information</h2>
-           <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
-                <label className="mb-3">{medicalDoctors.label}</label>
-                <Field 
-                    type="text" 
-                    name={medicalDoctors.name}
-                    placeholder={medicalDoctors.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                     {errors.medicalDoctors && touched.medicalDoctors ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.medicalDoctors}
-                        </div>
-                        ) : null}
-                </div>
+                                    <Field
+                                        type="number"
+                                        name={medicalDoctors.name}
+                                        placeholder={medicalDoctors.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_doctors ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_doctors && touched.hs_no_doctors ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_doctors}
+                                        </div>
+                                    ) : null}
+                                </div>
 
-                <div className="flex flex-col">
-                <label className="mb-3">{dentists.label}</label>
-                <Field 
-                    type="text" 
-                    name={dentists.name}
-                    placeholder={dentists.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.dentists && touched.dentists ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.dentists}
-                        </div>
-                        ) : null}
-                </div>
-           </div>
+                                <div className="flex flex-col">
+                                    <label className="mb-3">{dentists.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={dentists.name}
+                                        placeholder={dentists.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_dentist ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_dentist && touched.hs_no_dentist ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_dentist}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
 
-           <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{nurses.label}</label>
-                <Field 
-                    type="text" 
-                    name={nurses.name}
-                    placeholder={nurses.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.nurses && touched.nurses ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.nurses}
-                        </div>
-                        ) : null}
-                </div>
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{nurses.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={nurses.name}
+                                        placeholder={nurses.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_single_qualified_nurses ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_single_qualified_nurses && touched.hs_no_single_qualified_nurses ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_single_qualified_nurses}
+                                        </div>
+                                    ) : null}
+                                </div>
 
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{midwives.label}</label>
-                <Field 
-                    type="text" 
-                    name={midwives.name}
-                    placeholder={midwives.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.midwives && touched.midwives ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.midwives}
-                        </div>
-                        ) : null}
-                </div>
-           </div>
-           <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{juniorCommunityHealthExtensionWorker.label}</label>
-                <Field 
-                    type="text" 
-                    name={juniorCommunityHealthExtensionWorker.name}
-                    placeholder={juniorCommunityHealthExtensionWorker.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.healthInformationManagementOfficers && touched.healthInformationManagementOfficers ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.healthInformationManagementOfficers}
-                        </div>
-                        ) : null}
-                </div>
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{midwives.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={midwives.name}
+                                        placeholder={midwives.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_single_qualified_midwives ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_single_qualified_midwives && touched.hs_no_single_qualified_midwives ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_single_qualified_midwives}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="flex flex-col col-span-2">
+                                    <label className="mb-3 mt-5">{communityHealthExtensionWorker.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={communityHealthExtensionWorker.name}
+                                        placeholder={communityHealthExtensionWorker.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_comm_health_ext_officer ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_comm_health_ext_officer && touched.hs_no_comm_health_ext_officer ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_comm_health_ext_officer}
+                                        </div>
+                                    ) : null}
+                                </div>
 
-                <div className="flex flex-col">
+                                {/* <div className="flex flex-col">
                 <label className="mb-3 mt-5">{healthInformationManagementOfficers.label}</label>
                 <Field 
                     type="text" 
@@ -200,117 +187,118 @@ export default function OwnerShipForm(props) {
                             {errors.communityHealthOfficer}
                         </div>
                         ) : null}
-                </div>
-           </div>
+                </div> */}
+                            </div>
 
-           <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{communityHealthOfficer.label}</label>
-                <Field 
-                    type="text" 
-                    name={communityHealthOfficer.name}
-                    placeholder="John Doe Hospital"
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.communityHealthOfficer && touched.communityHealthOfficer ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.communityHealthOfficer}
-                        </div>
-                        ) : null}
-                </div>
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{communityHealthOfficer.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={communityHealthOfficer.name}
+                                        placeholder="John Doe Hospital"
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_comm_health_officer ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_comm_health_officer && touched.hs_no_comm_health_officer ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_comm_health_officer}
+                                        </div>
+                                    ) : null}
+                                </div>
 
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{enviromentHealthOfficer.label}</label>
-                <Field 
-                    type="text" 
-                    name={enviromentHealthOfficer.name}
-                    placeholder={enviromentHealthOfficer.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.enviromentHealth && touched.enviromentHealthOfficer ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.enviromentHealth}
-                        </div>
-                        ) : null}
-                       
-                </div>
-           </div>
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{enviromentHealthOfficer.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={enviromentHealthOfficer.name}
+                                        placeholder={enviromentHealthOfficer.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_env_health_officer ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_env_health_officer && touched.hs_no_env_health_officer ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_env_health_officer}
+                                        </div>
+                                    ) : null}
 
-           <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{pharmacyTechnicians.label}</label>
-                <Field 
-                    type="text" 
-                    name={pharmacyTechnicians.name}
-                    placeholder={pharmacyTechnicians.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.pharmacyTechnicians && touched.pharmacyTechnicians ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.pharmacyTechnicians}
-                        </div>
-                        ) : null}
-                </div>
+                                </div>
+                            </div>
 
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{labScientists.label}</label>
-                <Field 
-                    type="text" 
-                    name={labScientists.name}
-                    placeholder={labScientists.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.labScientists && touched.labScientists ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.labScientists}
-                        </div>
-                        ) : null}
-                </div>
-           </div>
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{pharmacyTechnicians.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={pharmacyTechnicians.name}
+                                        placeholder={pharmacyTechnicians.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_pharm_tech ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_pharm_tech && touched.hs_no_pharm_tech ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_pharm_tech}
+                                        </div>
+                                    ) : null}
+                                </div>
 
-           <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{phamacists.label}</label>
-                <Field 
-                    type="text" 
-                    name={phamacists.name}
-                    placeholder={phamacists.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.phamacists && touched.phamacists ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.phamacists}
-                        </div>
-                        ) : null}
-                </div>
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{labScientists.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={labScientists.name}
+                                        placeholder={labScientists.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_lab_sc ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_lab_sc && touched.hs_no_lab_sc ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_lab_sc}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
 
-                <div className="flex flex-col">
-                <label className="mb-3 mt-5">{dentalTechnicians.label}</label>
-                <Field 
-                    type="text" 
-                    name={dentalTechnicians.name}
-                    placeholder={dentalTechnicians.placeholder}
-                    className="px-4 py-4 bg-gray outline-none rounded-md"
-                    />
-                    {errors.dentalTechnicians && touched.dentalTechnicians ? (
-                        <div className="flex flex-row items-center text-danger text-xs italic">
-                            {" "}
-                            <AiOutlineWarning className="w-4 h-4" />
-                            {errors.dentalTechnicians}
-                        </div>
-                        ) : null}
+                            <div className="grid grid-cols-2 gap-5">
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{phamacists.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={phamacists.name}
+                                        placeholder={phamacists.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_pharm ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_pharm && touched.hs_no_pharm ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_pharm}
+                                        </div>
+                                    ) : null}
+                                </div>
+
+                                <div className="flex flex-col">
+                                    <label className="mb-3 mt-5">{dentalTechnicians.label}</label>
+                                    <Field
+                                        type="number"
+                                        name={dentalTechnicians.name}
+                                        placeholder={dentalTechnicians.placeholder}
+                                        className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.hs_no_dental_tech ? 'border border-danger' : ''}`}
+                                    />
+                                    {errors.hs_no_dental_tech && touched.hs_no_dental_tech ? (
+                                        <div className="flex flex-row items-center text-danger text-xs italic">
+                                            {" "}
+                                            <AiOutlineWarning className="w-4 h-4" />
+                                            {errors.hs_no_dental_tech}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
                 </div>
-           </div>
            <div className="my-16 grid grid-cols-5 gap-5 ">
             <button
               onClick={props.onClose}
@@ -330,5 +318,6 @@ export default function OwnerShipForm(props) {
            )}
          </Formik>
         </div>
+
     )
 }

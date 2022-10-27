@@ -3,15 +3,16 @@ import { AiOutlineDown } from "react-icons/ai";
 
 const SelectDropdown = ({ options, selectTitle }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [option, setOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const onOptionClicked = (value) => () => {
-    setOption(value);
-    // console.log(value);
+    setSelectedOption(value);
     setIsOpen(false);
   };
+
+  console.log(selectedOption);
 
   return (
     <div className="w-full flex flex-col border shadow-sm border-background rounded-md py-2 px-1 ">
@@ -19,7 +20,7 @@ const SelectDropdown = ({ options, selectTitle }) => {
         className="w-full px-2 cursor-pointer flex flex-row items-center traking-wide justify-between text-xs font-semibold text-secondary "
         onClick={toggleDropdown}
       >
-        {option || selectTitle}
+        {selectedOption || selectTitle}
         <AiOutlineDown className="" />{" "}
       </label>
       <div className="w-full relative flex flex-col ">

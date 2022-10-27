@@ -6,6 +6,8 @@ import { AiOutlineWarning } from "react-icons/ai";
 import validationSchema from "@hooks/formValidations/reportFacilityFormValidation/validationSchema";
 
 import {useForm} from "../../../context/StepperContext"
+import facilityTypes from "@libs/facility-types.json";
+
 
 export default function FacilityInfoForm(props) {
 
@@ -39,55 +41,61 @@ export default function FacilityInfoForm(props) {
         }}
       >
         {({ errors, touched }) => (
-          <Form className="w-full flex flex-col">
-            <label className="mb-3 mt-5">{facilityName.label}</label>
-            <Field
-              type="text"
-              name={facilityName.name}
-              placeholder="John Doe Hospital"
-              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_name ? 'border border-danger' : ''}`}
-            />
-            {errors.facility_name && touched.facility_name ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.facility_name}
-          </div>
-        ) : null}
+          <Form >
+            <div className="w-full flex flex-col h-80 px-4 overflow-y-auto">
+              <label className="mb-3 mt-5">{facilityName.label}</label>
+              <Field
+                type="text"
+                name={facilityName.name}
+                placeholder="John Doe Hospital"
+                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_name ? 'border border-danger' : ''}`}
+              />
+              {errors.facility_name && touched.facility_name ? (
+                <div className="flex flex-row items-center text-danger text-xs italic">
+                  {" "}
+                  <AiOutlineWarning className="w-4 h-4" />
+                  {errors.facility_name}
+                </div>
+              ) : null}
 
-            <label className="mb-3 mt-4">{facilityType.label}</label>
-            <Field
-              as="select"
-              name={facilityType.name}
-              placeholder="Hospital/Clinic"
-              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_category ? 'border border-danger' : ''}`}
-            >
-              <option value=""></option>
-              <option value="Hospital">Hospital</option>
-              <option value="Clinic">Clinic</option>
-            </Field>
-            {errors.facility_category && touched.facility_category ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.facility_category}
-          </div>
-        ) : null}
+              <label className="mb-3 mt-4">{facilityType.label}</label>
+              <Field
+                as="select"
+                name={facilityType.name}
+                placeholder="Hospital/Clinic"
+                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_category ? 'border border-danger' : ''}`}
+              >
+                <option value="" className='text-white'>Select facility type</option>
+                {
+                  facilityTypes.map(FacilityType => (
+                    <option key={FacilityType} value={FacilityType}>{FacilityType}</option>
+                  ))
+                }
+                
+              </Field>
+              {errors.facility_category && touched.facility_category ? (
+                <div className="flex flex-row items-center text-danger text-xs italic">
+                  {" "}
+                  <AiOutlineWarning className="w-4 h-4" />
+                  {errors.facility_category}
+                </div>
+              ) : null}
 
-            <label className="mb-3 mt-4">{facilityAddress.label}</label>
-            <Field
-              type="text"
-              name={facilityAddress.name}
-              placeholder="Hospital/Clinic"
-              className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.location ? 'border border-danger' : ''}`}
-            />
-             {errors.location && touched.location ? (
-          <div className="flex flex-row items-center text-danger text-xs italic">
-            {" "}
-            <AiOutlineWarning className="w-4 h-4" />
-            {errors.location}
-          </div>
-        ) : null}
+              <label className="mb-3 mt-4">{facilityAddress.label}</label>
+              <Field
+                type="text"
+                name={facilityAddress.name}
+                placeholder="Hospital/Clinic"
+                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.location ? 'border border-danger' : ''}`}
+              />
+              {errors.location && touched.location ? (
+                <div className="flex flex-row items-center text-danger text-xs italic">
+                  {" "}
+                  <AiOutlineWarning className="w-4 h-4" />
+                  {errors.location}
+                </div>
+              ) : null}
+            </div>
          <div className="my-16 grid grid-cols-5 gap-5 ">
             <button
               onClick={props.onClose}

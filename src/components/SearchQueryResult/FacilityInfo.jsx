@@ -1,7 +1,6 @@
 import React from "react";
 
 const FacilityInfo = ({
-  facilityInfo,
   reg_fac_name,
   average_rating,
   facility_level,
@@ -76,8 +75,6 @@ const FacilityInfo = ({
           </div>
         </div>
       </div>
-
-      {/* buttons */}
     </div>
   );
 };

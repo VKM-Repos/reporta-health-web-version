@@ -17,7 +17,6 @@ export const useLogin = () => {
       populateUserInfoAndJwt(returnedData?.data);
       data = returnedData?.data;
       // add toast here
-      alert("login success")
       console.log(returnedData?.data);
       window.location.replace("/") 
     },

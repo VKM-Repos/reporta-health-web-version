@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const LoadingSpinner = ({ text }) => {
+const LoadingSpinner = ({ text, className }) => {
   return (
     <div>
       <svg
         role="status"
-        className="inline mr-2 w-4 h-4 animate-spin "
+        className={`inline mr-2 animate-spin w-5 h-5 ${className}`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
