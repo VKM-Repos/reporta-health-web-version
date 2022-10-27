@@ -9,13 +9,9 @@ const icon = L.icon({
   iconSize: [35, 50],
 });
 
-export default function Maps({ className }) {
+export default function Maps({ className, geoPosition }) {
   const { data, status, fetchNextPage, hasNextPage } =
     useFetchNearestFacilities();
-
-  const geoPosition = [9.0570752, 7.471104];
-
-  console.log("geooo", geoPosition);
 
   return (
     <div className={className}>
@@ -34,18 +30,18 @@ export default function Maps({ className }) {
               return result?.data?.map((facility) => (
                 <Marker
                   key={facility.id}
-                  position={[facility.latitude, facility.longitude]}
+                  position={[facility?.latitude, facility?.longitude]}
                   icon={icon}
                 >
                   <Popup>
-                    <div className="text-sm lowercase font-semibold">
+                    <div className="w-64 h-24 p-4 text-sm lowercase font-semibold">
                       {facility.reg_fac_name}
                     </div>
                   </Popup>
                 </Marker>
               ));
             })
-          : "no facility found"}
+          : "no map found"}
       </MapContainer>
     </div>
   );

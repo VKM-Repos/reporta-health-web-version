@@ -7,22 +7,26 @@ export const useFetchNearestFacilities = () => {
   const {
     isLoading,
     isError,
+    isFetching,
     error,
     data,
     status,
     fetchNextPage,
     hasNextPage,
+    isFetchingNextPage,
   } = useInfiniteQuery(
     FETCH_NEAREST_FACILITY_KEY,
     fetchNearestFacility,
     {
       getNextPageParam: (lastPage, pages) => {
-        console.log("last page na", lastPage?.next_page_url);
         if (lastPage?.next_page_url) {
           return pages?.length + 1;
-        }
+        } else return undefined;
+        // const nextPage = pages.length + 1;
+        // return lastPage?.next_page_url?.length !== 0 ? nextPage : null;
       },
     }
+
     // {
     //   onSuccess: (result) => {
     //   },
@@ -30,11 +34,14 @@ export const useFetchNearestFacilities = () => {
   );
 
   return {
+    isLoading,
     isError,
+    isFetching,
     error,
     data,
     status,
     fetchNextPage,
     hasNextPage,
+    isFetchingNextPage,
   };
 };

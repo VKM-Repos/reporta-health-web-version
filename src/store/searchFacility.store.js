@@ -7,18 +7,18 @@ let searchFacilityStore = (set) => ({
 
   populateSearchResult: (payload) => {
     set(() => ({
-        searchResults: payload,
+      searchResults: payload,
     }));
   },
 
   refreshSearchFacilityResults: (payload) => {
     set(() => ({
-        searchResults: payload,
+      searchResults: payload,
     }));
   },
 
   reset: () => {
-    set(() => ({ searchResults: null}));
+    set(() => ({ searchResults: null }));
   },
 });
 
@@ -29,4 +29,4 @@ searchFacilityStore = persist(searchFacilityStore, {
   version: searchFacilityVersion,
 });
 
-export const useSearchFacilityStore= create(searchFacilityStore);
+export const useSearchFacilityStore = create(searchFacilityStore);
