@@ -15,14 +15,14 @@ import {useForm} from "../../context/StepperContext"
 
 export default function ReportFacility(props) {
   const {reportFacilityFormData, setReportFacilityFormData, reportFacilityLastStep, setReportFacilityLastStep  } = useForm()
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [facilityData, setFacilityData] = useState("");
   const [addressData, setAddressData] = useState([]);
   useEffect(() => {
     if (reportFacilityLastStep) {
       console.log("Submitting Report Facility data");
       console.log(reportFacilityFormData)
-      notify("facility has been reported")
+      // notify("facility has been reported")
       // toast.success('Facility has been reported', {
       //   icon: "🚀"
       // })
@@ -41,6 +41,7 @@ export default function ReportFacility(props) {
                   currentStep={currentStep}
                   steps={steps}
                   onClose={props.onClose}
+                  facility={props.facility}
                   />;
       case 2:
         return <ComplaintsForm 
@@ -49,6 +50,8 @@ export default function ReportFacility(props) {
                   currentStep={currentStep}
                   steps={steps}
                   onClose={props.onClose}
+                  onSubmitClose={props.onSubmitClose}
+                  facility={props.facility}
                   />;
       default:
     }
@@ -81,7 +84,7 @@ export default function ReportFacility(props) {
   if (!props.visible) return null;
 
   return (
-    <div className="fixed top-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-md flex justify-center items-center">
+    <div className="fixed top-0 w-full h-full bg-black  flex justify-center items-center">
        <ToastContainer 
               position="top-right"
               autoClose={5000}
@@ -94,8 +97,8 @@ export default function ReportFacility(props) {
               pauseOnHover
               progressStyle={{ backgroundColor: '#242F9B', color: '#242F9B'}}
             />
-      <div className="bg-white px-5 lg:px-10 rounded-md lg:w-2/5 w-[90vw] h-[85vh] max-h-[85vh]">
-        <div className="fixed w-[430px] xl:w-[650px] bg-white py-5">
+      <div className=" bg-white px-5 lg:px-10 rounded-md  w-[90vw] h-[78vh] max-h-[85vh]">
+        <div className="fixed w-[370px] xl:w-[370px] bg-white py-2 ">
           
           <Stepper
             handleClick={handleClick}
@@ -104,7 +107,7 @@ export default function ReportFacility(props) {
           />
         </div>
 
-        <div className="my-5 pt-14">
+        <div className="my-5 pt-16">
           
             {displayStep(currentStep)}
         </div>

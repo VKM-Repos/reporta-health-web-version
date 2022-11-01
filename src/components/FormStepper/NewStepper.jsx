@@ -1,6 +1,6 @@
 // Stepper.js
 import React, { useContext, useEffect } from "react";
-import {FormContext} from '../Facility/newFacilityModal'
+import {FormContext} from '../Facility/NewReportFacilityModal'
 function NewStepper() {
     const activeStepIndex  = useContext(FormContext);
     console.log(activeStepIndex)

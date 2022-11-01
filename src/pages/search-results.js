@@ -4,26 +4,58 @@ import SearchForm from "@components/Forms/SearchForm/SearchForm";
 import mapIcon from "@assets/images/map-icon.svg";
 import listIcon from "@assets/images/list-icon.svg";
 
-import { useSearchFacilityStore } from "@store/searchFacility.store";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { searchFacility } from "@services/query/searchFacility.service";
 
-import { FETCH_NEAREST_FACILITY_KEY } from "@config/queryKeys";
-import { fetchNearestFacility } from "@services/query/fetchNearestFacility.service";
-import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 const Map = dynamic(() => import("@components/SearchQueryResult/Map"), {
   ssr: false,
 });
 
 export default function SearchResult() {
   const [showFacilityList, setShowFacilityList] = useState(true);
+
+  //  const [searchResults, setSearchResults] = useState([]);
+  //  const [arrayData, setArrayData] = useState([]);
+
+  //  useEffect(() => {
+  //     searchFacility().then((json) => {
+  //       setArrayData(json);
+  //       console.log("seeeeeeeee", json);
+  //     });
+  //     .then((json) => {
+  //       setSearchResults(json);
+  //     });
+  //  }, []);
+
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+
+  useEffect(() => {
+    const getLocation = () => {
+      try {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        });
+      } catch (error) {}
+    };
+    getLocation();
+  }, [latitude, longitude]);
+
+  const geoPosition = [latitude, longitude];
+  console.log(geoPosition)
+
   return (
     <section className="w-full flex flex-col relative overflow-x-hidden">
       <SearchHeader />
 
-      <Map className={`w-screen h-screen z-10 pt-12 `} />
+      <Map
+        className={`w-screen h-screen z-10 pt-12 `}
+        geoPosition={geoPosition}
+      />
 
       <div className="w-full absolute z-20">
         <div className="w-full relative flex flex-row">
@@ -65,25 +97,25 @@ export default function SearchResult() {
             <SearchForm />
           </div>
 
-          <div className="fixed rounded-xl bg-white border border-secondary shadow-xl right-10 bottom-10 ">
+          <div className="fixed rounded-lg bg-white text-black text-opacity-90 font-semibold border border-black border-opacity-30 shadow-xl right-10 bottom-10 ">
             {showFacilityList ? (
               <button
                 onClick={() => setShowFacilityList(!showFacilityList)}
-                className="px-4 py-4 z-40 text-sm text-black text-opacity-60 font-semibold"
+                className="px-4 py-4 z-40 text-sm "
               >
                 <span className="flex flex-row items-center">
                   <Image src={mapIcon} width="20" height="20" />{" "}
-                  <p className="ml-2">show map</p>{" "}
+                  <p className="ml-2">Show Map</p>{" "}
                 </span>
               </button>
             ) : (
               <button
                 onClick={() => setShowFacilityList(!showFacilityList)}
-                className=" px-4 py-4 z-40  text-sm text-black text-opacity-60 font-semibold"
+                className=" px-4 py-4 z-40  text-sm "
               >
                 <span className="flex flex-row items-center">
                   <Image src={listIcon} width="20" height="20" />{" "}
-                  <p className="ml-2">show list</p>{" "}
+                  <p className="ml-2">Show List</p>{" "}
                 </span>
               </button>
             )}

@@ -4,19 +4,54 @@ import * as yup from "yup";
 import { AiOutlineWarning } from "react-icons/ai";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { authInstanceAxios } from "@config/axiosInstance";
 
 import validationSchema from "@hooks/formValidations/reportFacilityFormValidation/validationSchema";
 
 import {useForm} from "../../../context/StepperContext"
+import { useUserCredentialsStore } from "@store/authStore.store";
 
 export default function FacilityInfoForm(props) {
 
   const currentValidationSchema = validationSchema[1]
-
+  const [userDetails, setUserDetails] = useState(useUserCredentialsStore.getState().userDetails)
   const {reportFacilityFormData, setReportFacilityFormData, setReportFacilityLastStep } = useForm()
-  const handleSetFormData = (data) => {
-    setReportFacilityFormData(data)
-    setReportFacilityLastStep(true)
+
+  const closeReportModal = () => {
+    props.onSubmitClose()
+  }
+  const handleSetFormData = async(data) => {
+    const user = userDetails.user
+    const reportData = {
+      user_id: user.id,
+      name: 'null',
+      email: user.username,
+      ...data,
+      state: props.facility.statename,
+      gps_point_lat: props.facility.latitude,
+      gps_point_lon: props.facility.longitude,
+      actual_location: '',
+      actual_gps_lat: props.facility.latitude,
+      actual_gps_lon: props.facility.longitude
+    }
+    setReportFacilityFormData(reportData)
+    toast.promise(
+      authInstanceAxios.post(`/report`, reportFacilityFormData),
+      {
+        pending: 'Please wait...',
+        success: {
+          render(){
+            setTimeout(()=>{
+              closeReportModal()
+            },2000)
+            setReportFacilityFormData({ ...reportFacilityFormData, complaints_factor:[]})
+            return 'Facility has been reported'
+          },
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#242F9B" ><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
+        },
+        error: 'Error reporting facility 🤯'
+      },
+    );
     // notify("facility has been reported")
     // console.log(reportFacilityFormData)
 
@@ -27,7 +62,7 @@ export default function FacilityInfoForm(props) {
     }
   } = props;
   const [validationError, setValidationError] = useState(false)
-  
+  // console.log(userDetails.user)
     // const notify = (data) => {
     // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
     //     toast.promise(
@@ -43,7 +78,7 @@ export default function FacilityInfoForm(props) {
     <div className="w-full flex flex-col">
            
 
-      <h2 className="text-xl font-bold">Facility information</h2>
+      <h2 className="text-xl font-bold">Complaint box</h2>
       <Formik
         initialValues={{ 
           complaints_factor: reportFacilityFormData.complaints_factor,
@@ -149,20 +184,22 @@ export default function FacilityInfoForm(props) {
                     className=" w-6 h-6 rounded-full"
                   />
                 </label>
-                {errors.complaints_factor ? (
-                  <div className="flex flex-row items-center text-danger text-sm italic">
-                    {" "}
-                    <AiOutlineWarning className="w-4 h-4" />
-                    {errors.complaints_factor}
-                  </div>
-                ) : null}
+               
               </div>
            </div>
-           
-         <div className="my-16 grid grid-cols-5 gap-5 ">
+            {errors.complaints_factor ? (
+              <div className="flex flex-row items-center text-danger text-sm italic">
+                {" "}
+                <AiOutlineWarning className="w-4 h-4" />
+                {errors.complaints_factor}
+              </div>
+            ) : null}
+         <div className="mt-5 grid grid-cols-5 gap-5 ">
+              
             <button
               onClick={props.onClose}
               className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2"
+              type="button"
             >
               Cancel
             </button>

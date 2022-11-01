@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-import { useSearchFacility } from "@hooks/useSearchFacility";
-// import { useSearchFacilityStore } from "@store/searchFacility.store";
+// import { useSearchFacility } from "@hooks/useSearchFacility.hook";
 
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import InputField from "@components/FormFields/InputField";
@@ -10,8 +9,15 @@ import SelectDropdown from "@components/FormFields/SelectDropdown";
 import nigerianStates from "@libs/nigerian-states.json";
 import facilityTypes from "@libs/facility-types.json";
 
-const SearchForm = () => {
-  const { mutate, isError, isLoading } = useSearchFacility();
+const SearchForm = ({ data, setSearchResults }) => {
+  // const searchFacility = async (query) => {
+  //   const result = await authInstanceAxios.get(`/search/?query=${query}`);
+  //   return result?.data;
+  // };
+
+  // TODO: CREATE A SEARCH QUERIES TO HOLD BOTH THE INPUT, AND DROPDOWN OPTIONS
+
+  // const [allSearchQuery, setAllSearchQuery] = useState();
 
   const [searchInput, setSearchInput] = useState("");
 
@@ -20,12 +26,13 @@ const SearchForm = () => {
   const facilityOptions = facilityTypes;
 
   const handleChange = (event) => {
-    console.log(event.target.value);
+    setSearchInput(event.target.value);
   };
 
   const submitSearch = (event) => {
     event.preventDefault();
-    mutate(filteredResults);
+    setSearchResults(searchInput);
+    console.log(searchInput);
   };
 
   return (
@@ -44,12 +51,14 @@ const SearchForm = () => {
           className="col-span-2"
           options={locationOptions}
           selectTitle="location"
+          // selectedOption={}
         />
 
         <SelectDropdown
           className="col-span-2"
           options={facilityOptions}
           selectTitle="facility type"
+          // selectedOption={}
         />
 
         <button
@@ -63,11 +72,12 @@ const SearchForm = () => {
           }`}
           disabled={!searchInput ? true : false}
         >
-          {isLoading ? (
+          {/* {isLoading ? (
             <LoadingSpinner text="Searching for facility..." />
           ) : (
             "Find facility"
-          )}
+          )} */}
+          Find facility
         </button>
       </div>
     </form>

@@ -5,7 +5,7 @@ import { authInstanceAxios } from "@config/axiosInstance";
  * @returns {Object}
  */
 
-export const searchFacilityData = async (query) => {
-  const user = await authInstanceAxios.get(`/search/?query=${query}`);
-  return user?.data;
+export const searchFacility = async (query) => {
+  const result = await authInstanceAxios.get(`/search/?query=${query}`);
+  return result?.data;
 };

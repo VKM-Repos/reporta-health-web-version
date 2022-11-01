@@ -9,43 +9,30 @@ import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import { useRouter } from "next/router";
 
 const Landing = () => {
-  const [query, setQuery] = useState(null);
-  const { data, isLoading, isError, isFetching, isFetched } =
-    useFetchNearestFacilities();
-  // console.log("data", data);
+  const router = useRouter();
+  const { data, isLoading, status } = useFetchNearestFacilities();
+  console.log("data", data);
 
   const fetchFacility = (e) => {
     e.preventDefault();
     // setQuery(data);
     if (data !== undefined) {
-      window.location.replace("/search-results");
+      router.push("/search-results");
     } else {
       console.log("error, there is no data");
+      // TODO: CHANGE DIALOGUE BOX MODAL TO A TOAST COMPONENT
       setShowDialogue(true);
     }
   };
 
-  isFetching
-    ? console.log("loading", data)
-    : isLoading
-    ? console.log("fetching", data)
-    : isError
-    ? console.log("error fetching data")
-    : isFetched
-    ? console.log("fetched oo", data)
-    : null;
-
-  // dialogue box function to log out users
   const [showDialogue, setShowDialogue] = useState(false);
-  const confirmOkay = () => {
-    logoutHandler();
-  };
   const confirmCancel = () => {
     setShowDialogue(false);
   };
 
   return (
     <section className="-mt-[20%] w-[100vw] font-jarkata">
+      {/* TODO: REPLACE DIALOGUE MODAL WITH TOAST COMPONENT */}
       <ToastBox
         show={showDialogue}
         confirmCancel={confirmCancel}
@@ -64,16 +51,20 @@ const Landing = () => {
             to the supervising authorities.
           </p>
 
-          {query || (
+          {status === "success" ? (
             <button
               type="submit"
               value="Find facility"
               className="w-full lg:w-1/3 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer text-white"
-              // disabled={isLoading}
+              disabled={isLoading}
               onClick={fetchFacility}
             >
               Search nearest facility
             </button>
+          ) : status === "error" ? (
+            <div>error</div>
+          ) : (
+            <div>please wait...</div>
           )}
 
           {/* search bar */}

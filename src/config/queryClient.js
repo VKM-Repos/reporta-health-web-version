@@ -5,13 +5,13 @@ export const useQueryClientAndsettings = () => {
   const queryClientSettings = {
     defaultOptions: {
       queries: {
-        retry: 2,
-        refetchOnMount: "false",
-        refetchOnWindowFocus: "always",
+        retry: 1,
+        refetchOnMount: "true",
+        refetchOnWindowFocus: "true",
         refetchOnReconnect: "always",
         cacheTime: 3.6e6,
         refetchInterval: 3.6e6, //1 hour
-        refetchIntervalInBackground: false,
+        refetchIntervalInBackground: true,
         suspense: false,
         staleTime: 3.6e6,
       },
