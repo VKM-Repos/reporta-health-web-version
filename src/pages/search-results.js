@@ -46,6 +46,7 @@ export default function SearchResult() {
   }, [latitude, longitude]);
 
   const geoPosition = [latitude, longitude];
+  console.log(geoPosition)
 
   return (
     <section className="w-full flex flex-col relative overflow-x-hidden">

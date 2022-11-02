@@ -26,13 +26,13 @@ export default function FacilityInfoForm(props) {
     }
   } = props;
   return (
-    <div className="w-full flex flex-col">
+    <div className=" flex flex-col">
       <h2 className="text-xl font-bold">Facility information</h2>
       <Formik
         initialValues={{ 
-          facility_name: reportFacilityFormData.facility_name,
-          facility_category: reportFacilityFormData.facility_category, 
-          location: reportFacilityFormData.location,
+          facility_name: props.facility.reg_fac_name,
+          facility_category: 'Hospital', 
+          location: props.facility.street_name || 'N/A',
         }}
         validationSchema={currentValidationSchema}
         onSubmit={values => {
@@ -42,13 +42,15 @@ export default function FacilityInfoForm(props) {
       >
         {({ errors, touched }) => (
           <Form >
-            <div className="w-full flex flex-col h-80 px-4 overflow-y-auto">
+            <div className=" w-full flex flex-col h-80 px-4 overflow-y-auto">
               <label className="mb-3 mt-5">{facilityName.label}</label>
               <Field
                 type="text"
                 name={facilityName.name}
                 placeholder="John Doe Hospital"
-                className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_name ? 'border border-danger' : ''}`}
+                className={`z-40 px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_name ? 'border border-danger' : ''}`}
+                disabled={true}
+               
               />
               {errors.facility_name && touched.facility_name ? (
                 <div className="flex flex-row items-center text-danger text-xs italic">
@@ -64,13 +66,10 @@ export default function FacilityInfoForm(props) {
                 name={facilityType.name}
                 placeholder="Hospital/Clinic"
                 className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.facility_category ? 'border border-danger' : ''}`}
+                disabled={true}
               >
-                <option value="" className='text-white'>Select facility type</option>
-                {
-                  facilityTypes.map(FacilityType => (
-                    <option key={FacilityType} value={FacilityType}>{FacilityType}</option>
-                  ))
-                }
+                <option value="" className='text-white'>Hospital</option>
+                
                 
               </Field>
               {errors.facility_category && touched.facility_category ? (
@@ -87,6 +86,7 @@ export default function FacilityInfoForm(props) {
                 name={facilityAddress.name}
                 placeholder="Hospital/Clinic"
                 className={`px-4 py-4 bg-gray outline-none rounded-md ${errors.location ? 'border border-danger' : ''}`}
+                disabled={true}
               />
               {errors.location && touched.location ? (
                 <div className="flex flex-row items-center text-danger text-xs italic">
@@ -96,7 +96,7 @@ export default function FacilityInfoForm(props) {
                 </div>
               ) : null}
             </div>
-         <div className="my-16 grid grid-cols-5 gap-5 ">
+         <div className="mt-5 grid grid-cols-5 gap-5 ">
             <button
               onClick={props.onClose}
               className=" text-primary tracking-wide leading-loose  text-sm font-normal  py-3 border border-primary rounded-md col-span-2"
