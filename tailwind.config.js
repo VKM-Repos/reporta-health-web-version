@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require('tailwindcss/colors')
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -19,6 +20,7 @@ module.exports = {
       error: "#FF0000",
       success: "#00FF00",
       danger: "#CA0B00",
+      slate: require('tailwindcss/colors').slate
     },
     extend: {
       fontFamily: {

@@ -94,19 +94,7 @@ const Header = () => {
             </a>
           </Link>
 
-          <button
-            className="tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
-            onClick={() => setShowReportModal(true)}
-          >
-            Report a facility
-          </button>
-
-          <button
-            className="tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300 hover:pointer"
-            onClick={() => setShowModal(true)}
-          >
-            Register a facility
-          </button>
+          
         </div>
 
         <div className="relative">
@@ -235,95 +223,7 @@ const Header = () => {
                 </svg>
                 &nbsp; &nbsp; About
               </a>
-            </Link>
-
-            <button
-              className={
-                router.pathname === "/report-facility"
-                  ? "flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
-                  : "tracking-wide leading-loose my-2 flex items-center justify-start "
-              }
-              onClick={() => {
-                setShowSidebar(!showSidebar);
-                setShowReportModal(true);
-              }}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 8V13"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M11.9946 16H12.0036"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              &nbsp; &nbsp; Report a facility
-            </button>
-
-            <button
-              className={
-                router.pathname === "/register-facility"
-                  ? "flex items-center justify-start my-2  text-black text-opacity-1 font-extrabold"
-                  : "tracking-wide leading-loose my-2 flex items-center justify-start"
-              }
-              onClick={() => {
-                setShowSidebar(!showSidebar);
-                setShowModal(true);
-              }}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.31006 14.7L10.8101 16.2L14.8101 12.2"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M16 4.02002C19.33 4.20002 21 5.43002 21 10V16C21 20 20 22 15 22H9C4 22 3 20 3 16V10C3 5.44002 4.67 4.20002 8 4.02002"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              &nbsp; &nbsp; Register a facility
-            </button>
+            </Link> 
           </div>
 
           <div className="w-full mb-[4rem]">
