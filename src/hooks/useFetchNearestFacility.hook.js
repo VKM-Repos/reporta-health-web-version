@@ -14,24 +14,15 @@ export const useFetchNearestFacilities = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    FETCH_NEAREST_FACILITY_KEY,
-    fetchNearestFacility,
-    {
-      getNextPageParam: (lastPage, pages) => {
-        if (lastPage?.next_page_url) {
-          return pages?.length + 1;
-        } else return undefined;
-        // const nextPage = pages.length + 1;
-        // return lastPage?.next_page_url?.length !== 0 ? nextPage : null;
-      },
-    }
-
-    // {
-    //   onSuccess: (result) => {
-    //   },
-    // }
-  );
+  } = useInfiniteQuery(FETCH_NEAREST_FACILITY_KEY, fetchNearestFacility, {
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage?.next_page_url) {
+        return pages?.length + 1;
+      } else return null;
+      // const nextPage = pages.length + 1;
+      // return lastPage?.next_page_url?.length !== 0 ? nextPage : null;
+    },
+  });
 
   return {
     isLoading,

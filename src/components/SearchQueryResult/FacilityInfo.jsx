@@ -1,4 +1,6 @@
-import React from "react";
+import starIcon from "@assets/images/star.svg";
+
+import Image from "next/image";
 
 const FacilityInfo = ({
   reg_fac_name,
@@ -7,24 +9,39 @@ const FacilityInfo = ({
   street_name,
   statename,
   operational_hours,
+  services,
 }) => {
   return (
-    <div className="w-full relative lg:px-4 pt-2  flex flex-col-reverse lg:flex-col items-start justify-between">
+    <div className="w-full relative  flex flex-col-reverse lg:flex-col items-start justify-between">
       <div className="w-full flex flex-col  items-start justify-start">
-        <div className="w-full lg:h-[8rem] bg-transparent hover:bg-background lg:border-none border-b border-black border-opacity-20 px-4 py-4 cursor-pointer lg:rounded-md flex flex-row items-center">
+        <div
+          // onClick={handleFlyTo}
+          className="w-full lg:h-[9rem] bg-transparent hover:bg-background border-b border-black border-opacity-20 px-4 py-4 cursor-pointer flex flex-row items-center"
+        >
           <div className="basis-4/5 flex flex-col items-start justify-start">
-            <h3 className="font-extrabold text-sm text-black text-opacity-80 lg:text-sm lowercase first-letter:uppercase">
+            <h3 className="font-extrabold text-sm text-black  lg:text-sm lowercase first-letter:uppercase">
               {reg_fac_name}
             </h3>
-            <span className="my-2 flex flex-row font-semibold items-center justify-between text-primary text-xs">
-              <span className="mr-2">{average_rating || 5.8}</span>
+            <span className="my-2 flex flex-row font-semibold items-center justify-between text-black text-opacity-70 text-xs">
+              <span className="mr-1">
+                <Image src={starIcon} width="15" height="15" />{" "}
+              </span>
+              <span className="mr-2 font-semibold  text-black text-opacity-70">
+                {Math.round(average_rating) || "No ratings"}
+              </span>
               &bull;
-              <span className="mx-2">{facility_level}</span>
+              <span className="mx-2 font-semibold text-black text-opacity-70">
+                {services[0]}
+              </span>
+              &bull;
+              <span className="mx-2 font-semibold text-black text-opacity-70">
+                {facility_level}
+              </span>
             </span>
-            <h6 className="text-secondary text-xs lowercase first-letter:uppercase">
+            <h6 className="text-secondary text-xs font-bold text-black text-opacity-70 lowercase first-letter:uppercase">
               {street_name ? street_name + ", " : null} {" " + statename}
             </h6>
-            <h6 className="my-2 text-primary text-xs">
+            <h6 className="my-2 text-primary font-bold text-xs">
               Open {operational_hours || 24} hours
             </h6>
           </div>
@@ -71,7 +88,9 @@ const FacilityInfo = ({
                 />
               </svg>
             </span>
-            <h6 className="my-2 text-primary  text-xs ">Directions</h6>
+            <h6 className="my-2 text-primary font-semibold text-xs ">
+              Directions
+            </h6>
           </div>
         </div>
       </div>

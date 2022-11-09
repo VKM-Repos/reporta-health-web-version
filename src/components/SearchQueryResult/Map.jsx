@@ -1,17 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import React, { useState } from "react";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMapEvents,
+  Circle,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+
+import useGetLocation from "@hooks/useGetLocation.hook";
+
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
-import NewReportFacilityModal from "@components/Facility/NewReportFacilityModal";
+
+
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
   iconSize: [35, 50],
 });
 
-export default function Maps({ className, geoPosition }) {
+
+const iconP = L.icon({
+  iconUrl: "health-worker.svg",
+  iconSize: [35, 35],
+});
+
+export default function Maps({ className, data }) {
+  const location = useGetLocation();
   const [showModal, setShowModal] = useState(false)
   const [showReportModal, setShowReportModal] = useState(false);
   const { data, status, fetchNextPage, hasNextPage } =
@@ -24,32 +42,54 @@ export default function Maps({ className, geoPosition }) {
   const closeReportModalOnFormSubmit = ()=> {
     setShowReportModal(false);
   }
+
+  function LocationMarker() {
+    const [position, setPosition] = useState(null);
+    const map = useMapEvents({
+      click() {
+        map.locate();
+      },
+      locationfound(e) {
+        setPosition(e.latlng);
+        map.flyTo(e.latlng, map.getZoom());
+      },
+    });
+  }
+
   return (
-    <>
-      {/* <div className="fixed top-[60%] bg-primary w-full h-52">
-        <p>Report</p>
-      </div> */}
-      <div className={className}>
-       
+    <div className={className}>
+      {location.loaded && !location.error && (
         <MapContainer
-          center={geoPosition}
+          center={[location.coordinates.lat, location.coordinates.lng]}
           zoom={14}
           style={{ width: "100%", height: "100%" }}
+          zoomControl={false}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://api.maptiler.com/maps/basic/256/{z}/{x}/{y}.png?key=8L7fs9mdkhXHT8JP63RZ"
+            url="https://tile.osm.ch/switzerland/{z}/{x}/{y}.png"
           />
+          <Marker
+            icon={iconP}
+            position={[location.coordinates.lat, location.coordinates.lng]}
+          >
+            <Circle
+              center={[location.coordinates.lat, location.coordinates.lng]}
+              pathOptions={{ fillColor: "blue" }}
+              radius={800}
+            />
+            <Popup>You are here</Popup>
+          </Marker>
 
           {data?.pages && Array.isArray(data.pages) && data?.pages.length !== 0
             ? data?.pages.map((result) => {
-              return result?.data?.map((facility) => (
-                <Marker
-                  key={facility.id}
-                  position={[facility?.latitude, facility?.longitude]}
-                  icon={icon}
-                >
-                  <Popup maxWidth={400} minWidth={400} maxHeight={420} minHeight={420}>
+                return result?.data?.map((facility) => (
+                  <Marker
+                    key={facility.id}
+                    position={[facility?.latitude, facility?.longitude]}
+                    icon={icon}
+                  >
+                     <Popup maxWidth={400} minWidth={400} maxHeight={420} minHeight={420}>
                     <div className="text-sm font-semibold px-5">
                       <div className="flex flex-col ">
                         <div className="flex gap-4 items-center -mb-8 ">
@@ -117,14 +157,14 @@ export default function Maps({ className, geoPosition }) {
 
                     </div>
                   </Popup>
-                </Marker>
-              ));
-            })
+                  </Marker>
+                ));
+              })
             : "no map found"}
-        </MapContainer>
 
-      </div>
-    </>
-    
+          <LocationMarker />
+        </MapContainer>
+      )}
+    </div>
   );
 }
