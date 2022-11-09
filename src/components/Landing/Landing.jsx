@@ -7,11 +7,20 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import ToastBox from "@components/ToastBox/ToastBox";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import { useRouter } from "next/router";
+import useGetLocation from "@hooks/useGetLocation.hook";
 
 const Landing = () => {
   const router = useRouter();
   const { data, isLoading, status } = useFetchNearestFacilities();
   console.log("data", data);
+
+  const location = useGetLocation();
+  const ShowMyLocation = () => {
+    if (location.loaded && !location.error) {
+    } else {
+      alert(location.error.message);
+    }
+  };
 
   const fetchFacility = (e) => {
     e.preventDefault();
@@ -78,7 +87,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <div className="hidden z-20 lg:block pt-[10%] absolute top-0  lg:-right-[5%]">
+      <div className="hidden z-20 lg:block pt-[10%] absolute top-0 lg:-right-[5%]">
         <Image src={landing} alt="landing" />
       </div>
     </section>

@@ -9,13 +9,6 @@ const ProfileDropdown = ({ show, onLogout }) => {
   }
 
   return (
-    // <motion.div
-    //   animate={{ height: "10rem" }}
-    //   className="hidden absolute my-1 right-0 z-30 mx-8 lg:flex w-1/6 rounded-md  bg-white shadow-lg "
-    // >
-
-    // </motion.div>
-
     <AnimatePresence>
       {show && (
         <motion.div
@@ -29,7 +22,7 @@ const ProfileDropdown = ({ show, onLogout }) => {
           <div className="text-xs w-full flex items-center">
             <ul className="w-full">
               <li className="w-full text-secondary px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
-                <Link href="#">
+                <Link href="profile">
                   <a className="flex flex-row items-center">
                     {" "}
                     <span>

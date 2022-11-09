@@ -1,18 +1,20 @@
 import React from "react";
 
 const PulseLoader = () => {
-  const arr = [1, 2, 3, 4, 5];
+  const arr = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
   return (
-    <div className="w-full mt-20">
+    <div className="w-full">
       {arr.map((array) => (
         <div
-          key={array.length}
+          key={array.id}
           className="w-full lg:h-[8rem] lg:border-none border-b border-black border-opacity-20 px-4 py-4 lg:rounded-md flex flex-row items-center"
         >
           <div className="animate-pulse basis-4/5 flex flex-col items-start justify-start">
             <h3 className="w-2/3 h-5 bg-black bg-opacity-20 rounded-lg "></h3>
             <span className="my-2 flex flex-row items-center justify-between ">
+              <span className="mr-2 w-8 h-3 bg-black bg-opacity-20 rounded-lg"></span>
+              &bull;
               <span className="mr-2 w-16 h-3 bg-black bg-opacity-20 rounded-lg"></span>
               &bull;
               <span className="mx-2 w-24 h-3 bg-black bg-opacity-20 rounded-lg"></span>

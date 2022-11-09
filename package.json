@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.11",
     "husky": "^8.0.1",
     "immer": "^9.0.14",
     "leaflet": "^1.8.0",
+    "leaflet-easybutton": "^2.4.0",
     "lodash": "^4.17.21",
     "next": "12.1.6",
     "nprogress": "^0.2.0",
