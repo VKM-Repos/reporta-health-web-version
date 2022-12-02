@@ -36,15 +36,13 @@
   --toastify-spinner-color-empty-area: #e0e0e0;
 
 
-  --toastify-color-progress-light: linear-gradient(
-    to right,
-    #242F9B,
-    #5ac8fa,
-    #007aff,
-    #34aadc,
-    #5856d6,
-    #ff2d55
-  );
+  --toastify-color-progress-light: linear-gradient(to right,
+      #242F9B,
+      #5ac8fa,
+      #007aff,
+      #34aadc,
+      #5856d6,
+      #ff2d55);
 
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
@@ -81,29 +79,33 @@
 ::placeholder {
   font: 16px/400 inherit;
 }
+
 .input-email {
-width: 32rem;
+  width: 32rem;
 }
+
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #F0F0F0 inset !important;
 }
+
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px #F0F0F0 inset !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #F0F0F0 inset !important;
 }
 
 .input-password::placeholder {
-font-size: 50px;
-font-weight:400;
-font-family: jarkata;
-letter-spacing: 0;
-align-items: center;
+  font-size: 50px;
+  font-weight: 400;
+  font-family: jarkata;
+  letter-spacing: 0;
+  align-items: center;
 }
+
 .hamburger span,
 .hamburger span:before,
 .hamburger span:after {

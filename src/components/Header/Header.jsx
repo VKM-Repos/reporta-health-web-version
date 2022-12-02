@@ -94,7 +94,18 @@ const Header = () => {
             </a>
           </Link>
 
-          
+          <Link href="/statistics">
+            <a
+              className={
+                router.pathname === "/statistics"
+                  ? "text-accent mx-4 font-extrabold"
+                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+              }
+            >
+              Statistics
+            </a>
+          </Link>
+
         </div>
 
         <div className="relative">
@@ -149,9 +160,8 @@ const Header = () => {
       {/* sidebar menu content */}
 
       <div
-        className={`top-0 w-full bg-black bg-opacity-10 fixed h-full z-50 ease-in-out duration-300 ${
-          showSidebar ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`top-0 w-full bg-black bg-opacity-10 fixed h-full z-50 ease-in-out duration-300 ${showSidebar ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div
           className={`top-0 right-0 md:w-3/6 w-5/6 bg-white text-lg text-black text-opacity-60 drop-shadow-2xl flex flex-col justify-between px-6 fixed h-full z-40 ease-in-out duration-300`}
@@ -223,7 +233,7 @@ const Header = () => {
                 </svg>
                 &nbsp; &nbsp; About
               </a>
-            </Link> 
+            </Link>
           </div>
 
           <div className="w-full mb-[4rem]">

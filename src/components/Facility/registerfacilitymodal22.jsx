@@ -9,7 +9,7 @@ import registerFacilityFormModel from "@hooks/formValidations/registerFacilityFo
 import formInitialValues from "@hooks/formValidations/registerFacilityFormValidation/formInitialValues";
 
 import BasicInfoFrom from "@components/Facility/registerFacilitySteps/BasicInfoForm";
-import AddressForm from "@components/Facility/registerFacilitySteps/AddressForm";
+import AddressForm from "@components/Facility/registerFacilitySteps/AddressForm1";
 import OwnerShipForm from "@components/Facility/registerFacilitySteps/OwnerShipForm";
 import OperationForm from "@components/Facility/registerFacilitySteps/OperationForm";
 import { useForm } from "../../context/StepperContext";
@@ -28,13 +28,13 @@ export default function RegisterFacility(props) {
   const [currentStep, setCurrentStep] = useState(1);
   useEffect(() => {
     if (registerFacilityLastStep) {
-       console.log("Submitting Report Facility data");
-        console.log(formData);
-        // notify("Facility has been successfully registered");
-        toast('Facility registered',{
-          className: "black-background"
-        })
-        setRegisterFacilityLastStep(false);
+      console.log("Submitting Report Facility data");
+      console.log(formData);
+      // notify("Facility has been successfully registered");
+      toast('Facility registered', {
+        className: "black-background"
+      })
+      setRegisterFacilityLastStep(false);
       // try {
       //   // console.log("Submitting Report Facility data");
       //   // console.log(formData);
