@@ -53,7 +53,7 @@ const SearchForm = ({ setDataArray }) => {
       fetchNextPage,
       hasNextPage,
       isFetchingNextPage,
-    } = useInfiniteQuery(SEARCH_FACILITY_KEY, searchFacility, {
+    } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchInput], searchFacility, {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage?.next_page_url) {
           return pages?.length + 1;
@@ -74,8 +74,8 @@ const SearchForm = ({ setDataArray }) => {
     };
   };
 
-  const searchFacility = async () => {
-    const result = await authInstanceAxios.get(`/search/?query=${searchInput}`);
+  const searchFacility = async ({pageParam = 0}) => {
+    const result = await authInstanceAxios.get(`/search/?query=${searchInput}&page=${pageParam}`);
     return result.data;
   };
 
@@ -92,7 +92,7 @@ const SearchForm = ({ setDataArray }) => {
   const submitSearch = (event) => {
     event.preventDefault();
     searchFacility();
-    filteredData();
+    // filteredData();
   };
 
   const data = useSearchFacility();

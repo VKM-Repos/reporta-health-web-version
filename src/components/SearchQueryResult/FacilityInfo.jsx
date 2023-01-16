@@ -24,7 +24,7 @@ const FacilityInfo = ({
             </h3>
             <span className="my-2 flex flex-row font-semibold items-center justify-between text-black text-opacity-70 text-xs">
               <span className="mr-1">
-                <Image src={starIcon} width="15" height="15" />{" "}
+                <Image src={starIcon} width="15" height="15" alt="" />{" "}
               </span>
               <span className="mr-2 font-semibold  text-black text-opacity-70">
                 {Math.round(average_rating) || "No ratings"}
@@ -38,7 +38,7 @@ const FacilityInfo = ({
                 {facility_level}
               </span>
             </span>
-            <h6 className="text-secondary text-xs font-bold text-black text-opacity-70 lowercase first-letter:uppercase">
+            <h6 className=" text-xs font-bold text-black text-opacity-70 lowercase first-letter:uppercase">
               {street_name ? street_name + ", " : null} {" " + statename}
             </h6>
             <h6 className="my-2 text-primary font-bold text-xs">

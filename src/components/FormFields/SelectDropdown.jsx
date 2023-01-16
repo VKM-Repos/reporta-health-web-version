@@ -13,7 +13,7 @@ const SelectDropdown = ({
   return (
     <div className="w-full flex flex-col border shadow-sm border-background rounded-md py-2 px-1 ">
       <label
-        className="w-full px-2 cursor-pointer flex flex-row items-center traking-wide justify-between text-xs font-semibold text-secondary "
+        className="w-full px-2 cursor-pointer flex flex-row items-center traking-wide justify-between text-xs font-semibold text-black "
         onClick={toggleDropdown}
       >
         {selectedOption || selectTitle}

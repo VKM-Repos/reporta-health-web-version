@@ -54,7 +54,7 @@ export default function Profile() {
               </label>
               <div className="col-span-2 flex items-start">
                 <Input
-                  placeholder="Dami"
+                  placeholder="Jawn"
                   id="first name"
                   name="first name"
                   type="text"
@@ -73,7 +73,7 @@ export default function Profile() {
               </label>
               <div className="col-span-2 flex items-start">
                 <Input
-                  placeholder="Oluwadamiiii"
+                  placeholder="Chuks"
                   id="last name"
                   name="last name"
                   type="text"
@@ -92,7 +92,7 @@ export default function Profile() {
               </label>
               <div className="col-span-2 flex items-start">
                 <Input
-                  placeholder="Dami@mail.com"
+                  placeholder="jawn@mail.com"
                   id="email"
                   name="email"
                   type="text"
@@ -130,7 +130,7 @@ export default function Profile() {
               </label>
               <div className="col-span-2 flex items-start">
                 <Input
-                  placeholder="Gwagwadala, Abuja. Nigeria"
+                  placeholder="Wuse, Abuja. Nigeria"
                   id="address"
                   name="address"
                   type="text"

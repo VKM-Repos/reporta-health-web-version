@@ -21,7 +21,7 @@ const ProfileDropdown = ({ show, onLogout }) => {
         >
           <div className="text-xs w-full flex items-center">
             <ul className="w-full">
-              <li className="w-full text-secondary px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
+              <li className="w-full text-black px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
                 <Link href="profile">
                   <a className="flex flex-row items-center">
                     {" "}
@@ -80,7 +80,7 @@ const ProfileDropdown = ({ show, onLogout }) => {
                   </a>
                 </Link>
               </li>
-              <li className="w-full text-secondary px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
+              <li className="w-full text-black px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
                 <Link href="#">
                   <a className="flex flex-row items-center">
                     {" "}
@@ -140,7 +140,7 @@ const ProfileDropdown = ({ show, onLogout }) => {
                   </a>
                 </Link>
               </li>
-              <li className="w-full text-secondary px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
+              <li className="w-full text-black px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
                 <button
                   onClick={onLogout}
                   className="flex flex-row items-center"
