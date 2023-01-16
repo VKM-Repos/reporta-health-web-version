@@ -40,7 +40,7 @@ const Landing = () => {
   };
 
   return (
-    <section className="-mt-[20%] w-[100vw] font-jarkata">
+    <section className="-mt-[20%] w-[100vw] font-jarkata noisy">
       {/* TODO: REPLACE DIALOGUE MODAL WITH TOAST COMPONENT */}
       <ToastBox
         show={showDialogue}
@@ -48,7 +48,7 @@ const Landing = () => {
         title="Network error"
         message="There has been an error, please refresh page and try again"
       />
-      <div className="w-full lg:w-2/3 bg-background h-full py-[20%]">
+      <div className="w-full lg:w-2/3 bg-background noisy h-full py-[20%]">
         <div className="w-5/6 mx-auto relative flex flex-col items-start justify-center ">
           <h1 className="text-black font-extrabold lg:text-[3.3rem] md:text-[3.5rem] text-[2.6rem] tracking-normal leading-tight mt-4 lg:mt-12">
             Find healthcare <br className="hidden lg:block" /> facilites close{" "}

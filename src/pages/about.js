@@ -6,7 +6,7 @@ import about2 from "@assets/images/about-man.svg";
 
 export default function About() {
   return (
-    <div className="w-full bg-transparent relative overflow-hidden select-none  z-2">
+    <div className="w-full bg-transparent relative overflow-hidden select-none noisy z-2">
       <Layout
         pageMeta={{
           title: "Reporta Health - Search and report a facility",
@@ -24,7 +24,7 @@ export default function About() {
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-stretch ">
-            <div className="flex flex-col items-center justify-start mt-[4rem] px-4 pt-4 bg-[#DBDFFD33] bg-opacity-20">
+            <div className="flex flex-col items-center justify-start mt-[4rem] px-4 pt-4 bg-[#8491ef33] bg-opacity-20">
               <h4 className="w-full my-4 font-extrabold text-lg lg:text-2xl text-left">
                 What it does
               </h4>

@@ -6,7 +6,7 @@ import "@styles/nprogress.css";
 import Router from "next/router";
 import { Hydrate } from "react-query/hydration";
 import { useQueryClientAndsettings } from "@config/queryClient";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import PropTypes from "prop-types";
 import { FormProvider } from "../context/StepperContext";
 
@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </FormProvider>
       </Hydrate>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
