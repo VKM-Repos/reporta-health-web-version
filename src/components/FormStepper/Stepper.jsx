@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { FormContext } from "@components/Facility/RegisterFacilityModal";
 
 export default function Stepper(props) {
   const [newStep, setNewStep] = useState([]);
@@ -62,9 +61,9 @@ export default function Stepper(props) {
         className={`
             
             ${
-            index !== newStep.length - 1
-              ? "w-full flex items-center"
-              : "flex items-center"
+              index !== newStep.length - 1
+                ? "w-full flex items-center"
+                : "flex items-center"
             }
         `}
       >
