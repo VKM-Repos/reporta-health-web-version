@@ -7,7 +7,7 @@ import { useLogoutUser } from "@hooks/useLogoutUser.hook";
 import { AiOutlineDown } from "react-icons/ai";
 import healthWorker from "@assets/images/health-worker.svg";
 
-import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
+// import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 
 import Image from "next/image";
@@ -372,7 +372,7 @@ const SearchHeader = (props) => {
           </div>
         </div>
       </div>
-      <RegisterFacilityModal onClose={closeModal} visible={showModal} />
+      {/* <RegisterFacilityModal onClose={closeModal} visible={showModal} /> */}
       <ProfileDropdown
         onClose={closeProfile}
         show={showProfile}

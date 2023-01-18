@@ -74,8 +74,8 @@ const SearchForm = ({ setDataArray }) => {
     };
   };
 
-  const searchFacility = async ({pageParam = 0}) => {
-    const result = await authInstanceAxios.get(`/search/?query=${searchInput}&page=${pageParam}`);
+  const searchFacility = async () => {
+    const result = await authInstanceAxios.get(`/search/?query=${searchInput}`);
     return result.data;
   };
 
@@ -92,10 +92,11 @@ const SearchForm = ({ setDataArray }) => {
   const submitSearch = (event) => {
     event.preventDefault();
     searchFacility();
-    // filteredData();
+    filteredData();
   };
 
   const data = useSearchFacility();
+  console.log("trey", data);
 
   return (
     <form className="" onSubmit={submitSearch}>
