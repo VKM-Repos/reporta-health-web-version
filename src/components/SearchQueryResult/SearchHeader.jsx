@@ -377,6 +377,7 @@ const SearchHeader = (props) => {
         onClose={closeProfile}
         show={showProfile}
         onLogout={setShowDialogue}
+        close={closeProfile}
       />
       <ReportFacilityModal
         onClose={closeReportModal}

@@ -27,13 +27,13 @@ export default function SearchResult() {
       <Map className={`w-screen h-screen z-10 pt-12 `} data={data} />
 
       <div className="w-full absolute flex flex-row">
-        <div className="hidden md:block z-10">
+        <div className="hidden lg:block z-10">
           <AnimatePresence>
             {showFacilityList && (
               <motion.div
                 key="list"
                 initial={{ width: 0, opacity: 0 }}
-                animate={{ width: "30vw", opacity: 1 }}
+                animate={{ width: "35vw", opacity: 1 }}
                 exit={{ width: 0, opacity: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 className=""
@@ -44,7 +44,7 @@ export default function SearchResult() {
           </AnimatePresence>
         </div>
 
-        <div className="md:hidden block z-10">
+        <div className="lg:hidden block z-10">
           <AnimatePresence>
             {showFacilityList && (
               <motion.div

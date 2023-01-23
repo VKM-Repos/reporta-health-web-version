@@ -326,6 +326,7 @@ const Header = () => {
         onClose={closeProfile}
         show={showProfile}
         onLogout={setShowDialogue}
+        close={closeProfile}
       />
       <ReportFacilityModal
         onClose={closeReportModal}
