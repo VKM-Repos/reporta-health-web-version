@@ -12,24 +12,23 @@ import useGetLocation from "@hooks/useGetLocation.hook";
 const Landing = () => {
   const router = useRouter();
   const { data, isLoading, status } = useFetchNearestFacilities();
-  console.log("data", data);
+  // console.log("data", data);
 
   const location = useGetLocation();
   const ShowMyLocation = () => {
     if (location.loaded && !location.error) {
+      fetchFacility();
+      // console.log("show location");
     } else {
       alert(location.error.message);
     }
   };
 
-  const fetchFacility = (e) => {
-    e.preventDefault();
-    // setQuery(data);
+  const fetchFacility = () => {
     if (data !== undefined) {
       router.push("/search-results");
     } else {
-      console.log("error, there is no data");
-      // TODO: CHANGE DIALOGUE BOX MODAL TO A TOAST COMPONENT
+      // console.log("error, there is no data");
       setShowDialogue(true);
     }
   };
@@ -66,14 +65,16 @@ const Landing = () => {
               value="Find facility"
               className="w-full lg:w-1/3 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer text-white"
               disabled={isLoading}
-              onClick={fetchFacility}
+              onClick={ShowMyLocation}
             >
               Search nearest facility
             </button>
           ) : status === "error" ? (
             <div>error</div>
           ) : (
-            <div>please wait...</div>
+            <div>
+              <LoadingSpinner text="getting your location" />
+            </div>
           )}
 
           {/* search bar */}

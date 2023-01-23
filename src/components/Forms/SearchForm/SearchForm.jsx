@@ -9,7 +9,7 @@ import { authInstanceAxios } from "@config/axiosInstance";
 import { SEARCH_FACILITY_KEY } from "@config/queryKeys";
 import { useInfiniteQuery } from "react-query";
 
-const SearchForm = ({ setDataArray }) => {
+const SearchForm = ({ setDataArray, setIsSearching }) => {
   // TODO: CREATE A SEARCH QUERIES FUNCTION TO HOLD BOTH THE INPUT, AND DROPDOWN OPTIONS
 
   const locationOptions = nigerianStates;
@@ -53,11 +53,12 @@ const SearchForm = ({ setDataArray }) => {
       fetchNextPage,
       hasNextPage,
       isFetchingNextPage,
+      refetch,
     } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchInput], searchFacility, {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage?.next_page_url) {
           return pages?.length + 1;
-        } else return undefined;
+        } else refetch;
       },
     });
 
@@ -80,23 +81,24 @@ const SearchForm = ({ setDataArray }) => {
   };
 
   const filteredData = () => {
-    setDataArray(data);
-    // console.log("whip", data?.data?.pages[0]?.data?.data);
-    const resultArray = data?.data?.pages[0]?.data?.data.filter((result) =>
-      // result.reg_fac_name.includes(searchInput) ||
-      // result.statename.includes(locationInput)
-      console.log("resultttt", result.reg_fac_name)
+    const resultArray = data?.data?.pages[0]?.data?.data.filter(
+      (result) =>
+        result.reg_fac_name.includes(searchInput) ||
+        result.statename.includes(locationInput)
+      // console.log("resultttt", result.reg_fac_name)
     );
+    setDataArray(resultArray);
   };
 
   const submitSearch = (event) => {
     event.preventDefault();
+    setIsSearching(true);
     searchFacility();
     filteredData();
   };
 
   const data = useSearchFacility();
-  console.log("trey", data);
+  // console.log("trey", data);
 
   return (
     <form className="" onSubmit={submitSearch}>
@@ -118,6 +120,7 @@ const SearchForm = ({ setDataArray }) => {
           selectedOption={locationInput}
           toggleDropdown={toggleLocationDropdown}
           isOpen={isLocationOpen}
+          close={toggleLocationDropdown}
         />
 
         <SelectDropdown
@@ -128,6 +131,7 @@ const SearchForm = ({ setDataArray }) => {
           selectedOption={facilityTypeInput}
           toggleDropdown={toggleFacilityTypeDropdown}
           isOpen={isFacilityTypeOpen}
+          close={toggleFacilityTypeDropdown}
         />
 
         <button

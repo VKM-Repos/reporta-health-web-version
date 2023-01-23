@@ -1,9 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-const ProfileDropdown = ({ show, onLogout }) => {
+const ProfileDropdown = ({ show, onLogout, close }) => {
   if (!show) {
     return null;
   }
@@ -20,7 +19,11 @@ const ProfileDropdown = ({ show, onLogout }) => {
           className="hidden absolute my-1 right-0 z-30 mx-8 lg:flex w-[10%] rounded-md  bg-white shadow-lg border border-gray"
         >
           <div className="text-xs w-full flex items-center">
-            <ul className="w-full">
+            <div
+              onClick={close}
+              className="w-screen h-screen fixed inset-0"
+            ></div>
+            <ul className="w-full relative">
               <li className="w-full text-black px-2 py-2 hover:text-primary cursor-pointer hover:bg-background">
                 <Link href="profile">
                   <a className="flex flex-row items-center">
