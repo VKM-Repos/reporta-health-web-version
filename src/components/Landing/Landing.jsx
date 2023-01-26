@@ -12,7 +12,7 @@ import useGetLocation from "@hooks/useGetLocation.hook";
 const Landing = () => {
   const router = useRouter();
   const { data, isLoading, status } = useFetchNearestFacilities();
-  // console.log("data", data);
+  console.log("data", data);
 
   const location = useGetLocation();
   const ShowMyLocation = () => {
