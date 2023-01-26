@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { stepperContext } from "@context/StepperContext";
 import { ToastContainer, toast } from "react-toastify";
 
-// import Input from "@components/Input/input"
 import StepperController from "@components/FormStepper/StepperController";
 import Stepper from "@components/FormStepper/Stepper";
 
@@ -26,10 +25,6 @@ export default function ReportFacility(props) {
     if (reportFacilityLastStep) {
       console.log("Submitting Report Facility data");
       console.log(reportFacilityFormData);
-      // notify("facility has been reported")
-      // toast.success('Facility has been reported', {
-      //   icon: "🚀"
-      // })
       setReportFacilityLastStep(false);
     }
   }, [reportFacilityLastStep, setReportFacilityLastStep]);
@@ -73,7 +68,7 @@ export default function ReportFacility(props) {
   }
   const notify = (data) => {
     const resolveAfter3Sec = new Promise((resolve) =>
-      setTimeout(resolve, 3000)
+      setTimeout(resolve, 5000)
     );
     toast.promise(resolveAfter3Sec, {
       pending: "Please wait .....",
@@ -101,30 +96,35 @@ export default function ReportFacility(props) {
   if (!props.visible) return null;
 
   return (
-    <div className="fixed top-0 w-full h-full bg-black  flex justify-center items-center">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        progressStyle={{ backgroundColor: "#242F9B", color: "#242F9B" }}
-      />
-      <div className=" bg-white px-5 lg:px-10 rounded-md  w-[90vw] h-[78vh] max-h-[85vh]">
-        <div className="fixed w-[370px] xl:w-[370px] bg-white py-2 ">
-          <Stepper
-            handleClick={handleClick}
-            steps={steps}
-            currentStep={currentStep}
+    <>
+      <div className="fixed inset-0 w-screen h-screen bg-black/10 z-[900] ">
+        <div className=" fixed w-screen h-screen z-[999] flex justify-center items-center">
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            progressStyle={{
+              backgroundColor: "#242F9B",
+              color: "#242F9B",
+            }}
           />
-        </div>
+          <div className="relative w-[90vw] md:w-2/3 lg:w-1/3  bg-white py-6 px-2 lg:px-4 rounded-md ">
+            <Stepper
+              handleClick={handleClick}
+              steps={steps}
+              currentStep={currentStep}
+            />
 
-        <div className="my-5 pt-16">{displayStep(currentStep)}</div>
+            <div className="">{displayStep(currentStep)}</div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

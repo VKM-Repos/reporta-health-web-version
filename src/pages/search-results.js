@@ -1,25 +1,23 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
-import { useSearchFacility } from "@hooks/useSearchFacility.hook";
-
 import SearchHeader from "@components/SearchQueryResult/SearchHeader";
 import SearchQueryResult from "@components/SearchQueryResult/SearchQueryResult";
 import mapIcon from "@assets/images/map-icon.svg";
 import listIcon from "@assets/images/list-icon.svg";
+import { useSearchFacility } from "@components/Forms/SearchForm/SearchForm";
+import SearchFacilityData from "@components/SearchQueryResult/SearchFacilityData";
 
 const Map = dynamic(() => import("@components/SearchQueryResult/Map"), {
   ssr: false,
 });
 
 export default function SearchResult() {
-  const [showFacilityList, setShowFacilityList] = useState(true);
-
+  const [showFacilityList, setShowFacilityList] = useState(false);
   const { data } = useFetchNearestFacilities();
 
-  // TODO: CREATE A HOOK TO GET USER LOCATION AND IMPORT IT HERE
+  console.log(SearchFacilityData);
 
   return (
     <section className="w-full flex flex-col relative overflow-x-hidden">
@@ -27,7 +25,7 @@ export default function SearchResult() {
       <Map className={`w-screen h-screen z-10 pt-12 `} data={data} />
 
       <div className="w-full absolute flex flex-row">
-        <div className="hidden lg:block z-10">
+        <div className="hidden md:block z-10">
           <AnimatePresence>
             {showFacilityList && (
               <motion.div
@@ -44,7 +42,7 @@ export default function SearchResult() {
           </AnimatePresence>
         </div>
 
-        <div className="lg:hidden block z-10">
+        <div className="md:hidden block z-10">
           <AnimatePresence>
             {showFacilityList && (
               <motion.div
@@ -62,30 +60,47 @@ export default function SearchResult() {
         </div>
 
         {/* show panels button */}
-        <div className="fixed z-10 rounded-lg bg-white text-black text-opacity-90 font-semibold border border-black border-opacity-30 shadow-xl right-10 bottom-10 ">
+        <div className="fixed z-10 rounded-lg bg-white/50 hover:bg-white text-black text-opacity-90 font-semibold border border-black border-opacity-30 shadow-xl right-5 bottom-10 lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer">
           {showFacilityList ? (
             <button
               onClick={() => setShowFacilityList(!showFacilityList)}
-              className="px-4 py-4 z-40 text-sm "
+              className="py-2 px-4 z-40  w-full space-x-2 flex flex-row items-center"
             >
-              <span className="flex flex-row items-center">
-                <Image src={mapIcon} width="20" height="20" />{" "}
-                <p className="ml-2">Show Map</p>{" "}
-              </span>
+
+              <span
+                style={{
+                  backgroundImage: `url(${mapIcon.src})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "top center",
+                }}
+                className="w-[1.5rem] aspect-square "
+              ></span>
+              <p className="text-[90%] whitespace-nowrap">show map</p>{" "}
+
             </button>
           ) : (
             <button
               onClick={() => setShowFacilityList(!showFacilityList)}
-              className=" px-4 py-4 z-40  text-sm "
+              className="py-2 px-4 z-40  w-full space-x-2 flex flex-row items-center"
             >
-              <span className="flex flex-row items-center">
-                <Image src={listIcon} width="20" height="20" />{" "}
-                <p className="ml-2">Show List</p>{" "}
-              </span>
+
+              <span
+                style={{
+                  backgroundImage: `url(${listIcon.src})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "top center",
+                }}
+                className="w-[1.5rem] aspect-square "
+              ></span>
+              <p className="text-[90%] whitespace-nowrap">show list</p>{" "}
+
             </button>
           )}
         </div>
       </div>
+
     </section>
   );
 }

@@ -15,14 +15,9 @@ export const useLogin = () => {
     mutationFn: loginData,
     onSuccess: (returnedData) => {
       populateUserInfoAndJwt(returnedData?.data);
-      data = returnedData?.data;
-      // add toast here
-      console.log(returnedData?.data);
-      window.location.replace("/") 
+      return returnedData;
     },
     onError: () => {
-      // add error toast
-      alert("login error")
       return console.log("An error occured");
     },
   });

@@ -7,6 +7,7 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { AiOutlineWarning } from "react-icons/ai";
 
 import logo from "@assets/images/logo-white.svg";
+import { ToastContainer, toast } from "react-toastify";
 
 import Input from "@components/Input/Input";
 import Button from "@components/Button/Button";
@@ -15,12 +16,25 @@ import Image from "next/image";
 export default function Signup() {
   const { mutate, isLoading } = useCreateUser();
   const onSubmitHandler = (values) => {
-    mutate(values);
+    mutate(values, {
+      onSuccess: () => {
+
+      },
+      onError: () => {
+        toast.error("Sorry, there was an error signing you up, please confirm your details and try again")
+      },
+      onSettled: () => {
+        toast.success('Registration successful, Welcome!', {
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#242F9B" ><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
+        })
+        window.location.replace("/")
+      }
+    });
   };
 
   const formik = useUserSignupFormValidation(onSubmitHandler);
 
-  const [showPasword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleShowPassword() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -178,7 +192,7 @@ export default function Signup() {
                 className="flex items-center justify-center cursor-pointer px-2"
                 onClick={handleShowPassword}
               >
-                {!showPasword ? (
+                {!showPassword ? (
                   <span>
                     <svg
                       width="25"
@@ -229,7 +243,7 @@ export default function Signup() {
               id="password"
               className=" p-3 w-full rounded-md focus:bg-gray  bg-gray outline-none"
               name="password"
-              type={!showPasword ? "password" : "text"}
+              type={!showPassword ? "password" : "text"}
               placeholder="......."
               required
               onChange={formik.handleChange}
@@ -262,6 +276,18 @@ export default function Signup() {
               "Create account"
             )}
           </Button>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            progressStyle={{ backgroundColor: '#242F9B', color: '#242F9B' }}
+          />
         </form>
 
         <p className="mt-3 mb-4 text-center text-sm ">

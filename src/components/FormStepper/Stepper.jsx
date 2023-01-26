@@ -67,10 +67,10 @@ export default function Stepper(props) {
             }
         `}
       >
-        <div className="relative flex flex-col items-center text-accent">
+        <div className="flex items-center text-primary">
           <div
-            className={`rounded-full transition duration-500 ease-in-out border-2 border-accent h-7 w-7 flex items-center justify-center py-3 ${
-              step.selected ? "bg-accent text-white" : ""
+            className={`rounded-md transition duration-500 ease-in-out border-2 border-primary w-[1.2rem] aspect-square flex items-center justify-center ${
+              step.selected ? "bg-primary text-white" : ""
             } `}
           >
             {/* Display Number*/}
@@ -78,41 +78,37 @@ export default function Stepper(props) {
           </div>
         </div>
 
-        <div className="flex-auto border-t-2 transition duration-500 ease-in-out">
+        <div className="flex-auto border-t-2 border-primary transition duration-500 ease-in-out">
           {/*Display line*/}
         </div>
       </div>
     );
   });
   return (
-    <div className="flex  items-center justify-between">
-      <div className="flex justify-center">
-        <button
-          onClick={() => props.handleClick()}
-          className="text-xs lg:text-sm flex gap-1 justify-center items-center"
+    <div className="w-full mb-4 grid grid-cols-3 gap-10 items-center justify-items-stretch">
+      <button
+        onClick={() => props.handleClick()}
+        className="text-[100%] flex bg-primary/20 border-none rounded-md text-primary py-1 px-2 justify-center items-center justify-self-start lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
+      >
+        <svg
+          className="mr-2 w-[9%]"
+          viewBox="0 0 9 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <svg
-            className="mr-4"
-            width="8"
-            height="14"
-            viewBox="0 0 9 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7.49954 14.6L2.06621 9.16669C1.42454 8.52502 1.42454 7.47502 2.06621 6.83336L7.49954 1.40002"
-              stroke="#242F9B"
-              strokeWidth="1.5"
-              strokeMiterlimit="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Back
-        </button>{" "}
-      </div>
+          <path
+            d="M7.49954 14.6L2.06621 9.16669C1.42454 8.52502 1.42454 7.47502 2.06621 6.83336L7.49954 1.40002"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Back
+      </button>
 
-      <div className="py-5 flex w-1/2 lg:w-1/2 justify-between items-center">
+      <div className="col-span-2 w-1/3 flex  justify-self-end">
         {displaySteps}
       </div>
     </div>

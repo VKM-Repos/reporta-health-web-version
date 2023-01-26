@@ -1,4 +1,3 @@
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import React, { useState } from "react";
 import SearchForm from "@components/Forms/SearchForm/SearchForm";
 import SearchFacilityData from "./SearchFacilityData";

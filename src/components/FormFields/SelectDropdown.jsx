@@ -19,7 +19,16 @@ const SelectDropdown = ({
           onClick={toggleDropdown}
         >
           {selectedOption || selectTitle}
-          <AiOutlineDown className="" />{" "}
+          {/* <AiOutlineDown className="" />{" "} */}
+          {isOpen ? (
+            <span className="rotate-180 transition-all ease-in duration-150">
+              <AiOutlineDown />
+            </span>
+          ) : (
+            <span className="transition-all ease-in duration-150">
+              <AiOutlineDown />
+            </span>
+          )}
         </label>
         <div className="w-full relative flex flex-col ">
           <AnimatePresence>

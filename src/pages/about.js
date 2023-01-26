@@ -6,15 +6,15 @@ import about2 from "@assets/images/about-man.svg";
 
 export default function About() {
   return (
-    <div className="w-full bg-transparent relative overflow-hidden select-none noisy z-2">
+    <div className="w-full bg-white relative overflow-hidden select-none z-2">
       <Layout
         pageMeta={{
           title: "Reporta Health - Search and report a facility",
           description: "give any description here",
         }}
       >
-        <section className="w-[95vw] mx-auto px-5 lg:px-10 py-4 pb-[6rem]">
-          <h1 className="mt-[2rem] my-6 text-2xl lg:text-5xl font-bold capitalize">
+        <section className="w-[95vw] mx-auto px-5 lg:px-10 pt-[8%] pb-[6rem]">
+          <h1 className="mt-[2rem] my-6 lg:text-[3.5vw] md:text-[5vw] text-[8vw] font-bold capitalize">
             About Reporta health
           </h1>
           <p className="w-full md:w-3/5 text-sm">
@@ -24,7 +24,7 @@ export default function About() {
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-stretch ">
-            <div className="flex flex-col items-center justify-start mt-[4rem] px-4 pt-4 bg-[#8491ef33] bg-opacity-20">
+            <div className="flex flex-col items-center justify-start mt-[4rem] px-4 pt-4 bg-[#8491ef33] bg-opacity-20 rounded-lg">
               <h4 className="w-full my-4 font-extrabold text-lg lg:text-2xl text-left">
                 What it does
               </h4>
@@ -35,7 +35,7 @@ export default function About() {
               </p>
               <Image src={about1} alt="woman" />
             </div>
-            <div className="flex flex-col items-center justify-start mt-[4rem] px-4 pt-4 bg-[#FEF9A733] bg-opacity-20">
+            <div className="flex flex-col items-center justify-start mt-[4rem] px-4 pt-4 bg-[#FEF9A733] bg-opacity-20 rounded-lg">
               <h4 className="w-full my-4 font-extrabold text-lg lg:text-2xl text-left ">
                 Our vision
               </h4>
@@ -48,7 +48,7 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 justify-items-stretch ">
-            <div className="flex flex-col items-start justify-start mt-[4rem]  lg:p-8 px-4 py-4 bg-[#FAC21333] bg-opacity-20">
+            <div className="flex flex-col items-start justify-start mt-[4rem]  lg:p-8 px-4 py-4 bg-[#FAC21333] bg-opacity-20 rounded-lg">
               <h4 className="my-4 font-extrabold text-lg lg:text-2xl ">
                 What we&apos;re doing
               </h4>
@@ -59,7 +59,7 @@ export default function About() {
                 for informed decision making on choice of facility by the public
               </p>
             </div>
-            <div className="flex flex-col items-start justify-start mt-[4rem] lg:p-8 px-4 py-4 bg-[#F77E2133] bg-opacity-20">
+            <div className="flex flex-col items-start justify-start mt-[4rem] lg:p-8 px-4 py-4 bg-[#F77E2133] bg-opacity-20 rounded-lg">
               <h4 className="my-4 font-extrabold text-lg lg:text-2xl ">
                 Our impact
               </h4>
