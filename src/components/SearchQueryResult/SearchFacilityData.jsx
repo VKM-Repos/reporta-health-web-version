@@ -33,7 +33,7 @@ export default function SearchFacilityData({ dataArray }) {
               </g>
             </g>
           </svg>
-          <h4 className="text-xl font-semibold ">Location not found</h4>
+          <h4 className="text-xl font-semibold ">Result not found</h4>
         </div>
       )}
     </div>

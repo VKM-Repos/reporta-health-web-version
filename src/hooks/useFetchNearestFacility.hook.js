@@ -14,6 +14,7 @@ export const useFetchNearestFacilities = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch
   } = useInfiniteQuery(FETCH_NEAREST_FACILITY_KEY, fetchNearestFacility, {
     getNextPageParam: (lastPage, pages) => {
       if (lastPage?.next_page_url) {

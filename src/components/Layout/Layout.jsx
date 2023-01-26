@@ -18,7 +18,8 @@ const Layout = ({ children, pageMeta }) => {
       <Head>
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
-        <link rel="icon" href="/favicon.ico" />
+        {/* <link rel="icon" href="/favicon.ico" /> */}
+
         {/* open graph meta tag */}
         <meta
           property="og:url"

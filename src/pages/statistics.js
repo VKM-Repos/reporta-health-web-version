@@ -7,6 +7,7 @@ import { useFetchFacilityByLevelOfCare } from '@hooks/useFetchFacilityByLevelOfC
 import { useFetchFacilityByOwnership } from '@hooks/usefetchFacilityByOwnership';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import LoadingSpinner from '@components/LoadingSpinner/LoadingSpinner';
 
 export default function Statistics() {
     const [facilityByState, setFacilityByState] = useState([])
@@ -117,113 +118,106 @@ export default function Statistics() {
 
     }
     return (
-        <Layout>
-            <div className='px-20  py-[100px]'>
-                <div className='lg:w-[750px] w-[350px] mx-auto shadow-xl px-5 py-5'>
-                    <h2 className='text-xl'>Statistics</h2>
-                    {
-                        isLoading
-                            ? <div>
-                                <Skeleton className='pl-10 ' style={{ width: '100px', height: '30px' }} />
-                                <div className='flex gap-14 justify-center'>
-                                    <Skeleton className='mb-5' style={{ height: '350px', width: '5px' }} />
-                                    <div className='flex gap-[80px] justify-center -mb-14'>
-                                        <Skeleton style={{ height: '330px', width: '50px' }} />
-                                        <Skeleton style={{ height: '330px', width: '50px' }} />
-                                        <Skeleton style={{ height: '330px', width: '50px' }} />
-                                        <Skeleton style={{ height: '330px', width: '50px' }} />
-                                    </div>
+        <div className='w-full bg-white relative overflow-hidden select-none  z-2'>
+            <Layout>
+                <div className='w-[95vw] mx-auto px-5 lg:px-10 pt-[8%] pb-[6rem]'>
+
+                    <h1 className="mt-[2rem] my-6 lg:text-[3.5vw] md:text-[5vw] text-[8vw] font-bold capitalize">
+                        Statistics
+                    </h1>
+                    <p className="w-full md:w-3/5 text-sm">
+                        Reporta Health is a platform that allows users identify and report
+                        illegal healthcare facilities, and as well to rate the quality of
+                        service provided to them in those facilities.
+                    </p>
+
+                    <div className='w-full grid lg:grid-cols-5 grid-cols-1 justify-items-stretch gap-[4rem] my-12'>
+                        <div className='min-h-[110%] col-span-3 flex flex-col border-2 border-black/40  p-4 rounded-lg bg-white'>
+                            <div className="w-full grid grid-cols-2 gap-2 justify-items-stretch border-b border-black/20 py-3 ">
+                                <div className="">
+                                    <h2 className='text-lg font-semibold'>Total facilities by state</h2>
                                 </div>
-                                <div className='flex justify-center -mt-6 ml-10'>
-                                    <Skeleton style={{ width: '540px', height: '5px' }} />
+                                <div className='px-1 border flex border-black/20 w-full rounded-md'>
+                                    <select name='stateValue' value={stateValue} className='focus:outline-none py-1 lg:text-sm text-xs w-full' onChange={handleChangeState}>
+                                        {
+                                            facilityByState?.map(element => <option key={element.state} value={element.state}>{element.state}</option>)
+                                        }
+                                    </select>
                                 </div>
-                                <Skeleton style={{ height: '30px', width: '300px' }} />
 
                             </div>
-                            : status === 'success'
-                                ? <div >
-                                    <div className='px-1 border border-[#B4B4B4] w-[105px] rounded-md my-3'>
-                                        <select name='stateValue' value={stateValue} className='focus:outline-none py-1 text-sm' onChange={handleChangeState}>
-                                            {
-                                                facilityByState?.map(element => <option key={element.state} value={element.state}>{element.state}</option>)
-                                            }
-                                        </select>
-                                    </div>
-                                    <BarChart
-                                        labels={barChartData.length === 0 ? ['Hospital', 'Imaging', 'Laboratory', 'Phamacy'] : barChartData[0].labels}
-                                        data={barChartData[0]}
-                                        loading={isLoading}
-                                    />
-                                </div>
-                                : 'Error'
 
-
-                    }
-                </div>
-                <div className='flex lg:flex-row flex-col justify-center gap-10  my-20'>
-                    <div className='flex flex-col'>
-                        <div className='px-7 py-7 border-b border-[#B4B4B4]'>
-                            {facilityLevelByCareLoading
-                                ? <Skeleton style={{ width: '150px', height: '20px' }} />
-                                : <p>Based on level of care</p>
+                            {
+                                isLoading
+                                    ?
+                                    <LoadingSpinner text='please wait...' className="font-3xl text-center" />
+                                    : status === 'success'
+                                        ? <div className=' p-2'>
+                                            <BarChart
+                                                labels={barChartData.length === 0 ? ['Hospital', 'Imaging', 'Laboratory', 'Phamacy'] : barChartData[0].labels}
+                                                data={barChartData[0]}
+                                                loading={isLoading}
+                                            />
+                                        </div>
+                                        : 'Error'
                             }
                         </div>
-                        {
-                            facilityLevelByCareLoading
-                                ? <div className='shadow-xl px-7 py-7 w-[350px] min-w-[350px] max-w-[350px]'>
-                                    <Skeleton className='h-7 mt-[30px]' style={{ width: '100px' }} />
-                                    <Skeleton className='h-64  mx-auto mt-[20px]' style={{ borderRadius: '200px', width: '270px' }} />
-                                    <Skeleton className='h-7 mt-[40px]' />
-                                </div>
-                                : <div className='shadow-xl px-7 py-7 w-[350px] min-w-[350px] max-w-[350px]'>
-                                    <div className='px-1 border border-[#B4B4B4] w-[105px] rounded-md my-3'>
-                                        <select name='stateLevelByCaraValue' value={stateLevelByCaraValue} className='focus:outline-none py-1 text-sm' onChange={handleFetchFacilityByLevelOfCare}>
+                        <div className="col-span-2 grid grid-rows-2 grid-flow-row gap-[4rem]">
+                            <div className='w-full min-h-[120%] flex flex-col items-center border-2 border-black/40  p-4 rounded-lg'>
+                                <div className="w-full grid lg:grid-cols-2 gap-2 justify-items-stretch border-b border-black/20 py-3 ">
+                                    <div className="">
+                                        <h3 className='text-xs lg:text-sm font-semibold'>Based on level of care</h3>
+                                    </div>
+                                    <div className='px-1 border flex border-black/20 w-full rounded-md'>
+                                        <select name='stateLevelByCaraValue' value={stateLevelByCaraValue} className='focus:outline-none py-1 lg:text-sm text-xs w-full' onChange={handleFetchFacilityByLevelOfCare}>
                                             {
                                                 facilityByState?.map(element => <option key={element.state} value={element.state}>{element.state}</option>)
                                             }
                                         </select>
                                     </div>
-                                    <DunotChart
-                                        data={facilityByCareData || [0, 0, 0, 0]}
-                                        labels={['Hospital', 'Imaging', 'Laboratory', 'Phamacy']}
-                                        colors={['#242F9B', '#54249B', '#247F9B', '#9B247F']}
-                                    />
                                 </div>
-                        }
-                    </div>
-                    <div className='flex flex-col'>
-                        <div className='px-7 py-7  border-b border-[#B4B4B4]'>
-                            {facilityByOwnershipLoading
-                                ? <Skeleton style={{ width: '150px', height: '20px' }} />
-                                : <p>Based on ownership</p>
-                            }
 
-                        </div>
-                        {
-                            facilityByOwnershipLoading
-                                ? <div className='shadow-xl px-7 py-7 w-[350px] min-w-[350px] max-w-[350px]'>
-                                    <Skeleton className='h-7 mt-[30px]' style={{ width: '100px' }} />
-                                    <Skeleton className='h-64  mx-auto mt-[20px]' style={{ borderRadius: '200px', width: '270px' }} />
-                                    <Skeleton className='h-7 mt-[40px]' />
-                                </div>
-                                : <div className='shadow-xl px-7 py-7 w-[350px] min-w-[350px] max-w-[350px]'>
-                                    <div className='px-1 border border-[#B4B4B4] w-[105px] rounded-md my-3'>
-                                        <select name='stateOwnershipValue' value={stateOwnershipValue} className='focus:outline-none py-1 text-sm' onChange={handleFetchFacilityByOwnership}>
+                                {
+                                    facilityLevelByCareLoading
+                                        ? <LoadingSpinner text='please wait...' className="text-center" />
+                                        : <div className='p-2'>
+                                            <DunotChart
+                                                data={facilityByCareData || [0, 0, 0, 0]}
+                                                labels={['Hospital', 'Imaging', 'Laboratory', 'Pharmacy']}
+                                                colors={['#242F9B', '#54249B', '#247F9B', '#9B247F']}
+                                            />
+                                        </div>
+                                }
+                            </div>
+                            <div className='w-full min-h-[120%] flex flex-col items-center border-2 border-black/40  p-4 rounded-lg'>
+                                <div className="w-full grid lg:grid-cols-2 gap-2 justify-items-stretch border-b border-black/20 py-3 ">
+                                    <div className="">
+                                        <h3 className='text-xs lg:text-sm font-semibold'>Based on ownership</h3>
+                                    </div>
+                                    <div className='px-1 border flex border-black/20 w-full rounded-md'>
+                                        <select name='stateOwnershipValue' value={stateOwnershipValue} className='focus:outline-none py-1 lg:text-sm text-xs w-full' onChange={handleFetchFacilityByOwnership}>
                                             {
                                                 facilityByState?.map(element => <option key={element.state} value={element.state}>{element.state}</option>)
                                             }
                                         </select>
                                     </div>
-                                    <DunotChart
-                                        data={facilityByOwnership}
-                                        labels={['Government', 'Private']}
-                                        colors={['#242F9B', '#F806CC']}
-                                    />
                                 </div>
-                        }
+                                {
+                                    facilityByOwnershipLoading
+                                        ? <LoadingSpinner text='please wait...' className="text-center" />
+                                        : <div className='p-2'>
+                                            <DunotChart
+                                                data={facilityByOwnership}
+                                                labels={['Government', 'Private']}
+                                                colors={['#242F9B', '#F806CC']}
+                                            />
+                                        </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Layout>
+            </Layout>
+        </div>
     )
 }

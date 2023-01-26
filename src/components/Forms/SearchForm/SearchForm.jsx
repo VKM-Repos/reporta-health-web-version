@@ -85,20 +85,17 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
       (result) =>
         result.reg_fac_name.includes(searchInput) ||
         result.statename.includes(locationInput)
-      // console.log("resultttt", result.reg_fac_name)
     );
     setDataArray(resultArray);
   };
 
+  const data = useSearchFacility();
+
   const submitSearch = (event) => {
     event.preventDefault();
     setIsSearching(true);
-    searchFacility();
     filteredData();
   };
-
-  const data = useSearchFacility();
-  // console.log("trey", data);
 
   return (
     <form className="" onSubmit={submitSearch}>
@@ -145,11 +142,6 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
           }`}
           disabled={!searchInput ? true : false}
         >
-          {/* {isLoading ? (
-            <LoadingSpinner text="Searching for facility..." />
-          ) : (
-            "Find facility"
-          )} */}
           Find facility
         </button>
       </div>
