@@ -9,6 +9,8 @@ import { useQueryClientAndsettings } from "@config/queryClient";
 // import { ReactQueryDevtools } from "react-query/devtools";
 import PropTypes from "prop-types";
 import { FormProvider } from "@context/StepperContext";
+import { SearchContextProvider } from "@context/searchFacilityContext";
+
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -19,9 +21,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <FormProvider>
-          <Component {...pageProps} />
-        </FormProvider>
+
+        <SearchContextProvider>
+          <FormProvider>
+            <Component {...pageProps} />
+          </FormProvider>
+        </SearchContextProvider>
+
       </Hydrate>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>

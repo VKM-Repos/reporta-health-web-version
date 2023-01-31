@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import InputField from "@components/FormFields/InputField";
 import SelectDropdown from "@components/FormFields/SelectDropdown";
+import React, { useState } from "react";
 
 import nigerianStates from "@libs/nigerian-states.json";
 import facilityTypes from "@libs/facility-types.json";
-import { authInstanceAxios } from "@config/axiosInstance";
-import { SEARCH_FACILITY_KEY } from "@config/queryKeys";
-import { useInfiniteQuery } from "react-query";
-import { SearchContext } from "@context/searchFacilityContext";
 
-const SearchForm = ({ setDataArray, setIsSearching }) => {
-  const { setSearchFacilityData } = useContext(SearchContext);
-
+const SearchForm = ({
+  searchTerm,
+  setSearchTerm,
+  locationInput,
+  setLocationInput,
+  facilityTypeInput,
+  setFacilityTypeInput,
+  setDefaultApi,
+}) => {
   const locationOptions = nigerianStates;
   const facilityOptions = facilityTypes;
-
-  const [searchInput, setSearchInput] = useState("");
-  const [locationInput, setLocationInput] = useState("");
-  const [facilityTypeInput, setFacilityTypeInput] = useState("");
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isFacilityTypeOpen, setIsFacilityTypeOpen] = useState(false);
 
@@ -28,82 +25,27 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
 
   // INPUT FIELD FUNCTION
   const handleChange = (event) => {
-    setSearchInput(event.target.value);
+    setSearchTerm(event.target.value);
+    console.log(searchTerm);
   };
 
   // SELECT DROPDOWN FIELD FUNCTION FOR LOCATION
-  const handleLocation = (value) => {
-    setLocationInput(value.target.textContent);
+  const handleLocation = (event) => {
+    setLocationInput(event.target.textContent);
     setIsLocationOpen(!isLocationOpen);
   };
 
   // SELECT DROPDOWN FIELD FUNCTION FOR FACILITY TYPE
-  const handleFacilityType = (value) => {
-    setFacilityTypeInput(value.target.textContent);
+  const handleFacilityType = (event) => {
+    setFacilityTypeInput(event.target.textContent);
     setIsFacilityTypeOpen(!isFacilityTypeOpen);
   };
 
-  const useSearchFacility = () => {
-    const {
-      isLoading,
-      isError,
-      isFetching,
-      error,
-      data,
-      status,
-      fetchNextPage,
-      hasNextPage,
-      isFetchingNextPage,
-      refetch,
-    } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchInput], searchFacility, {
-      getNextPageParam: (lastPage, pages) => {
-        if (lastPage?.next_page_url) {
-          return pages?.length + 1;
-        } else refetch;
-      },
-    });
-
-    return {
-      isLoading,
-      isError,
-      isFetching,
-      error,
-      data,
-      status,
-      fetchNextPage,
-      hasNextPage,
-      isFetchingNextPage,
-    };
-  };
-
-  const searchFacility = async () => {
-    const result = await authInstanceAxios.get(`/search/?query=${searchInput}`);
-    return result.data;
-  };
-
-  const filteredData = () => {
-    const resultArray = data?.pages[0]?.data?.data.filter(
-      (result) =>
-        result.reg_fac_name.includes(searchInput) ||
-        result.statename.includes(locationInput)
-    );
-    setDataArray(resultArray);
-  };
-
-  const { data } = useSearchFacility();
-  // console.log(data);
-
-  // setSearchFacilityData(data);
-
   const submitSearch = (event) => {
     event.preventDefault();
-    setIsSearching(true);
-    filteredData();
+    setSearchTerm(searchTerm);
+    setDefaultApi(false);
   };
-
-  useEffect(() => {
-    setSearchFacilityData(data);
-  }, [data, setSearchFacilityData]);
 
   return (
     <form className="" onSubmit={submitSearch}>
@@ -113,7 +55,7 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
           type="text"
           placeholder="Search by specialty or name of facility"
           name="query"
-          value={searchInput}
+          value={searchTerm}
           handleChange={handleChange}
         />
         {/* dropdown fields */}
@@ -144,11 +86,11 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
           value="Find facility"
           className={`w-full  col-span-2 py-2 flex items-center justify-center text-xs rounded-md  cursor-pointer text-white 
           ${
-            !searchInput
+            !searchTerm
               ? "bg-secondary focus:none cursor-not-allowed"
               : "bg-primary hover:scale-95 ease-out duration-300"
           }`}
-          disabled={!searchInput ? true : false}
+          disabled={!searchTerm ? true : false}
         >
           Find facility
         </button>

@@ -7,7 +7,6 @@ import {
   useMapEvents,
   Circle,
   Tooltip,
-  // useLeaflet,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -16,8 +15,8 @@ import "leaflet-routing-machine";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import useGetLocation from "@hooks/useGetLocation.hook";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
-import PopupInfo from "./PopupInfo";
 import { SearchContext } from "@context/searchFacilityContext";
+import PopupInfo from "@components/SearchQueryResult/PopupInfo";
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
@@ -39,22 +38,6 @@ const Map = ({ className }) => {
   const { data } = useFetchNearestFacilities();
   console.log(data);
   const { searchFacilityData } = useContext(SearchContext);
-  // console.log(searchFacilityData);
-
-  // useEffect(() => {
-  //   if (!mapRef.current) return;
-  //   if (!facility) return;
-
-  //   const control = L.Routing.control({
-  //     waypoints: [
-  //       L.latLng(position.coords.latitude, position.coords.longitude),
-  //       L.latLng(facility.latitude, facility.longitude),
-  //     ],
-  //     router: new L.Routing.osrmv1({
-  //       serviceUrl: "https://router.project-osrm.org/route/v1",
-  //     }),
-  //   }).addTo(map);
-  // }, [mapRef, facility]);
 
   const closeReportModal = (e) => {
     e.stopPropagation();

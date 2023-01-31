@@ -16,6 +16,11 @@
     visibility: hidden;
   }
 
+  /* .leaflet-tooltip {
+  opacity: 0.5;
+  visibility: hidden;
+} */
+
 
 
 :root {

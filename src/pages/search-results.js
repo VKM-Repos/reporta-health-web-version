@@ -1,72 +1,39 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
+
 import SearchHeader from "@components/SearchQueryResult/SearchHeader";
-import SearchQueryResult from "@components/SearchQueryResult/SearchQueryResult";
+
 import mapIcon from "@assets/images/map-icon.svg";
 import listIcon from "@assets/images/list-icon.svg";
-import { useSearchFacility } from "@components/Forms/SearchForm/SearchForm";
-import SearchFacilityData from "@components/SearchQueryResult/SearchFacilityData";
 
-const Map = dynamic(() => import("@components/SearchQueryResult/Map"), {
+import Sidebar from "@components/SearchPage/Sidebar";
+
+
+const Map = dynamic(() => import("@components/SearchPage/Map"), {
   ssr: false,
 });
 
-export default function SearchResult() {
-  const [showFacilityList, setShowFacilityList] = useState(false);
-  const { data } = useFetchNearestFacilities();
+// const Map = dynamic(() => import("@components/SearchQueryResult/Map"), {
+//   ssr: false,
+// });
 
-  console.log(SearchFacilityData);
+
+export default function SearchResult() {
+  const [showSideBar, setShowSideBar] = useState(true);
 
   return (
-    <section className="w-full flex flex-col relative overflow-x-hidden">
-      <SearchHeader />
-      <Map className={`w-screen h-screen z-10 pt-12 `} data={data} />
-
-      <div className="w-full absolute flex flex-row">
-        <div className="hidden md:block z-10">
-          <AnimatePresence>
-            {showFacilityList && (
-              <motion.div
-                key="list"
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: "35vw", opacity: 1 }}
-                exit={{ width: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className=""
-              >
-                <SearchQueryResult />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <div className="md:hidden block z-10">
-          <AnimatePresence>
-            {showFacilityList && (
-              <motion.div
-                key="list"
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: "100vw", opacity: 1 }}
-                exit={{ width: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className=""
-              >
-                <SearchQueryResult />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
+    <section className="w-screen flex flex-col relative overflow-x-hidden">
+      <div className="w-full flex justify-center">
+        <SearchHeader />
+        <Map className={`w-screen h-screen z-30 pt-12 `} />
         {/* show panels button */}
-        <div className="fixed z-10 rounded-lg bg-white/50 hover:bg-white text-black text-opacity-90 font-semibold border border-black border-opacity-30 shadow-xl right-5 bottom-10 lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer">
-          {showFacilityList ? (
+        <div className="fixed z-50 w-fit rounded-lg bg-white hover:bg-white text-black text-opacity-90 font-semibold border border-black border-opacity-30  left-3 top-[4rem] lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer">
+          {showSideBar ? (
             <button
-              onClick={() => setShowFacilityList(!showFacilityList)}
+              onClick={() => setShowSideBar((showSideBar) => !showSideBar)}
               className="py-2 px-4 z-40  w-full space-x-2 flex flex-row items-center"
             >
-
               <span
                 style={{
                   backgroundImage: `url(${mapIcon.src})`,
@@ -76,12 +43,12 @@ export default function SearchResult() {
                 }}
                 className="w-[1.5rem] aspect-square "
               ></span>
-              <p className="text-[90%] whitespace-nowrap">show map</p>{" "}
+              <p className="text-[90%] whitespace-nowrap">show map view</p>{" "}
 
             </button>
           ) : (
             <button
-              onClick={() => setShowFacilityList(!showFacilityList)}
+              onClick={() => setShowSideBar((showSideBar) => !showSideBar)}
               className="py-2 px-4 z-40  w-full space-x-2 flex flex-row items-center"
             >
 
@@ -94,13 +61,65 @@ export default function SearchResult() {
                 }}
                 className="w-[1.5rem] aspect-square "
               ></span>
-              <p className="text-[90%] whitespace-nowrap">show list</p>{" "}
+              <p className="text-[90%] whitespace-nowrap">show list of facilities</p>{" "}
 
             </button>
           )}
         </div>
-      </div>
 
+
+
+        {showSideBar && (
+
+          <div>
+            {/* tablet and desktop */}
+            <div className="z-30 absolute hidden md:block left-0 inset-y-0">
+              <div onClick={() => setShowSideBar((showSideBar) => !showSideBar)} className="fixed inset-0 w-screen h-screen z-10"></div>
+
+              <div className="w-screen relative  z-40 ">
+                <AnimatePresence>
+                  <motion.div
+                    initial={{ x: "-100%" }}
+                    animate={{
+                      x: "0"
+                    }}
+                    exit={{
+                      x: "0"
+                    }}
+                    transition={{ type: "spring", bounce: 0, duration: 0.7 }}
+                    className="fixed text-white shadow-lg inset-y-0 left-0 w-full max-w-sm h-screen"
+                  >
+                    <Sidebar />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+            {/* mobile view */}
+            <div className="z-30 absolute md:hidden block left-0 inset-y-0">
+              <div onClick={() => setShowSideBar((showSideBar) => !showSideBar)} className="fixed inset-0 w-screen h-screen z-10"></div>
+              <div className="relative  z-40">
+                <AnimatePresence>
+                  <motion.div
+                    initial={{ x: "-100%" }}
+                    animate={{
+                      x: 0
+                    }}
+                    exit={{
+                      x: "100%"
+                    }}
+                    transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+                    className="fixed text-white shadow-lg inset-y-0 bottom-0 w-full max-w-sm h-screen"
+                  >
+                    <Sidebar />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        )}
+
+
+      </div>
     </section>
   );
 }
