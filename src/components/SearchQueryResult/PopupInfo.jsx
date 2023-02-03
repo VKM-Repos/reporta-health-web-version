@@ -106,7 +106,7 @@ export default function PopupInfo({ facility, showReportModal }) {
         <div className="grid grid-cols-1 gap-2 py-2 border-t border-b border-black/20">
           <span className="text-[70%] text-primary font-bold">Services</span>
           <span className="text-[100%] break-words overflow-hidden">
-            {facility.services ? facility.services : "N/A"}
+            {facility.services ? facility.services.join(", ") : "N/A"}
           </span>
         </div>
         <div className="w-full grid grid-cols-2 items-center justify-items-between py-6">

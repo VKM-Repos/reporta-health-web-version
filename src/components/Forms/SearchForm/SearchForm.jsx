@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import InputField from "@components/FormFields/InputField";
 import SelectDropdown from "@components/FormFields/SelectDropdown";
@@ -8,9 +8,10 @@ import facilityTypes from "@libs/facility-types.json";
 import { authInstanceAxios } from "@config/axiosInstance";
 import { SEARCH_FACILITY_KEY } from "@config/queryKeys";
 import { useInfiniteQuery } from "react-query";
+import { SearchContext } from "@context/searchFacilityContext";
 
 const SearchForm = ({ setDataArray, setIsSearching }) => {
-  // TODO: CREATE A SEARCH QUERIES FUNCTION TO HOLD BOTH THE INPUT, AND DROPDOWN OPTIONS
+  const { setSearchFacilityData } = useContext(SearchContext);
 
   const locationOptions = nigerianStates;
   const facilityOptions = facilityTypes;
@@ -81,7 +82,7 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
   };
 
   const filteredData = () => {
-    const resultArray = data?.data?.pages[0]?.data?.data.filter(
+    const resultArray = data?.pages[0]?.data?.data.filter(
       (result) =>
         result.reg_fac_name.includes(searchInput) ||
         result.statename.includes(locationInput)
@@ -89,13 +90,20 @@ const SearchForm = ({ setDataArray, setIsSearching }) => {
     setDataArray(resultArray);
   };
 
-  const data = useSearchFacility();
+  const { data } = useSearchFacility();
+  // console.log(data);
+
+  // setSearchFacilityData(data);
 
   const submitSearch = (event) => {
     event.preventDefault();
     setIsSearching(true);
     filteredData();
   };
+
+  useEffect(() => {
+    setSearchFacilityData(data);
+  }, [data, setSearchFacilityData]);
 
   return (
     <form className="" onSubmit={submitSearch}>

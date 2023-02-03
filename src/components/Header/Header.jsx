@@ -170,9 +170,9 @@ const Header = () => {
               </button>
             </div>
           ) : (
-            <div>
+            <div className="flex justify-end">
               <Link href="login">
-                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out lg:hover:scale-95 duration-300">
+                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-xl lg:transition ease-in-out lg:hover:scale-95 duration-300">
                   Login
                 </button>
               </Link>

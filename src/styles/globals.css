@@ -16,6 +16,56 @@
     visibility: hidden;
   }
 
+  /* .leaflet-tooltip {
+  opacity: 0.5;
+  visibility: hidden;
+} */
+
+.leaflet-routing-container .leaflet-routing-geometry {
+  stroke: #242F9B;
+}
+
+#leaflet-routing-container {
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #ddd;
+}
+
+
+
+.leaflet-routing-alt {
+  /* backdrop-filter: blur 10px; */
+  background-color: #ffffff89;
+  position: absolute;
+  top: 3rem;
+  right: 0;
+  width: 40vh;
+  max-height: 40vh;
+  overflow-y: scroll;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  font-size: 90%;
+  color: rgba(0, 0, 0, 0.897);
+  border: 2px solid #fff;
+  font-weight: 400;
+ 
+
+}
+
+.leaflet-routing-container a {
+  color: #00bfff;
+}
+
+.leaflet-routing-container a.leaflet-routing-cancel {
+  color: #ff0000;
+}
+
+.leaflet-routing-geos Sieg .leaflet-interactive {
+  stroke: #00bfff;
+  stroke-width: 4px;
+  stroke-opacity: 0.8;
+}
+
 
 
 :root {

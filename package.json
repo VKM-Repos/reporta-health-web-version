@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-leaflet/universal-leaflet": "^1.0.1",
     "bootstrap": "^5.2.3",
     "chart.js": "^4.0.1",
     "chartjs-plugin-datalabels": "^2.1.0",
@@ -17,7 +18,7 @@
     "framer-motion": "^6.3.11",
     "husky": "^8.0.1",
     "immer": "^9.0.14",
-    "leaflet": "^1.8.0",
+    "leaflet": "^1.9.3",
     "leaflet-easybutton": "^2.4.0",
     "leaflet-routing-machine": "^3.2.12",
     "lodash": "^4.17.21",
@@ -30,7 +31,7 @@
     "react-dom": "18.1.0",
     "react-icons": "^4.4.0",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-leaflet": "^4.0.2",
+    "react-leaflet": "^4.2.0",
     "react-loading-skeleton": "^3.1.0",
     "react-toastify": "^9.0.7",
     "yup": "^0.32.11",

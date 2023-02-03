@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -58,8 +58,8 @@ const SearchHeader = (props) => {
   };
 
   return (
-    <header className="fixed top-0 w-full z-40 border-b border-black border-opacity-20 bg-white shadow-sm">
-      <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-2  ">
+    <header className="fixed top-0 w-full z-[999] backdrop-blur-sm">
+      <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-2 ">
         {/* logo */}
         <Link href="/">
           <a className="w-[5rem] h-[2rem]">
@@ -74,7 +74,7 @@ const SearchHeader = (props) => {
               className={
                 router.pathname === "/"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-primary leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Home
@@ -85,7 +85,7 @@ const SearchHeader = (props) => {
               className={
                 router.pathname === "/about"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-primary leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               About
@@ -97,7 +97,7 @@ const SearchHeader = (props) => {
               className={
                 router.pathname === "/statistics"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-primary leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Statistics
@@ -168,9 +168,9 @@ const SearchHeader = (props) => {
               </button>
             </div>
           ) : (
-            <div>
+            <div className="flex justify-end">
               <Link href="login">
-                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-sm lg:transition ease-in-out lg:hover:scale-95 duration-300">
+                <button className="hidden text-primary tracking-wide leading-loose rounded-xl lg:flex items-center text-sm font-normal px-6 py-1 border border-primary lg:transition ease-in-out lg:hover:scale-95 duration-300">
                   Login
                 </button>
               </Link>
@@ -512,4 +512,4 @@ const SearchHeader = (props) => {
   );
 };
 
-export default SearchHeader;
+export default memo(SearchHeader);
