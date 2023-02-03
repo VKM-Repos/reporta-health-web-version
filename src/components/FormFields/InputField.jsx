@@ -3,7 +3,7 @@ import React from "react";
 const InputField = ({ type, placeholder, name, value, handleChange }) => {
   return (
     <>
-      <div className="w-full col-span-2 flex flex-row items-center justify-start py-2 px-2 lg:px-4 rounded-md bg-gray">
+      <div className="w-full col-span-2 flex flex-row items-center justify-start py-2 px-2 lg:px-4 rounded-md bg-black/10">
         <span>
           <svg
             width="24"
@@ -29,7 +29,7 @@ const InputField = ({ type, placeholder, name, value, handleChange }) => {
           </svg>
         </span>
         <input
-          className="w-full px-2 bg-gray focus:outline-none text-xs "
+          className="w-full px-2 placeholder:text-secondary bg-black/0 focus:outline-none text-xs "
           type={type}
           placeholder={placeholder}
           name={name}

@@ -1,70 +1,44 @@
 import { useContext, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-
 import SearchHeader from "@components/SearchQueryResult/SearchHeader";
-
 import mapIcon from "@assets/images/map-icon.svg";
 import listIcon from "@assets/images/list-icon.svg";
-
 import Sidebar from "@components/SearchPage/Sidebar";
-
+// import Map from "@components/SearchPage/Map"
 
 const Map = dynamic(() => import("@components/SearchPage/Map"), {
   ssr: false,
 });
 
-// const Map = dynamic(() => import("@components/SearchQueryResult/Map"), {
-//   ssr: false,
-// });
-
 
 export default function SearchResult() {
-  const [showSideBar, setShowSideBar] = useState(true);
+  const [showSideBar, setShowSideBar] = useState(false);
 
   return (
     <section className="w-screen flex flex-col relative overflow-x-hidden">
-      <div className="w-full flex justify-center">
+      <div className="w-full flex">
         <SearchHeader />
-        <Map className={`w-screen h-screen z-30 pt-12 `} />
+        <Map className={`w-screen h-screen z-30 `} />
         {/* show panels button */}
-        <div className="fixed z-50 w-fit rounded-lg bg-white hover:bg-white text-black text-opacity-90 font-semibold border border-black border-opacity-30  left-3 top-[4rem] lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer">
-          {showSideBar ? (
-            <button
-              onClick={() => setShowSideBar((showSideBar) => !showSideBar)}
-              className="py-2 px-4 z-40  w-full space-x-2 flex flex-row items-center"
-            >
-              <span
-                style={{
-                  backgroundImage: `url(${mapIcon.src})`,
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "top center",
-                }}
-                className="w-[1.5rem] aspect-square "
-              ></span>
-              <p className="text-[90%] whitespace-nowrap">show map view</p>{" "}
+        <div className="lg:z-[40] z-[90] relative">
+          <button
+            onClick={() => setShowSideBar(true)}
+            className="py-2 px-4  w-fit h-fit  space-x-2 flex flex-row items-center  rounded-lg text-[80%] bg-primary text-white border border-primary  fixed lg:top-[3.3rem] bottom-1 right-2 lg:left-3  lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
+          >
+            <span
+              style={{
+                backgroundImage: `url(${mapIcon.src})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "top center",
+              }}
+              className="w-[1.2rem] aspect-square "
+            ></span>
+            <p className="text-[90%] whitespace-nowrap">show map view</p>{" "}
 
-            </button>
-          ) : (
-            <button
-              onClick={() => setShowSideBar((showSideBar) => !showSideBar)}
-              className="py-2 px-4 z-40  w-full space-x-2 flex flex-row items-center"
-            >
+          </button>
 
-              <span
-                style={{
-                  backgroundImage: `url(${listIcon.src})`,
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "top center",
-                }}
-                className="w-[1.5rem] aspect-square "
-              ></span>
-              <p className="text-[90%] whitespace-nowrap">show list of facilities</p>{" "}
-
-            </button>
-          )}
         </div>
 
 
@@ -73,8 +47,19 @@ export default function SearchResult() {
 
           <div>
             {/* tablet and desktop */}
-            <div className="z-30 absolute hidden md:block left-0 inset-y-0">
-              <div onClick={() => setShowSideBar((showSideBar) => !showSideBar)} className="fixed inset-0 w-screen h-screen z-10"></div>
+            <div className="z-50 absolute hidden md:block left-0 inset-y-0">
+              <AnimatePresence>
+                <motion.div initial={{ x: "-100%" }}
+                  animate={{
+                    x: "0"
+                  }}
+                  exit={{
+                    x: "0"
+                  }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.9 }}
+                  onClick={() => setShowSideBar((showSideBar) => !showSideBar)}
+                  className="fixed inset-2 w-screen h-screen z-10"></motion.div>
+              </AnimatePresence>
 
               <div className="w-screen relative  z-40 ">
                 <AnimatePresence>
@@ -95,8 +80,19 @@ export default function SearchResult() {
               </div>
             </div>
             {/* mobile view */}
-            <div className="z-30 absolute md:hidden block left-0 inset-y-0">
-              <div onClick={() => setShowSideBar((showSideBar) => !showSideBar)} className="fixed inset-0 w-screen h-screen z-10"></div>
+            <div className="z-50 absolute md:hidden block left-0 inset-y-0">
+              <AnimatePresence>
+                <motion.div initial={{ x: "-100%" }}
+                  animate={{
+                    x: "0"
+                  }}
+                  exit={{
+                    x: "0"
+                  }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.7 }}
+                  onMouseOver={() => setShowSideBar((showSideBar) => !showSideBar)}
+                  className="fixed inset-2 w-screen h-screen z-10"></motion.div>
+              </AnimatePresence>
               <div className="relative  z-40">
                 <AnimatePresence>
                   <motion.div

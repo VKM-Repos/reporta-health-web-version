@@ -26,7 +26,6 @@ const SearchForm = ({
   // INPUT FIELD FUNCTION
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    console.log(searchTerm);
   };
 
   // SELECT DROPDOWN FIELD FUNCTION FOR LOCATION
@@ -48,8 +47,8 @@ const SearchForm = ({
   };
 
   return (
-    <form className="" onSubmit={submitSearch}>
-      <div className="min-w-fit mx-auto bg-white grid  grid-cols-2 gap-2 py-2 justify-items-stretch px-2 rounded-md">
+    <form className="sticky top-auto w-full px-2 py-4" onSubmit={submitSearch}>
+      <div className="min-w-screen mx-auto backdrop-blur-xl bg-white/40 border-2 border-black/10 shadow-xl grid  grid-cols-2 gap-2 py-2 justify-items-stretch px-2 rounded-md">
         {/* search input */}
         <InputField
           type="text"

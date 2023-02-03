@@ -1,5 +1,4 @@
 import PulseLoader from "@components/Loader/PulseLoader";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { authInstanceAxios } from "@config/axiosInstance";
 import {
   FETCH_NEAREST_FACILITY_KEY,
@@ -12,7 +11,6 @@ import { useInfiniteQuery } from "react-query";
 import FacilityItem from "./FacilityItem";
 
 const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
-  const { flyToFacility, showPopup } = useContext(MapContext);
   const {
     status,
     data,
@@ -34,7 +32,6 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
 
   const searchFacility = async () => {
     const result = await authInstanceAxios.get(`/search/?query=${searchTerm}`);
-    console.log("result.data", result);
     return result?.data?.data;
   };
 
@@ -57,18 +54,23 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
     },
   });
 
-  // const { setFacilities, setSearchFacilities } = useContext(MapContext);
+  const {
+    setNearestFacilities,
+    setSearchFacilities,
+    setSelectedFacility,
+    setSelectedDirection,
+  } = useContext(MapContext);
 
-  // useEffect(() => {
-  //   setFacilities(data);
-  // }, [data]);
+  useEffect(() => {
+    setNearestFacilities(data);
+  }, [data, setNearestFacilities]);
 
-  // useEffect(() => {
-  //   setSearchFacilities(searchData);
-  // }, [searchData]);
+  useEffect(() => {
+    setSearchFacilities(searchData);
+  }, [searchData, setSearchFacilities]);
 
   return (
-    <div>
+    <div className="w-full max-h-[70vh] overflow-y-scroll">
       {defaultApi ? (
         <>
           {status === "loading" && <PulseLoader />}
@@ -82,7 +84,9 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
                   return result?.data?.map((facility) => (
                     <div
                       key={facility.id}
-                      onClick={() => handleSelectFacility(facility)}
+
+                      // on click of this, setSelected facility to be this value
+                      // pass the value down into a context to hold
                     >
                       <FacilityItem
                         reg_fac_name={facility.reg_fac_name}
@@ -92,6 +96,12 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
                         statename={facility.statename}
                         operational_hours={facility.operational_hours}
                         services={facility.services}
+                        getDirection={() => {
+                          setSelectedDirection(facility);
+                        }}
+                        getFacility={() => {
+                          setSelectedFacility(facility);
+                        }}
                       />
                     </div>
                   ));
@@ -118,14 +128,14 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
               <div>
                 <div
                   disabled={!hasNextPage || isFetchingNextPage}
-                  className="w-fit mx-auto"
+                  className="w-fit mx-auto pb-16"
                 >
                   {isFetchingNextPage ? (
                     <PulseLoader />
                   ) : hasNextPage ? (
                     <button
                       onClick={() => fetchNextPage()}
-                      className="w-full my-4 px-8 py-2 bg-primary rounded-md text-white text-center mx-auto cursor-pointer "
+                      className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
                     >
                       Load more
                     </button>
@@ -176,8 +186,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
                     <div
                       key={facility.id}
                       onClick={() => {
-                        flyToFacility(facility);
-                        showPopup(facility);
+                        setSelectedFacility(facility);
                       }}
                     >
                       <FacilityItem
@@ -188,6 +197,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
                         statename={facility.statename}
                         operational_hours={facility.operational_hours}
                         services={facility.services}
+                        direction={facility}
                       />
                     </div>
                   ));
@@ -221,7 +231,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
                   ) : searchHasNextPage ? (
                     <button
                       onClick={() => searchFetchNextPage()}
-                      className="w-full my-4 px-8 py-2 bg-primary rounded-md text-white text-center mx-auto cursor-pointer "
+                      className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
                     >
                       Load more
                     </button>

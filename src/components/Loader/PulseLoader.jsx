@@ -4,11 +4,11 @@ const PulseLoader = () => {
   const arr = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
   return (
-    <div className="p-2 w-full">
+    <div className="px-3 w-full">
       {arr.map((array) => (
         <div
           key={array.id}
-          className=" w-full lg:h-[8rem] lg:border-none border-b border-black border-opacity-20 overflow-hidden py-2 lg:rounded-md flex flex-row items-center"
+          className=" w-full lg:h-[7rem] lg:border-none border-b border-black border-opacity-20 overflow-hidden py-2 lg:rounded-md flex flex-row items-center"
         >
           <div className="animate-pulse basis-4/5 flex flex-col items-start justify-start">
             <h3 className="w-2/3 h-4 bg-black bg-opacity-20 rounded-lg "></h3>

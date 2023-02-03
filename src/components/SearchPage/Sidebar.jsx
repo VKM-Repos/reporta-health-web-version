@@ -5,11 +5,11 @@ import SearchForm from "./SearchForm";
 const Sidebar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [defaultApi, setDefaultApi] = useState(true);
-  console.log("input", searchTerm);
+
   const [locationInput, setLocationInput] = useState("");
   const [facilityTypeInput, setFacilityTypeInput] = useState("");
   return (
-    <div className="pt-[6.7rem] h-screen flex flex-col bg-white text-black justify-items-stretch overflow-y-scroll">
+    <div className=" pt-[3rem] h-fit relative grid grid-cols-1 backdrop-blur text-black justify-items-stretch ">
       <SearchForm
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
