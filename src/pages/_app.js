@@ -9,6 +9,7 @@ import { useQueryClientAndsettings } from "@config/queryClient";
 import PropTypes from "prop-types";
 import { FormProvider } from "@context/StepperContext";
 import dynamic from "next/dynamic";
+import SidebarProvider from "@context/sidebarContext";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -26,9 +27,11 @@ function MyApp({ Component, pageProps }) {
 
       <Hydrate state={pageProps.dehydratedState}>
         <MapContextProvider>
-          <FormProvider>
-            <Component {...pageProps} />
-          </FormProvider>
+          <SidebarProvider>
+            <FormProvider>
+              <Component {...pageProps} />
+            </FormProvider>
+          </SidebarProvider>
         </MapContextProvider>
       </Hydrate>
 

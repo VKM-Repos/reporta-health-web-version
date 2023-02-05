@@ -10,7 +10,12 @@ import React, { useContext, useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
 import FacilityItem from "./FacilityItem";
 
-const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
+const FacilityList = ({
+  searchTerm,
+  defaultApi,
+  setDefaultApi,
+  setCloseToggle,
+}) => {
   const {
     status,
     data,
@@ -97,7 +102,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi }) => {
                         operational_hours={facility.operational_hours}
                         services={facility.services}
                         getDirection={() => {
-                          setSelectedDirection(facility);
+                          setSelectedDirection(facility), setCloseToggle;
                         }}
                         getFacility={() => {
                           setSelectedFacility(facility);

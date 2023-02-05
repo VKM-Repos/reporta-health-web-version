@@ -26,11 +26,11 @@ export default function FacilityInfoForm(props) {
     props.onSubmitClose();
   };
   const handleSetFormData = async (data) => {
-    const user = userDetails.user;
+    // const user = userDetails.user;
     const reportData = {
-      user_id: user.id,
-      name: "null",
-      email: user.username,
+      // user_id: user.id,
+      // name: "null",
+      // email: user.username,
       ...data,
       state: props.facility.statename,
       gps_point_lat: props.facility.latitude,

@@ -58,7 +58,7 @@ const SearchHeader = (props) => {
   };
 
   return (
-    <header className="fixed top-0 w-full z-[999] backdrop-blur-sm">
+    <header className="fixed top-0 w-full z-[999] backdrop-blur-sm bg-black/10">
       <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-2 ">
         {/* logo */}
         <Link href="/">
