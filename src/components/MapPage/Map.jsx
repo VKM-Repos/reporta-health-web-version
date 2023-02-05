@@ -44,6 +44,7 @@ const Map = ({ className }) => {
   const location = useGetLocation();
   const [showReportModal, setShowReportModal] = useState(false);
   const { data } = useFetchNearestFacilities();
+  console.log(nearestFacilities);
 
   const {
     selectedFacility,
@@ -59,6 +60,16 @@ const Map = ({ className }) => {
   ]);
   const [zoom, setZoom] = useState(15);
 
+  const mapRef = useRef(null);
+  useEffect(() => {
+    if (!mapRef.current) {
+      mapRef.current = L.map("map", {
+        center: [location.latitude, location.longitude],
+        zoom: zoom,
+      });
+    }
+  }, [location, zoom]);
+
   const closeReportModal = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -70,70 +81,43 @@ const Map = ({ className }) => {
 
   //   RENDER GET DIRECTION TO FACILITY
 
-  const handleDirection = () => {
-    const route = L.Routing.control({
-      waypoints: [
+  const handleRoute = () => {
+    let waypoints;
+    let lineOptions;
+    if (selectedFacility) {
+      waypoints = [
+        L.latLng(selectedFacility?.latitude, selectedFacility?.longitude),
+        L.latLng(selectedFacility?.latitude, selectedFacility?.longitude),
+      ];
+      lineOptions = {
+        styles: [{ color: "#242F9B", opacity: 1, weight: 5 }],
+      };
+    } else if (selectedDirection) {
+      waypoints = [
         L.latLng(location.coordinates.lat, location.coordinates.lng),
         L.latLng(selectedDirection?.latitude, selectedDirection?.longitude),
-      ],
-      show: false,
-      addWaypoints: false,
-      routeWhileDragging: true,
-      showControls: false,
-      showAlternatives: false,
-      collapsible: false,
-      showMarkers: false,
-      //   fitSelectedRoutes: false,
-      lineOptions: {
-        styles: [{ color: "blue", opacity: 1, weight: 5 }],
-      },
-      createMarker: function () {
-        return null;
-      },
-    });
+      ];
+      lineOptions = {
+        styles: [{ color: "#242F9B", opacity: 1, weight: 5 }],
+      };
+    }
 
-    return route;
-  };
-
-  const ShowDirection = createControlComponent(handleDirection);
-
-  //   RENDER FLY TO FACILITY
-
-  const handleFlyTo = () => {
     const routeControl = L.Routing.control({
-      waypoints: [
-        L.latLng(selectedFacility?.latitude, selectedFacility?.longitude),
-        L.latLng(selectedFacility?.latitude, selectedFacility?.longitude),
-      ],
-
+      waypoints,
       showControls: false,
       showMarkers: false,
       addWaypoints: false,
       fitSelectedRoutes: true,
+      lineOptions,
       createMarker: function () {
         return null;
       },
     });
 
     return routeControl;
-
-    //
   };
-  const FlyToLocation = createControlComponent(handleFlyTo);
 
-  //   Locate me handler
-  function HandleLocateUser() {
-    const [position, setPosition] = useState(null);
-    const locationMap = useMapEvents({
-      click() {
-        locationMap.locate();
-      },
-      locationfound(e) {
-        setPosition(e.latlng);
-        locationMap.flyTo(e.latlng, locationMap.getZoom());
-      },
-    });
-  }
+  const FlyToLocation = createControlComponent(handleRoute);
 
   // RENDER USER MARKER
   const UserMarker = ({ position, text }) => {
@@ -213,6 +197,50 @@ const Map = ({ className }) => {
   };
 
   // RENDER FACILITIES MARKER
+  // const SelectedFacilitiesMarker = () => {
+  //   const markerRef = useRef(null);
+
+  //   useEffect(() => {
+  //     if (markerRef.current) {
+  //       // Perform any custom logic on the marker here,
+  //       // such as setting the icon, popup content, etc.
+
+  //       markerRef?.current.openPopup();
+  //     } else {
+  //       markerRef.current.removeFrom(mapRef.current);
+  //       markerRef.current = null;
+  //     }
+  //   }, [selectedFacility]);
+
+  //   return (
+  //     <>
+  //       {selectedFacility ? (
+  //         <Fragment>
+  //           <Marker
+  //             position={[
+  //               selectedFacility?.latitude,
+  //               selectedFacility?.longitude,
+  //             ]}
+  //             icon={icon}
+  //             ref={markerRef}
+  //           >
+  //             <Popup maxWidth="auto" maxHeight="auto">
+  //               <PopupInfo
+  //                 facility={selectedFacility}
+  //                 showReportModal={() => {
+  //                   setShowReportModal(true);
+  //                 }}
+  //               />
+  //             </Popup>
+  //           </Marker>
+  //         </Fragment>
+  //       ) : null}
+  //     </>
+  //   );
+  // };
+
+  const handleGetDirection = () => {};
+
   const SelectedFacilitiesMarker = () => {
     const markerRef = useRef(null);
 
@@ -220,14 +248,20 @@ const Map = ({ className }) => {
       if (markerRef.current) {
         // Perform any custom logic on the marker here,
         // such as setting the icon, popup content, etc.
+
         markerRef?.current.openPopup();
+      } else {
+        // if (mapRef.current) {
+        //   markerRef.current.removeFrom(mapRef.current);
+        // }
+        markerRef.current = null;
       }
-    }, []);
+    }, [selectedFacility]);
 
     return (
       <>
         {selectedFacility ? (
-          <Fragment key={selectedFacility.id}>
+          <Fragment>
             <Marker
               position={[
                 selectedFacility?.latitude,
@@ -254,7 +288,7 @@ const Map = ({ className }) => {
   // RENDER FACILITY POPUP
 
   return (
-    <div className={className}>
+    <div id="map" ref={mapRef} className={className}>
       {location.loaded && !location.error && (
         <MapContainer
           center={
@@ -274,8 +308,8 @@ const Map = ({ className }) => {
           />
           <FacilitiesMarker />
           <SelectedFacilitiesMarker />
-          <HandleLocateUser />
-          <ShowDirection />
+          {/* <HandleLocateUser /> */}
+          {/* <ShowDirection /> */}
           <FlyToLocation />
         </MapContainer>
       )}

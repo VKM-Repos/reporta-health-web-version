@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function PopupInfo({ facility, showReportModal }) {
+export default function PopupInfo({ facility, showReportModal, getDirection }) {
   return (
     <section className="relative">
       <div className="w-[70vw] md:w-[35vw] lg:w-[25vw] aspect-square bg-white font-semibold px-2 font-sans">
@@ -116,7 +116,10 @@ export default function PopupInfo({ facility, showReportModal }) {
           >
             Report facility
           </button>
-          <button className="bg-primary w-fit text-[90%] font-light px-3 py-2 rounded-md flex items-end justify-self-end text-white lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer">
+          <button
+            onClick={getDirection}
+            className="bg-primary w-fit text-[90%] font-light px-3 py-2 rounded-md flex items-end justify-self-end text-white lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
+          >
             Get Direction
           </button>
         </div>

@@ -1,10 +1,11 @@
+import React, { useState, useEffect, memo } from "react";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useUserCredentialsStore } from "@store/authStore.store";
-// import shallow from "zustand/shallow";
 import { useLogoutUser } from "@hooks/useLogoutUser.hook";
+import { AiOutlineDown } from "react-icons/ai";
+import healthWorker from "@assets/images/health-worker.svg";
 
 // import RegisterFacilityModal from "@components/Facility/RegisterFacilityModal";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
@@ -12,14 +13,11 @@ import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import Image from "next/image";
 import logo from "@assets/images/logo.svg";
 import DialogueBox from "@components/DialogueBox/DialogueBox";
-import { AiOutlineDown } from "react-icons/ai";
-
-import healthWorker from "@assets/images/health-worker.svg";
 import ProfileDropdown from "@components/Dropdown/ProfileDropdown";
 
-const Header = () => {
+const MapHeader = (props) => {
   const [userData, setUserData] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     setUserData(useUserCredentialsStore.getState().userDetails);
@@ -27,12 +25,11 @@ const Header = () => {
   }, []);
 
   let userName = userData?.user?.username;
+
   const router = useRouter();
 
-  // logout function
   const { logoutHandler } = useLogoutUser();
 
-  // Modals
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -46,6 +43,7 @@ const Header = () => {
   };
 
   const [showReportModal, setShowReportModal] = useState(false);
+
   const closeReportModal = () => {
     setShowReportModal(false);
   };
@@ -60,8 +58,8 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full absolute top-0 bg-transparent z-50">
-      <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-2  ">
+    <header className="fixed top-0 w-full z-[999] backdrop-blur-sm bg-black/10">
+      <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-2 ">
         {/* logo */}
         <Link href="/">
           <a className="w-[5rem] h-[2rem]">
@@ -76,7 +74,7 @@ const Header = () => {
               className={
                 router.pathname === "/"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-primary leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Home
@@ -87,7 +85,7 @@ const Header = () => {
               className={
                 router.pathname === "/about"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-primary leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               About
@@ -99,7 +97,7 @@ const Header = () => {
               className={
                 router.pathname === "/statistics"
                   ? "text-accent mx-4 font-extrabold"
-                  : "tracking-wide mx-4 font-extrabold hover:text-accent leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
+                  : "tracking-wide mx-4 font-extrabold hover:text-primary leading-loose lg:transition ease-in-out delay-150 lg:hover:-translate-y-1 lg:hover:scale-130 duration-300"
               }
             >
               Statistics
@@ -172,7 +170,7 @@ const Header = () => {
           ) : (
             <div className="flex justify-end">
               <Link href="login">
-                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-xl lg:transition ease-in-out lg:hover:scale-95 duration-300">
+                <button className="hidden text-primary tracking-wide leading-loose rounded-xl lg:flex items-center text-sm font-normal px-6 py-1 border border-primary lg:transition ease-in-out lg:hover:scale-95 duration-300">
                   Login
                 </button>
               </Link>
@@ -208,7 +206,7 @@ const Header = () => {
         }`}
       >
         <div
-          className="w-screen h-screen fixed inset-0 z-40 ease-in-out duration-300 bg-black bg-opacity-0"
+          className="w-screen h-screen fixed inset-0 z-40 ease-in-out duration-300 bg-black bg-opacity-10"
           onClick={() => setShowSidebar(!showSidebar)}
         ></div>
         <div
@@ -492,7 +490,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
       {/* <RegisterFacilityModal onClose={closeModal} visible={showModal} /> */}
       <ProfileDropdown
         onClose={closeProfile}
@@ -515,4 +512,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(MapHeader);
