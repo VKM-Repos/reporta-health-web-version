@@ -24,7 +24,7 @@ import { createControlComponent } from "@react-leaflet/core";
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import useGetLocation from "@hooks/useGetLocation.hook";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
-import PopupInfo from "@components/SearchQueryResult/PopupInfo";
+import PopupInfo from "@components/MapPage/PopupInfo";
 import { MapContext } from "@context/mapContext";
 
 const icon = L.icon({
