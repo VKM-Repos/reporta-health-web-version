@@ -28,10 +28,18 @@ const FacilityList = ({
     refetch,
   } = useInfiniteQuery([FETCH_NEAREST_FACILITY_KEY], fetchNearestFacility, {
     enabled: defaultApi,
+    cacheTime: 3600000,
+    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, pages) => {
       if (lastPage?.next_page_url) {
         return pages?.length + 1;
       } else refetch;
+    },
+    getFetchMore: (lastPage, pages) => {
+      if (lastPage.length > 0) {
+        return pages.length + 1;
+      }
+      return false;
     },
   });
 
@@ -52,10 +60,18 @@ const FacilityList = ({
     refetch: searchRefetch,
   } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchTerm], searchFacility, {
     enabled: !defaultApi,
+    cacheTime: 3600000,
+    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, pages) => {
       if (lastPage?.next_page_url) {
         return pages?.length + 1;
       } else searchRefetch;
+    },
+    getFetchMore: (lastPage, pages) => {
+      if (lastPage.length > 0) {
+        return pages.length + 1;
+      }
+      return false;
     },
   });
 
@@ -87,12 +103,7 @@ const FacilityList = ({
               data?.pages.length !== 0 ? (
                 data?.pages.map((result) => {
                   return result?.data?.map((facility) => (
-                    <div
-                      key={facility.id}
-
-                      // on click of this, setSelected facility to be this value
-                      // pass the value down into a context to hold
-                    >
+                    <div key={facility.id}>
                       <FacilityItem
                         reg_fac_name={facility.reg_fac_name}
                         average_rating={facility.average_rating}
@@ -101,9 +112,6 @@ const FacilityList = ({
                         statename={facility.statename}
                         operational_hours={facility.operational_hours}
                         services={facility.services}
-                        getDirection={() => {
-                          setSelectedDirection(facility), setCloseToggle;
-                        }}
                         getFacility={() => {
                           setSelectedFacility(facility);
                         }}
@@ -139,7 +147,11 @@ const FacilityList = ({
                     <PulseLoader />
                   ) : hasNextPage ? (
                     <button
-                      onClick={() => fetchNextPage()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault;
+                        fetchNextPage();
+                      }}
                       className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
                     >
                       Load more
@@ -235,7 +247,11 @@ const FacilityList = ({
                     <PulseLoader />
                   ) : searchHasNextPage ? (
                     <button
-                      onClick={() => searchFetchNextPage()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault;
+                        searchFetchNextPage();
+                      }}
                       className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
                     >
                       Load more

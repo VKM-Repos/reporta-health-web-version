@@ -15,7 +15,7 @@ export default function SidebarProvider({ children }) {
 
     // set the html tag style overflow to hidden
     useEffect(() => {
-        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'auto';
     }, []);
 
     // close side navigation when route changes

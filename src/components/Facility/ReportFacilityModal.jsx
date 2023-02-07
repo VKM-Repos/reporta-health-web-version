@@ -97,32 +97,34 @@ export default function ReportFacility(props) {
 
   return (
     <>
-      <div className="fixed inset-0 w-screen h-screen bg-black/10 z-[900] ">
-        <div className=" fixed w-screen h-screen z-[999] flex justify-center items-center">
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            progressStyle={{
-              backgroundColor: "#242F9B",
-              color: "#242F9B",
-            }}
+      <div
+        className="fixed inset-0 w-screen h-screen bg-black/10 z-[2000] "
+        onClick={props.onClose}
+      ></div>
+      <div className=" fixed w-screen h-screen z-[3000] flex justify-center items-center">
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          progressStyle={{
+            backgroundColor: "#242F9B",
+            color: "#242F9B",
+          }}
+        />
+        <div className="relative w-[90vw] md:w-2/3 lg:w-1/3 z-[5000] bg-white py-6 px-2 lg:px-4 rounded-md ">
+          <Stepper
+            handleClick={handleClick}
+            steps={steps}
+            currentStep={currentStep}
           />
-          <div className="relative w-[90vw] md:w-2/3 lg:w-1/3  bg-white py-6 px-2 lg:px-4 rounded-md ">
-            <Stepper
-              handleClick={handleClick}
-              steps={steps}
-              currentStep={currentStep}
-            />
 
-            <div className="">{displayStep(currentStep)}</div>
-          </div>
+          <div className="">{displayStep(currentStep)}</div>
         </div>
       </div>
     </>

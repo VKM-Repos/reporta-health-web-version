@@ -74,7 +74,13 @@ export default function FacilityInfoForm(props) {
   const {
     formField: { complaints_factor },
   } = props;
-  const [validationError, setValidationError] = useState(false);
+
+  const [textareaValue, setTextareaValue] = useState("");
+
+  const handleChange = (event) => {
+    setTextareaValue(event.target.value);
+  };
+
   return (
     <div className="w-full flex flex-col">
       <h2 className="text-[120%] font-bold">Complaint box</h2>
@@ -98,7 +104,7 @@ export default function FacilityInfoForm(props) {
       >
         {({ isSubmitting, errors }) => (
           <Form>
-            <div className=" w-full flex flex-col h-[50vh] mt-4 overflow-y-auto">
+            <div className=" w-full flex flex-col h-[55vh] mt-2 overflow-y-auto">
               <div className="w-full">
                 <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Long delay before recieving care
@@ -180,6 +186,17 @@ export default function FacilityInfoForm(props) {
                     className=" w-5 h-5 rounded-full"
                   />
                 </label>
+              </div>
+
+              <div className="">
+                <Field
+                  type="textarea"
+                  placeholder="Enter a text here"
+                  value={textareaValue}
+                  onChange={handleChange}
+                  name="complaints_factor"
+                  className="w-full h-12 mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none "
+                />
               </div>
             </div>
             {errors.complaints_factor ? (

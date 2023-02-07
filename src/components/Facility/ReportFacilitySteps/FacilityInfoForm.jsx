@@ -19,6 +19,7 @@ export default function FacilityInfoForm(props) {
   const {
     formField: { facilityName, facilityType, facilityAddress },
   } = props;
+  console.log(props);
   return (
     <div className=" flex flex-col">
       <h2 className="text-[120%] font-bold">Facility information</h2>
@@ -43,7 +44,7 @@ export default function FacilityInfoForm(props) {
               <Field
                 type="text"
                 name={facilityName.name}
-                placeholder="John Doe Hospital"
+                placeholder={facilityName.name}
                 className={`p-2 bg-gray outline-none rounded-md lowercase ${
                   errors.facility_name ? "border border-danger" : ""
                 }`}

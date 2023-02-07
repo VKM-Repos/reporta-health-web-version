@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import { MapContext } from "@context/mapContext";
+import React, { useContext, useState } from "react";
 
-export default function PopupInfo({ facility, showReportModal, getDirection }) {
+export default function PopupInfo({ facility, showReportModal }) {
+  const { setSelectedDirection } = useContext(MapContext);
   return (
     <section className="relative">
       <div className="w-[70vw] md:w-[35vw] lg:w-[25vw] aspect-square bg-white font-semibold px-2 font-sans">
@@ -117,7 +119,9 @@ export default function PopupInfo({ facility, showReportModal, getDirection }) {
             Report facility
           </button>
           <button
-            onClick={getDirection}
+            onClick={() => {
+              setSelectedDirection(facility);
+            }}
             className="bg-primary w-fit text-[90%] font-light px-3 py-2 rounded-md flex items-end justify-self-end text-white lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
           >
             Get Direction
