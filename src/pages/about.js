@@ -6,7 +6,7 @@ import about2 from "@assets/images/about-man.svg";
 
 export default function About() {
   return (
-    <div className="w-full bg-white relative overflow-hidden select-none z-2">
+    <div className="w-full bg-white relative select-none z-2">
       <Layout
         pageMeta={{
           title: "Reporta Health - Search and report a facility",

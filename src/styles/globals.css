@@ -8,15 +8,7 @@
 
 
 
-leaflet styles
- .leaflet-popup-content-wrapper {
-    border-radius: 0;
-    width: fit-content;
-  }
-
-  .leaflet-popup-tip-container {
-    visibility: hidden;
-  }
+ 
 
   /* .leaflet-tooltip {
   opacity: 0.5;
@@ -37,6 +29,11 @@ leaflet styles
 
 
 .leaflet-routing-alt {
+display: none;
+/* display: block; */
+}
+
+.leaflet-routing-container {
 display: none;
      /* backdrop-filter: blur 10px; */
   background-color: #ffffff89;

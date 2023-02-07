@@ -5,7 +5,7 @@ import Layout from "@components/Layout/Layout";
 
 export default function Home() {
   return (
-    <div className="w-full bg-transparent relative overflow-hidden select-none  z-2">
+    <div className="w-full bg-transparent relative  select-none  z-2">
       <Layout
         pageMeta={{
           title: "Reporta Health - Search and report a facility",

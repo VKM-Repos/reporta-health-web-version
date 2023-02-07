@@ -10,8 +10,6 @@ export default function Sidenav() {
   const [locationInput, setLocationInput] = useState("");
   const [facilityTypeInput, setFacilityTypeInput] = useState("");
 
-  const [closeToggle, setCloseToggle] = useState(toggle);
-
   const { open, ref, toggle } = useToggle();
 
   return (
@@ -29,7 +27,7 @@ export default function Sidenav() {
         aria-expanded="false"
         aria-label="Toggle sidenav"
         onClick={toggle}
-        className="p-2 rounded-md bg-black/40 backdrop-blur fixed top-[10%] -right-[15%] md:-right-[20%] text-[90%] text-white/90 focus:outline-none text-center lg:flex items-center  justify-center"
+        className="p-2 rounded-md bg-black/40 backdrop-blur fixed top-[10%] -right-[18%] md:-right-[20%] text-[90%] text-black focus:outline-none text-center lg:flex items-center  justify-center"
       >
         <svg
           version="1.1"
@@ -98,7 +96,7 @@ export default function Sidenav() {
         defaultApi={defaultApi}
         setDefaultApi={setDefaultApi}
         searchTerm={searchTerm}
-        setCloseToggle={toggle}
+        // setCloseToggle={toggle}
       />
     </aside>
   );

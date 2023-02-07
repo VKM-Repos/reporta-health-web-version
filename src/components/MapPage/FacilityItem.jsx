@@ -10,7 +10,6 @@ const FacilityItem = ({
   statename,
   operational_hours,
   services,
-  getDirection,
   getFacility,
 }) => {
   return (
@@ -45,10 +44,7 @@ const FacilityItem = ({
           Open {operational_hours || 24} hours
         </h6>
       </div>
-      <button
-        onClick={getDirection}
-        className="basis-1/5 flex flex-col items-end lg:items-center justify-start"
-      >
+      <div className="basis-1/5 flex flex-col items-end lg:items-center justify-start">
         <span className=" p-2 text-primary  hover:scale-95 ease-out duration-300  bg-black/20 hover:bg-primary hover:text-white rounded-full">
           <svg
             className="w-5 h-5"
@@ -91,8 +87,8 @@ const FacilityItem = ({
             />
           </svg>
         </span>
-        <h6 className="my-1 text-primary font-semibold text-xs ">Directions</h6>
-      </button>
+        <h6 className="my-1 text-primary font-semibold text-xs "></h6>
+      </div>
     </div>
   );
 };
