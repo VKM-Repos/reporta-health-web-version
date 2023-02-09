@@ -98,7 +98,7 @@ export default function ReportFacility(props) {
   return (
     <>
       <div
-        className="fixed inset-0 w-screen h-screen bg-black/10 z-[2000] "
+        className="fixed inset-0 w-screen h-screen backdrop-blur-[1px] bg-black/10 z-[2000] "
         onClick={props.onClose}
       ></div>
       <div className=" fixed w-screen h-screen z-[3000] flex justify-center items-center">

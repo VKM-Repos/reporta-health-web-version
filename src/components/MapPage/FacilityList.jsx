@@ -75,12 +75,8 @@ const FacilityList = ({
     },
   });
 
-  const {
-    setNearestFacilities,
-    setSearchFacilities,
-    setSelectedFacility,
-    setSelectedDirection,
-  } = useContext(MapContext);
+  const { setNearestFacilities, setSearchFacilities, setSelectedFacility } =
+    useContext(MapContext);
 
   useEffect(() => {
     setNearestFacilities(data);

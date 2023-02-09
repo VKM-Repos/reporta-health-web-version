@@ -26,6 +26,7 @@ import useGetLocation from "@hooks/useGetLocation.hook";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import PopupInfo from "@components/MapPage/PopupInfo";
 import { MapContext } from "@context/mapContext";
+import ReviewFacilityModal from "./ReviewFacilityModal";
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
@@ -60,10 +61,7 @@ const MapComponent = ({ className }) => {
       );
     }
   }, []);
-
-  const [showReportModal, setShowReportModal] = useState(false);
   const { data } = useFetchNearestFacilities();
-  // console.log(nearestFacilities);
 
   const {
     selectedFacility,
@@ -72,14 +70,8 @@ const MapComponent = ({ className }) => {
     searchFacilities,
   } = useContext(MapContext);
 
-  const closeReportModal = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShowReportModal(false);
-  };
-  const closeReportModalOnFormSubmit = () => {
-    setShowReportModal(false);
-  };
+  // console.log("nearestFac", nearestFacilities);
+  // console.log("searchFac", searchFacilities);
 
   // -----------------lOCATE USER BUTTON -----------------------//
   const FlyToLocateUser = ({ latlng }) => {
@@ -144,65 +136,95 @@ const MapComponent = ({ className }) => {
     );
   };
 
-  // RENDER NEAREST FACILITIES MARKER
-  const FacilitiesMarker = () => {
-    const markerRef = useRef(null);
-    const map = useMap();
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
-    useEffect(() => {
-      if (markerRef.current) {
-        // Perform any custom logic on the marker here,
-        // such as setting the icon, popup content, etc.
-        // markerRef.current.control._container.style.display = "None";
-      }
-    }, [markerRef, map]);
-
-    return (
-      <>
-        {data?.pages &&
-        Array.isArray(data.pages) &&
-        data?.pages.length !== 0 ? (
-          data?.pages.map((result) => {
-            return result?.data?.map((facility, index) => (
-              <Fragment key={index}>
-                <Marker
-                  position={[facility?.latitude, facility?.longitude]}
-                  icon={icon}
-                >
-                  <Tooltip
-                    direction="bottom"
-                    offset={[0, 10]}
-                    opacity={0.8}
-                    permanent
-                  >
-                    <h2 className="text-[100%] font-bold text-primary">
-                      {facility.reg_fac_name}
-                    </h2>
-                  </Tooltip>
-                  <Popup maxWidth="auto" maxHeight="auto">
-                    <PopupInfo
-                      facility={facility}
-                      showReportModal={() => {
-                        setShowReportModal(true);
-                      }}
-                    />
-                  </Popup>
-                </Marker>
-                <ReportFacilityModal
-                  onClose={closeReportModal}
-                  visible={showReportModal}
-                  facility={facility}
-                  onSubmitClose={closeReportModalOnFormSubmit}
-                />
-              </Fragment>
-            ));
-          })
-        ) : (
-          <div className="w-screen h-screen">No map found</div>
-        )}
-      </>
-    );
+  const closeReviewModal = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShowReviewModal(false);
   };
+
+  const closeReportModal = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShowReportModal(false);
+  };
+
+  const closeReportModalOnFormSubmit = () => {
+    setShowReportModal(false);
+  };
+
+  // RENDER NEAREST FACILITIES MARKER
+  // const FacilitiesMarker = () => {
+  //   const markerRef = useRef(null);
+  //   const map = useMap();
+
+  //   useEffect(() => {
+  //     if (markerRef.current) {
+  //       // Perform any custom logic on the marker here,
+  //       // such as setting the icon, popup content, etc.
+  //       // markerRef.current.control._container.style.display = "None";
+  //     }
+  //     return () => {
+  //       markerRef.current = null;
+  //     };
+  //   }, [markerRef, map]);
+
+  //   return (
+  //     <>
+  //       {data?.pages.map((result) => {
+  //         return result?.data?.map((facility, index) => (
+  //           <Fragment key={facility.id}>
+  //             <Marker
+  //               position={[facility?.latitude, facility?.longitude]}
+  //               icon={icon}
+  //             >
+  //               <Tooltip
+  //                 direction="bottom"
+  //                 offset={[0, 10]}
+  //                 opacity={0.8}
+  //                 permanent
+  //               >
+  //                 <h2 className="text-[100%] font-bold text-primary">
+  //                   {facility.reg_fac_name}
+  //                 </h2>
+  //               </Tooltip>
+  //               <Popup maxWidth="auto" maxHeight="auto">
+  //                 <PopupInfo
+  //                   facility={facility}
+  //                   showReportModal={() => {
+  //                     setShowReportModal(true);
+  //                   }}
+  //                   openReviewModal={() => {
+  //                     setShowReviewModal(true);
+  //                     console.log(facility);
+  //                   }}
+  //                 />
+
+  //                 {
+  //                   <ReportFacilityModal
+  //                     onClose={closeReportModal}
+  //                     visible={showReportModal}
+  //                     facility={facility}
+  //                     onSubmitClose={closeReportModalOnFormSubmit}
+  //                   />
+  //                 }
+  //                 {
+  //                   <ReviewFacilityModal
+  //                     closeReviewModal={closeReviewModal}
+  //                     facility={facility}
+  //                     visible={showReviewModal}
+  //                   />
+  //                 }
+  //               </Popup>
+  //             </Marker>
+  //           </Fragment>
+  //         ));
+  //       })}
+  //     </>
+  //   );
+  // };
 
   // RENDER GET DIRECTIONS MARKER
 
@@ -396,6 +418,26 @@ const MapComponent = ({ className }) => {
   const SelectedFacilitiesMarker = () => {
     const markerRef = useRef(null);
     const map = useMap(); // available when component nested inside MapContainer
+
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+
+    const closeReviewModal = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      setShowReviewModal(false);
+    };
+
+    const closeReportModal = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      setShowReportModal(false);
+    };
+
+    const closeReportModalOnFormSubmit = () => {
+      setShowReportModal(false);
+    };
+
     useEffect(() => {
       if (markerRef.current) {
         // Perform any custom logic on the marker here,
@@ -406,15 +448,15 @@ const MapComponent = ({ className }) => {
           { duration: 1 }
         );
         markerRef?.current.openPopup();
-        // return () => {
-        //   markerRef.current = null;
-        // };
+        return () => {
+          markerRef.current = null;
+        };
       }
     }, [map, selectedFacility]);
 
     return (
       <>
-        {selectedFacility ? (
+        {selectedFacility && (
           <Fragment>
             <Marker
               position={[
@@ -430,11 +472,25 @@ const MapComponent = ({ className }) => {
                   showReportModal={() => {
                     setShowReportModal(true);
                   }}
+                  openReviewModal={() => {
+                    setShowReviewModal(true);
+                  }}
                 />
               </Popup>
             </Marker>
+            <ReportFacilityModal
+              onClose={closeReportModal}
+              visible={showReportModal}
+              facility={selectedFacility}
+              onSubmitClose={closeReportModalOnFormSubmit}
+            />
+            <ReviewFacilityModal
+              closeReviewModal={closeReviewModal}
+              facility={selectedFacility}
+              visible={showReviewModal}
+            />
           </Fragment>
-        ) : null}
+        )}
       </>
     );
   };
@@ -463,7 +519,7 @@ const MapComponent = ({ className }) => {
             position={[location.coordinates.lat, location.coordinates.lng]}
             text="You are here"
           />
-          <FacilitiesMarker />
+          {/* <FacilitiesMarker /> */}
 
           {/* <GetDirection /> */}
           <GetDirectionToFacilitiesMarker />

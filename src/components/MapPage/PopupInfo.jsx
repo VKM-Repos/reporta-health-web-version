@@ -1,7 +1,11 @@
 import { MapContext } from "@context/mapContext";
 import React, { useContext, useState } from "react";
 
-export default function PopupInfo({ facility, showReportModal }) {
+export default function PopupInfo({
+  facility,
+  showReportModal,
+  openReviewModal,
+}) {
   const { setSelectedDirection } = useContext(MapContext);
   return (
     <section className="relative">
@@ -37,17 +41,17 @@ export default function PopupInfo({ facility, showReportModal }) {
               />
             </svg>
             <p className="col-span-3 text-primary font-extrabold text-[120%] w-fit">
-              {facility.reg_fac_name}
+              {facility?.reg_fac_name || "N/A"}
             </p>
           </div>
           <div className="grid grid-cols-4 items-center justify-items-stretch -space-y-2">
             <div className=""></div>
-            <div className="col-span-3 flex items-center justify-start space-x-2 text-primary">
-              <span className="text-[110%] flex justify-start font-semibold">
-                <p>{Math.round(facility.average_rating)}</p>
+            <div className="col-span-3 grid grid-cols-3 items-center  justify-center space-x-2 text-primary">
+              <span className="text-[110%] flex justify-center space-x-1 font-semibold">
+                <p>{Math.round(facility?.average_rating)}</p>
 
                 <svg
-                  className="w-[20%] aspect-square"
+                  className="lg:w-[10%] w-[20%] aspect-square"
                   viewBox="0 0 15 15"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -62,11 +66,15 @@ export default function PopupInfo({ facility, showReportModal }) {
                   />
                 </svg>
               </span>
-              <span className="flex space-x-2 items-center">
+              <span className="col-span-2 flex space-x-2  items-center">
                 <p>(200)</p>
-                <p className=" text-black/80 font-extrabold px-3 border border-primary py-1 text-[90%] rounded-md lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer">
+                <div
+                  type="button"
+                  onClick={openReviewModal}
+                  className=" text-black/80 font-extrabold px-3 border border-primary py-1 text-[90%] rounded-md lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
+                >
                   Reviews
-                </p>
+                </div>
               </span>
             </div>
           </div>
@@ -75,14 +83,14 @@ export default function PopupInfo({ facility, showReportModal }) {
           <div className="flex flex-col col-span-4">
             <span className="text-[70%] text-primary font-bold">Address</span>
             <span className="text-[100%] lowercase">
-              {facility.street_name ? facility.street_name : "N/A"}
+              {facility?.street_name ? facility?.street_name : "N/A"}
             </span>
           </div>
           <div className="w-full h-full border-r border-black/20"></div>
           <div className="flex flex-col col-span-2">
             <span className="text-[70%] text-primary font-bold">Ownership</span>
             <span className="text-[100%] lowercase">
-              {facility.ownership ? facility.ownership : "N/A"}
+              {facility?.ownership ? facility?.ownership : "N/A"}
             </span>
           </div>
         </div>
@@ -92,7 +100,9 @@ export default function PopupInfo({ facility, showReportModal }) {
               Operation Hours
             </span>
             <span className="text-[100%] lowercase">
-              {facility.operational_hours ? facility.operational_hours : "N/A"}
+              {facility?.operational_hours
+                ? facility?.operational_hours
+                : "N/A"}
             </span>
           </div>
           <div className="w-full h-full border-r border-black/20"></div>
@@ -101,14 +111,14 @@ export default function PopupInfo({ facility, showReportModal }) {
               Phone Number
             </span>
             <span className="text-[100%] lowercase">
-              {facility.phone_number ? facility.phone_number : "N/A"}
+              {facility?.phone_number ? facility?.phone_number : "N/A"}
             </span>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-2 py-2 border-t border-b border-black/20">
           <span className="text-[70%] text-primary font-bold">Services</span>
           <span className="text-[100%] break-words overflow-hidden">
-            {facility.services ? facility.services.join(", ") : "N/A"}
+            {facility?.services ? facility?.services.join(", ") : "N/A"}
           </span>
         </div>
         <div className="w-full grid grid-cols-2 items-center justify-items-between py-6">
