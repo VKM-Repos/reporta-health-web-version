@@ -12,7 +12,7 @@ const MapComponent = dynamic(() => import("@components/MapPage/MapComponent"), {
 export default function SearchResult() {
 
   return (
-    <div className="flex">
+    <div className="flex w-screen h-screen ">
       <MapHeader />
       <MapComponent className="z-30 w-screen h-screen" />
 

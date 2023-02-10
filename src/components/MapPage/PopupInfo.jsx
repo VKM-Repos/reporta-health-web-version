@@ -123,7 +123,7 @@ export default function PopupInfo({
         </div>
         <div className="w-full grid grid-cols-2 items-center justify-items-between py-6">
           <button
-            onClick={showReportModal}
+            onClick={() => showReportModal()}
             className="text-danger font-bold w-fit text-[90%] underline"
           >
             Report facility
