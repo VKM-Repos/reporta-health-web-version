@@ -104,86 +104,86 @@ export default function FacilityInfoForm(props) {
       >
         {({ isSubmitting, errors }) => (
           <Form>
-            <div className=" w-full flex flex-col h-[55vh] mt-2 overflow-y-auto">
+            <div className=" w-full flex flex-col h-[50vh] mt-2 overflow-y-auto">
               <div className="w-full">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Long delay before recieving care
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="1"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
 
               <div className="">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Cost of service recieved
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="2"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
               <div className="">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Care recieved was suboptimal
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="3"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
 
               <div className="">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Unregistered health facility
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="4"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
 
               <div className="">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Poor medical equipment
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="5"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
 
               <div className="">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Uncoordinated medical staff
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="6"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
 
               <div className="">
-                <label className="mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
+                <label className="mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none ">
                   Other
                   <Field
                     type="checkbox"
                     name="complaints_factor"
                     value="7"
-                    className=" w-5 h-5 rounded-full"
+                    className=" w-3 h-3 rounded-full"
                   />
                 </label>
               </div>
@@ -195,7 +195,7 @@ export default function FacilityInfoForm(props) {
                   value={textareaValue}
                   onChange={handleChange}
                   name="complaints_factor"
-                  className="w-full h-12 mt-2 flex flex-row items-center text-accent justify-between p-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none "
+                  className="w-full h-10 mt-2 flex flex-row items-center text-accent justify-between p-1 px-2 rounded-md selection:text-accent selection:font-extrabold bg-gray outline-none "
                 />
               </div>
             </div>
