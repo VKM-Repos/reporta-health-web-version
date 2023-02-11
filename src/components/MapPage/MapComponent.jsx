@@ -1,5 +1,6 @@
 import React, {
   Fragment,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -13,6 +14,7 @@ import {
   useMapEvents,
   Circle,
   Tooltip,
+  withLeaflet,
   MapContainer,
   useMap,
 } from "react-leaflet";
@@ -27,6 +29,7 @@ import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import PopupInfo from "@components/MapPage/PopupInfo";
 import { MapContext } from "@context/mapContext";
 import ReviewFacilityModal from "./ReviewFacilityModal";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
@@ -45,6 +48,8 @@ const iconP = L.icon({
 const MapComponent = ({ className }) => {
   const location = useGetLocation();
   const [position, setPosition] = useState({});
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -68,10 +73,77 @@ const MapComponent = ({ className }) => {
     selectedDirection,
     nearestFacilities,
     searchFacilities,
+    routingControl,
+    setRoutingControl,
   } = useContext(MapContext);
 
-  // console.log("nearestFac", nearestFacilities);
-  // console.log("searchFac", searchFacilities);
+  // ___________________Zoom control ------------
+  const ZoomControl = () => {
+    const map = useMap();
+
+    const handleZoomIn = () => {
+      map.zoomIn();
+    };
+
+    const handleZoomOut = () => {
+      map.zoomOut();
+    };
+
+    return (
+      <div className="p-2 rounded-md bg-black/40 backdrop-blur absolute z-[900] left-2 md:left-6 top-[38%]">
+        <button
+          className="bg-white text-gray-600 hover:text-gray-800 rounded-full p-2"
+          onClick={handleZoomIn}
+        >
+          +
+        </button>
+        <button
+          className="bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 mt-2"
+          onClick={handleZoomOut}
+        >
+          -
+        </button>
+      </div>
+    );
+  };
+
+  // -----------------Toggle direction -----------------------//
+
+  // const CustomToggleControl = () => {
+  //   const map = useMap();
+  //   const [showInstructions, setShowInstructions] = useState(true);
+
+  //   const toggleInstructions = () => {
+  //     if (showInstructions) {
+  //       map.getControls().forEach((control) => {
+  //         if (
+  //           control._container &&
+  //           control._container.classList.contains("leaflet-routing-container")
+  //         ) {
+  //           control._container.style.display = "none";
+  //         }
+  //       });
+  //     } else {
+  //       map.getControls().forEach((control) => {
+  //         if (
+  //           control._container &&
+  //           control._container.classList.contains("leaflet-routing-container")
+  //         ) {
+  //           control._container.style.display = "block";
+  //         }
+  //       });
+  //     }
+  //     setShowInstructions(!showInstructions);
+  //   };
+
+  //   return (
+  //     <div className="p-2 rounded-md text-black bg-black/40 backdrop-blur absolute z-[900] left-2 md:left-6 top-[26%]">
+  //       <button className="focus:outline-none" onClick={toggleInstructions}>
+  //         {showInstructions ? "Hide Instructions" : "Show Instructions"}
+  //       </button>
+  //     </div>
+  //   );
+  // };
 
   // -----------------lOCATE USER BUTTON -----------------------//
   const FlyToLocateUser = ({ latlng }) => {
@@ -136,9 +208,6 @@ const MapComponent = ({ className }) => {
     );
   };
 
-  const [showReportModal, setShowReportModal] = useState(false);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-
   const closeReviewModal = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -156,75 +225,86 @@ const MapComponent = ({ className }) => {
   };
 
   // RENDER NEAREST FACILITIES MARKER
-  // const FacilitiesMarker = () => {
-  //   const markerRef = useRef(null);
-  //   const map = useMap();
+  const FacilitiesMarker = () => {
+    const markerRef = useRef(null);
+    const map = useMap();
+    const [isSelected, setIsSelected] = useState(null);
+    const [openReport, setOpenReport] = useState(null);
+    const [openReview, setOpenReview] = useState(null);
 
-  //   useEffect(() => {
-  //     if (markerRef.current) {
-  //       // Perform any custom logic on the marker here,
-  //       // such as setting the icon, popup content, etc.
-  //       // markerRef.current.control._container.style.display = "None";
-  //     }
-  //     return () => {
-  //       markerRef.current = null;
-  //     };
-  //   }, [markerRef, map]);
+    const closeReportModal = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      setOpenReport(false);
+    };
 
-  //   return (
-  //     <>
-  //       {data?.pages.map((result) => {
-  //         return result?.data?.map((facility, index) => (
-  //           <Fragment key={facility.id}>
-  //             <Marker
-  //               position={[facility?.latitude, facility?.longitude]}
-  //               icon={icon}
-  //             >
-  //               <Tooltip
-  //                 direction="bottom"
-  //                 offset={[0, 10]}
-  //                 opacity={0.8}
-  //                 permanent
-  //               >
-  //                 <h2 className="text-[100%] font-bold text-primary">
-  //                   {facility.reg_fac_name}
-  //                 </h2>
-  //               </Tooltip>
-  //               <Popup maxWidth="auto" maxHeight="auto">
-  //                 <PopupInfo
-  //                   facility={facility}
-  //                   showReportModal={() => {
-  //                     setShowReportModal(true);
-  //                   }}
-  //                   openReviewModal={() => {
-  //                     setShowReviewModal(true);
-  //                     console.log(facility);
-  //                   }}
-  //                 />
+    const closeReportModalOnFormSubmit = () => {
+      setOpenReview(false);
+    };
 
-  //                 {
-  //                   <ReportFacilityModal
-  //                     onClose={closeReportModal}
-  //                     visible={showReportModal}
-  //                     facility={facility}
-  //                     onSubmitClose={closeReportModalOnFormSubmit}
-  //                   />
-  //                 }
-  //                 {
-  //                   <ReviewFacilityModal
-  //                     closeReviewModal={closeReviewModal}
-  //                     facility={facility}
-  //                     visible={showReviewModal}
-  //                   />
-  //                 }
-  //               </Popup>
-  //             </Marker>
-  //           </Fragment>
-  //         ));
-  //       })}
-  //     </>
-  //   );
-  // };
+    useEffect(() => {}, [isSelected]);
+
+    return (
+      <>
+        {data?.pages.map((result) => {
+          return result?.data?.map((facility, index) => (
+            <Fragment key={facility.id}>
+              <Marker
+                position={[facility?.latitude, facility?.longitude]}
+                icon={icon}
+                ref={markerRef}
+              >
+                <Tooltip
+                  direction="bottom"
+                  offset={[0, 10]}
+                  opacity={0.8}
+                  permanent
+                >
+                  <h2 className="text-[100%] font-bold text-primary">
+                    {facility.reg_fac_name}
+                  </h2>
+                </Tooltip>
+                <Popup maxWidth="auto" maxHeight="auto">
+                  <PopupInfo
+                    facility={facility}
+                    showReportModal={() => {
+                      setIsSelected(facility);
+                      setOpenReport(true);
+                      setOpenReview(false);
+                    }}
+                    openReviewModal={() => {
+                      setIsSelected(facility);
+                      setOpenReview(true);
+                      setOpenReport(false);
+                    }}
+                  />
+                </Popup>
+              </Marker>
+              {isSelected?.latitude === facility.latitude && (
+                <ReportFacilityModal
+                  onClose={closeReportModal}
+                  visible={!!isSelected && openReport}
+                  facility={facility}
+                  onSubmitClose={closeReportModalOnFormSubmit}
+                  setIsSelected={setIsSelected}
+                />
+              )}
+
+              {isSelected?.latitude === facility.latitude && (
+                <ReviewFacilityModal
+                  closeReviewModal={closeReviewModal}
+                  facility={facility}
+                  visible={!!isSelected && openReview}
+                  // visible={showReviewModal}
+                  setIsSelected={setIsSelected}
+                />
+              )}
+            </Fragment>
+          ));
+        })}
+      </>
+    );
+  };
 
   // RENDER GET DIRECTIONS MARKER
 
@@ -299,7 +379,6 @@ const MapComponent = ({ className }) => {
   const GetDirectionToFacilitiesMarker = () => {
     const markerRef = useRef(null);
     const map = useMap(); // available when component nested inside MapContainer
-    const controlRef = useRef(null);
 
     const [routeSummary, setRouteSummary] = useState({
       distance: "",
@@ -308,80 +387,55 @@ const MapComponent = ({ className }) => {
 
     useEffect(() => {
       if (markerRef.current) {
-        markerRef?.current.openPopup();
+        // markerRef?.current.openPopup();
 
-        if (!controlRef.current) {
-          controlRef.current = L.Routing.control({
-            waypoints: [
-              L.latLng(location.coordinates.lat, location.coordinates.lng),
-              L.latLng(
-                selectedDirection?.latitude,
-                selectedDirection?.longitude
-              ),
-            ],
-            // lineOptions: {
-            //   styles: [{ color: "#242F9B", opacity: 1, weight: 5 }],
-            // },
-            show: false,
-            fitSelectedRoutes: false,
-            showAlternatives: false,
-            createMarker: function () {
-              return null;
-            },
-            routeWhileDragging: false,
-            lineOptions: {
-              styles: [
-                {
-                  color: "blue",
-                  opacity: 1,
-                  weight: 5,
-                },
-                {
-                  color: "blue",
-                  opacity: 1,
-                  weight: 5,
-                },
-                {
-                  color: "blue",
-                  opacity: 1,
-                  weight: 5,
-                },
-              ],
-            },
-            router: L.routing.osrmv1({
-              serviceUrl: "https://router.project-osrm.org/route/v1",
-              useOsrmWith: "viaroute",
-            }),
-            formatter: new L.Routing.Formatter({
-              unit: "imperial",
-            }),
-            routeLine: function (route, options) {
-              return L.polyline(route.coordinates, options);
-            },
-            altRouteLine: function (route, options) {
-              return L.polyline(route.coordinates, options);
-            },
-            summaryTemplate: (data) => {
-              setRouteSummary({ distance: data.distance, time: data.time });
-            },
-            altRoutes: function (routes) {
-              // show only the first alternative
-              if (routes.length > 0) {
-                return [routes[0]];
-              } else {
-                return [];
-              }
-            },
-          }).addTo(map);
-
-          return () => {
-            if (map.hasLayer(controlRef.current)) {
-              controlRef.current.remove();
-            }
-          };
-        }
+        !routingControl ? addRoutingControl() : updateRoutingControl();
       }
-    });
+    }, [addRoutingControl, updateRoutingControl]);
+
+    const addRoutingControl = useCallback(() => {
+      if (routingControl !== null) removeRoutingControl();
+
+      const control = L.Routing.control({
+        waypoints: [
+          L.latLng(location.coordinates.lat, location.coordinates.lng),
+          L.latLng(selectedDirection?.latitude, selectedDirection?.longitude),
+        ],
+        show: false,
+        fitSelectedRoutes: selectedDirection ? false : true,
+        showAlternatives: false,
+        createMarker: function () {
+          return null;
+        },
+        routeWhileDragging: false,
+        lineOptions: {
+          styles: [
+            {
+              color: "#242F9B",
+              opacity: 1,
+              weight: 5,
+            },
+          ],
+        },
+      }).addTo(map);
+      setRoutingControl(control);
+    }, [map, removeRoutingControl]);
+
+    const removeRoutingControl = useCallback(() => {
+      if (routingControl !== null) {
+        map?.removeControl(routingControl);
+        setRoutingControl(null);
+      }
+    }, [map]);
+
+    const updateRoutingControl = useCallback(() => {
+      routingControl
+        .getPlan()
+        .setWaypoints([
+          L.latLng(location.coordinates.lat, location.coordinates.lng),
+          L.latLng(selectedDirection?.latitude, selectedDirection?.longitude),
+        ]);
+    }, []);
 
     return (
       <>
@@ -452,7 +506,7 @@ const MapComponent = ({ className }) => {
           markerRef.current = null;
         };
       }
-    }, [map, selectedFacility]);
+    }, [map]);
 
     return (
       <>
@@ -497,7 +551,9 @@ const MapComponent = ({ className }) => {
 
   if (!Object.keys(position).length) {
     return (
-      <div className="text-3xl w-screen h-screen text-center">Loading...</div>
+      <div className="text-3xl flex justify-center items-center w-screen h-screen text-center">
+        <LoadingSpinner text="" />
+      </div>
     );
   }
 
@@ -509,25 +565,24 @@ const MapComponent = ({ className }) => {
           zoom={15}
           style={{ width: "100%", height: "100%" }}
           zoomControl={false}
+          scrollWheelZoom={false}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://tile.osm.ch/switzerland/{z}/{x}/{y}.png"
           />
-
+          <ZoomControl />
+          <FacilitiesMarker />
+          <SelectedFacilitiesMarker />
           <UserMarker
             position={[location.coordinates.lat, location.coordinates.lng]}
             text="You are here"
           />
-          {/* <FacilitiesMarker /> */}
-
-          {/* <GetDirection /> */}
-          <GetDirectionToFacilitiesMarker />
-          <SelectedFacilitiesMarker />
-
           <FlyToLocateUser
             latlng={[location.coordinates.lat, location.coordinates.lng]}
           />
+          {/* <CustomToggleControl /> */}
+          <GetDirectionToFacilitiesMarker />
         </MapContainer>
       )}
     </div>

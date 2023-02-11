@@ -7,14 +7,14 @@ const MapContextProvider = ({ children }) => {
     const [selectedDirection, setSelectedDirection] = useState(null);
     const [nearestFacilities, setNearestFacilities] = useState(null);
     const [searchFacilities, setSearchFacilities] = useState(null);
-
+    const [routingControl, setRoutingControl] = useState(null);
 
     useEffect(() => {
         setSelectedFacility(selectedFacility)
         setNearestFacilities(nearestFacilities);
         setSearchFacilities(searchFacilities);
         setSelectedDirection(selectedDirection);
-    }, [nearestFacilities, searchFacilities, selectedFacility, selectedDirection]);
+    }, [nearestFacilities, searchFacilities, selectedFacility, selectedDirection, routingControl]);
 
     return (
         <MapContext.Provider
@@ -26,7 +26,9 @@ const MapContextProvider = ({ children }) => {
                 selectedFacility,
                 setSelectedFacility,
                 selectedDirection,
-                setSelectedDirection
+                setSelectedDirection,
+                setRoutingControl,
+                routingControl
             }}
         >
             {children}

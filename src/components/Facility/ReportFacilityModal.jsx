@@ -17,6 +17,7 @@ export default function ReportFacility(props) {
     setReportFacilityFormData,
     reportFacilityLastStep,
     setReportFacilityLastStep,
+    setIsSelected,
   } = useForm();
   const [currentStep, setCurrentStep] = useState(2);
   const [facilityData, setFacilityData] = useState("");
@@ -40,7 +41,10 @@ export default function ReportFacility(props) {
             handleNextStep={handleClick}
             currentStep={currentStep}
             steps={steps}
-            onClose={props.onClose}
+            onClose={(e) => {
+              props.onClose(e);
+              !!setIsSelected && setIsSelected(null);
+            }}
             facility={props.facility}
           />
         );
@@ -98,7 +102,7 @@ export default function ReportFacility(props) {
   return (
     <>
       <div
-        className="fixed inset-0 w-screen h-screen backdrop-blur-[1px] bg-black/10 z-[2000] "
+        className="fixed inset-0 w-screen h-screen backdrop-blur-[1px] bg-black/10 z-[2000] pointer-events-none"
         onClick={props.onClose}
       ></div>
       <div className=" fixed w-screen h-screen z-[3000] flex justify-center items-center">
