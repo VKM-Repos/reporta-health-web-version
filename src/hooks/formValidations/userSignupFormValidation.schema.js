@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-export const useUserSignupFormValidation = (onSubmitHandler) => {
+export const useReviewFacilityFormValidation = (onSubmitHandler) => {
   const formik = useFormik({
     initialValues: {
       firstName: "",

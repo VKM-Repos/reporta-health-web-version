@@ -206,7 +206,7 @@ const MapHeader = (props) => {
         }`}
       >
         <div
-          className="w-screen h-screen fixed inset-0 z-40 ease-in-out duration-300 bg-black bg-opacity-10"
+          className="w-screen h-screen fixed inset-0 z-40 ease-in-out duration-300 bg-black bg-opacity-0"
           onClick={() => setShowSidebar(!showSidebar)}
         ></div>
         <div

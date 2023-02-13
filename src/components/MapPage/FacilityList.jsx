@@ -87,7 +87,7 @@ const FacilityList = ({
   }, [searchData, setSearchFacilities]);
 
   return (
-    <div className="w-full max-h-[70vh] overflow-y-scroll">
+    <div className="w-full max-h-full overflow-x-hidden overflow-y-scroll">
       {defaultApi ? (
         <>
           {status === "loading" && <PulseLoader />}

@@ -30,6 +30,7 @@ import PopupInfo from "@components/MapPage/PopupInfo";
 import { MapContext } from "@context/mapContext";
 import ReviewFacilityModal from "./ReviewFacilityModal";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
+import CustomTooltip from "./CustomTooltip";
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
@@ -90,15 +91,18 @@ const MapComponent = ({ className }) => {
     };
 
     return (
-      <div className="p-2 rounded-md bg-black/40 backdrop-blur absolute z-[900] left-2 md:left-6 top-[38%]">
+      <div className="flex flex-col items-center justify-center space-y-1">
+        <p className="text-[80%] text-black/40 font-bold">zoom</p>
+        <CustomTooltip text="hello">
+          <button
+            className="bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full w-[2rem] aspect-square text-[150%] transition-all ease-in-out duration-150 "
+            onClick={handleZoomIn}
+          >
+            +
+          </button>
+        </CustomTooltip>
         <button
-          className="bg-white text-gray-600 hover:text-gray-800 rounded-full p-2"
-          onClick={handleZoomIn}
-        >
-          +
-        </button>
-        <button
-          className="bg-white text-gray-600 hover:text-gray-800 rounded-full p-2 mt-2"
+          className="bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full w-[2rem] aspect-square text-[150%] transition-all ease-in-out duration-150 "
           onClick={handleZoomOut}
         >
           -
@@ -108,42 +112,43 @@ const MapComponent = ({ className }) => {
   };
 
   // -----------------Toggle direction -----------------------//
+  const ToggleDirection = () => {
+    const [showDirections, setShowDirections] = useState(true);
+    const map = useMap();
 
-  // const CustomToggleControl = () => {
-  //   const map = useMap();
-  //   const [showInstructions, setShowInstructions] = useState(true);
+    const toggleDirections = () => {
+      const routingContainer = document.querySelector(
+        ".leaflet-routing-container"
+      );
+      if (map && routingContainer.style.display === "block") {
+        setShowDirections((routingContainer.style.display = "none"));
+      } else {
+        setShowDirections((routingContainer.style.display = "block"));
+      }
+    };
 
-  //   const toggleInstructions = () => {
-  //     if (showInstructions) {
-  //       map.getControls().forEach((control) => {
-  //         if (
-  //           control._container &&
-  //           control._container.classList.contains("leaflet-routing-container")
-  //         ) {
-  //           control._container.style.display = "none";
-  //         }
-  //       });
-  //     } else {
-  //       map.getControls().forEach((control) => {
-  //         if (
-  //           control._container &&
-  //           control._container.classList.contains("leaflet-routing-container")
-  //         ) {
-  //           control._container.style.display = "block";
-  //         }
-  //       });
-  //     }
-  //     setShowInstructions(!showInstructions);
-  //   };
-
-  //   return (
-  //     <div className="p-2 rounded-md text-black bg-black/40 backdrop-blur absolute z-[900] left-2 md:left-6 top-[26%]">
-  //       <button className="focus:outline-none" onClick={toggleInstructions}>
-  //         {showInstructions ? "Hide Instructions" : "Show Instructions"}
-  //       </button>
-  //     </div>
-  //   );
-  // };
+    return (
+      <button className="focus:outline-none" onClick={toggleDirections}>
+        {/* {showDirections ? "Hide" : "Show"} */}
+        <svg
+          fill="currentColor"
+          className="w-[1.9rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path d="M 16 3 C 15.23 3 14.457 3.293 13.875 3.875 L 13.75 4.03125 L 4.03125 13.75 L 3.875 13.875 C 2.711 15.039 2.711 16.961 3.875 18.125 L 13.875 28.125 C 15.039 29.289 16.961 29.289 18.125 28.125 L 28.125 18.125 C 29.289 16.961 29.289 15.039 28.125 13.875 L 18.125 3.875 C 17.543 3.293 16.77 3 16 3 z M 16 5 C 16.254 5 16.51975 5.08225 16.71875 5.28125 L 26.71875 15.28125 C 27.11675 15.67925 27.11675 16.31975 26.71875 16.71875 L 16.71875 26.71875 C 16.32075 27.11675 15.68025 27.11675 15.28125 26.71875 L 5.28125 16.71875 C 4.88325 16.32075 4.88325 15.68025 5.28125 15.28125 L 15.28125 5.28125 C 15.48025 5.08225 15.746 5 16 5 z M 17 11 L 17 14 L 13 14 C 11.895 14 11 14.895 11 16 L 11 19 L 13 19 L 13 16 L 17 16 L 17 19 L 21 15 L 17 11 z"></path>
+          </g>
+        </svg>
+      </button>
+    );
+  };
 
   // -----------------lOCATE USER BUTTON -----------------------//
   const FlyToLocateUser = ({ latlng }) => {
@@ -152,13 +157,10 @@ const MapComponent = ({ className }) => {
       map.flyTo(latlng, 17, { duration: 2 });
     };
     return (
-      <button
-        onClick={fly}
-        className="p-2 rounded-md bg-black/40 backdrop-blur absolute z-[900] left-2 md:left-6 top-[18%]"
-      >
+      <button onClick={fly} className="">
         <svg
           fill="currentColor"
-          className="w-[1.5rem] aspect-square"
+          className="w-[1.7rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
           version="1.1"
           id="Capa_1"
           xmlns="http://www.w3.org/2000/svg"
@@ -214,15 +216,15 @@ const MapComponent = ({ className }) => {
     setShowReviewModal(false);
   };
 
-  const closeReportModal = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShowReportModal(false);
-  };
+  // const closeReportModal = (e) => {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  //   setShowReportModal(false);
+  // };
 
-  const closeReportModalOnFormSubmit = () => {
-    setShowReportModal(false);
-  };
+  // const closeReportModalOnFormSubmit = () => {
+  //   setShowReportModal(false);
+  // };
 
   // RENDER NEAREST FACILITIES MARKER
   const FacilitiesMarker = () => {
@@ -264,7 +266,7 @@ const MapComponent = ({ className }) => {
                     {facility.reg_fac_name}
                   </h2>
                 </Tooltip>
-                <Popup maxWidth="auto" maxHeight="auto">
+                <Popup maxWidth="auto" maxHeight="auto" offset={[0, 150]}>
                   <PopupInfo
                     facility={facility}
                     showReportModal={() => {
@@ -308,82 +310,9 @@ const MapComponent = ({ className }) => {
 
   // RENDER GET DIRECTIONS MARKER
 
-  const RouteSummary = ({ distance, time }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <div className="w-full ">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-2 rounded-md text-black bg-black/40 backdrop-blur absolute z-[900] left-2 md:left-6 top-[26%]"
-        >
-          <svg
-            className="w-[1.5rem] aspect-square"
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 32 32"
-            xmlSpace="preserve"
-            fill="currentColor"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <g>
-                {" "}
-                <path
-                  fill="currentColor"
-                  d="M27.336,12c0.133,0,0.26-0.053,0.354-0.146l3.99-4c0.195-0.195,0.195-0.512,0-0.707l-3.99-4 C27.596,3.053,27.469,3,27.336,3H18V0.5C18,0.224,17.776,0,17.5,0h-3C14.224,0,14,0.224,14,0.5V3h-3.703C9.521,3,9,3.603,9,4.5v6 c0,0.897,0.521,1.5,1.297,1.5H14v1H4.782c-0.14,0-0.273,0.059-0.368,0.162l-4.108,4.472c-0.175,0.19-0.176,0.482-0.002,0.674 l4.108,4.528C4.507,22.94,4.641,23,4.782,23H14v8c0,0.276,0.224,0.5,0.5,0.5S15,31.276,15,31v-8h2v5c0,0.276,0.224,0.5,0.5,0.5 S18,28.276,18,28v-5h4.674C23.455,23,24,22.383,24,21.5v-7c0-0.883-0.545-1.5-1.326-1.5H18v-1H27.336z M15,1h2v2h-2V1z M10.297,11 C10.051,11,10,10.729,10,10.5v-6C10,4.271,10.051,4,10.297,4h16.832l3.491,3.5L27.128,11H10.297z M22.674,14 C22.943,14,23,14.271,23,14.5v7c0,0.229-0.057,0.5-0.326,0.5H5.004l-3.652-4.026L5.002,14H22.674z M17,13h-2v-1h2V13z"
-                ></path>{" "}
-                <path
-                  fill="currentColor"
-                  d="M17.849,19.472c0.827,0,1.5-0.673,1.5-1.5s-0.673-1.5-1.5-1.5s-1.5,0.673-1.5,1.5 S17.022,19.472,17.849,19.472z M17.849,17.472c0.276,0,0.5,0.225,0.5,0.5s-0.224,0.5-0.5,0.5s-0.5-0.225-0.5-0.5 S17.573,17.472,17.849,17.472z"
-                ></path>{" "}
-                <path
-                  fill="currentColor"
-                  d="M13.47,19.472c0.827,0,1.5-0.673,1.5-1.5s-0.673-1.5-1.5-1.5s-1.5,0.673-1.5,1.5 S12.643,19.472,13.47,19.472z M13.47,17.472c0.276,0,0.5,0.225,0.5,0.5s-0.224,0.5-0.5,0.5s-0.5-0.225-0.5-0.5 S13.194,17.472,13.47,17.472z"
-                ></path>{" "}
-                <path
-                  fill="currentColor"
-                  d="M9.091,19.472c0.827,0,1.5-0.673,1.5-1.5s-0.673-1.5-1.5-1.5s-1.5,0.673-1.5,1.5S8.264,19.472,9.091,19.472 z M9.091,17.472c0.276,0,0.5,0.225,0.5,0.5s-0.224,0.5-0.5,0.5s-0.5-0.225-0.5-0.5S8.815,17.472,9.091,17.472z"
-                ></path>{" "}
-                <path
-                  fill="currentColor"
-                  d="M17,7h-2c-0.276,0-0.5,0.224-0.5,0.5S14.724,8,15,8h2c0.276,0,0.5-0.224,0.5-0.5S17.276,7,17,7z"
-                ></path>{" "}
-                <path
-                  fill="currentColor"
-                  d="M23,7h-3c-0.276,0-0.5,0.224-0.5,0.5S19.724,8,20,8h3c0.276,0,0.5-0.224,0.5-0.5S23.276,7,23,7z"
-                ></path>{" "}
-              </g>{" "}
-            </g>
-          </svg>
-        </button>
-        {isOpen && (
-          <div className="w-fit bg-white text-black">
-            <h2>Route Summary:</h2>
-            <h3>Total distance: {distance}</h3>
-            <h3>Travel Time: {time}</h3>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   const GetDirectionToFacilitiesMarker = () => {
+    const map = useMap();
     const markerRef = useRef(null);
-    const map = useMap(); // available when component nested inside MapContainer
-
-    const [routeSummary, setRouteSummary] = useState({
-      distance: "",
-      time: "",
-    });
 
     useEffect(() => {
       if (markerRef.current) {
@@ -407,6 +336,10 @@ const MapComponent = ({ className }) => {
         createMarker: function () {
           return null;
         },
+        summaryTemplate:
+          `<h2 style="font-size: 1.5rem;">{name}</h2>` +
+          `<h3 style="font-size: 1.1rem;">Distance: {distance}</h3>` +
+          `<h3 style="font-size: 1.1rem; padding-bottom: 1.5rem;">Time: {time}</h3>`,
         routeWhileDragging: false,
         lineOptions: {
           styles: [
@@ -449,7 +382,7 @@ const MapComponent = ({ className }) => {
               ref={markerRef}
               icon={icon}
             >
-              <Popup maxWidth="auto" maxHeight="auto">
+              <Popup maxWidth="auto" maxHeight="auto" offset={[0, 150]}>
                 <PopupInfo
                   facility={selectedDirection}
                   showReportModal={() => {
@@ -460,10 +393,6 @@ const MapComponent = ({ className }) => {
             </Marker>
           </Fragment>
         ) : null}
-        <RouteSummary
-          distance={routeSummary.distance}
-          time={routeSummary.time}
-        />
       </>
     );
   };
@@ -498,9 +427,10 @@ const MapComponent = ({ className }) => {
         // such as setting the icon, popup content, etc.
         map.flyTo(
           [selectedFacility?.latitude, selectedFacility?.longitude],
-          16,
-          { duration: 1 }
+          18,
+          { duration: 4 }
         );
+
         markerRef?.current.openPopup();
         return () => {
           markerRef.current = null;
@@ -520,7 +450,7 @@ const MapComponent = ({ className }) => {
               icon={icon}
               ref={markerRef}
             >
-              <Popup maxWidth="auto" maxHeight="auto">
+              <Popup maxWidth="auto" maxHeight="auto" offset={[0, 150]}>
                 <PopupInfo
                   facility={selectedFacility}
                   showReportModal={() => {
@@ -571,18 +501,23 @@ const MapComponent = ({ className }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://tile.osm.ch/switzerland/{z}/{x}/{y}.png"
           />
-          <ZoomControl />
+
           <FacilitiesMarker />
           <SelectedFacilitiesMarker />
+          <GetDirectionToFacilitiesMarker />
           <UserMarker
             position={[location.coordinates.lat, location.coordinates.lng]}
             text="You are here"
           />
-          <FlyToLocateUser
-            latlng={[location.coordinates.lat, location.coordinates.lng]}
-          />
-          {/* <CustomToggleControl /> */}
-          <GetDirectionToFacilitiesMarker />
+
+          <div className="flex flex-col items-center justify-center space-y-1 px-2 py-4 rounded-md bg-black/40 backdrop-blur-sm absolute z-[900] left-[0.1rem] md:left-[0.2rem] top-[17%]">
+            <FlyToLocateUser
+              latlng={[location.coordinates.lat, location.coordinates.lng]}
+            />
+
+            <ToggleDirection />
+            <ZoomControl />
+          </div>
         </MapContainer>
       )}
     </div>

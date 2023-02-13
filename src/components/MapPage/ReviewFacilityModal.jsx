@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { authInstanceAxios } from "@config/axiosInstance";
+import React, { useEffect, useState } from "react";
 import Reviewers from "./Reviewers";
 import StarRatings from "./StarRatings";
 import WriteReview from "./WriteReview";
@@ -10,6 +11,21 @@ const ReviewFacilityModal = ({
   setIsSelected,
 }) => {
   const [showWriteReview, setShowWriteReview] = useState(false);
+  const [facilityReviewData, setfacilityReviewData] = useState({});
+
+  const fetchFacilityReviews = async () => {
+    const result = await authInstanceAxios.get(
+      `/review/?facility_id=${facility.id}`
+    );
+    setfacilityReviewData(result?.data?.data);
+    // return result?.data;
+  };
+
+  useEffect(() => {
+    fetchFacilityReviews();
+  }, []);
+
+  console.log(facilityReviewData);
 
   if (!visible) return null;
 
@@ -81,7 +97,7 @@ const ReviewFacilityModal = ({
                   </svg>
                 </span>
                 <span className="flex space-x-2 items-center">
-                  <p>(200)</p>
+                  <p>({facilityReviewData?.length}+)</p>
                   <span
                     onClick={() => {
                       setShowWriteReview(true);
@@ -99,7 +115,9 @@ const ReviewFacilityModal = ({
               <span className="text-[70%] text-primary font-bold">
                 Total Reviews
               </span>
-              <span className=" lowercase font-extrabold text-[200%]">200</span>
+              <span className=" lowercase font-extrabold text-[200%]">
+                {facilityReviewData?.length}
+              </span>
             </div>
             <div className="w-full h-full border-r border-black/20"></div>
             <div className="flex flex-col col-span-4">
@@ -118,16 +136,23 @@ const ReviewFacilityModal = ({
 
           {/* reviewers list */}
           <div className="relative flex flex-col py- border-t border-black/20 h-[10rem] overflow-y-scroll z-[3000]">
-            {/* fetch and map list of reviewss here */}
-            <Reviewers rating={facility.average_rating} />
-            <Reviewers rating={facility.average_rating} />
-            <Reviewers rating={facility.average_rating} />
-            <Reviewers rating={facility.average_rating} />
+            {/* fetch and map list of reviews here */}
+            {facilityReviewData?.map((facilityReview) => (
+              <Reviewers
+                key={facilityReview.id}
+                id={facilityReview.id}
+                rating={facility.average_rating}
+                content={facilityReview.content}
+              />
+            ))}
           </div>
         </div>
       ) : (
         <div className="relative z-[2001] w-[80vw] md:w-[40vw] lg:w-[30vw]  aspect-square bg-white font-semibold md:p-8 p-4 font-sans justify-center mx-auto shadow-2xl rounded-md transition-all duration-500 ease-in-out transform translate-x-1">
-          <WriteReview onClose={() => setShowWriteReview(false)} />
+          <WriteReview
+            facility={facility}
+            onClose={() => setShowWriteReview(false)}
+          />
         </div>
       )}
     </div>

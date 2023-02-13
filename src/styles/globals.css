@@ -10,11 +10,11 @@ body {
   overflow-x: hidden;
 }
 
-
+/* 
 .leaflet-routing-container .leaflet-routing-geometry {
  display: none;
  
-}
+} */
 
 #leaflet-routing-container {
   background-color: #fff;
@@ -31,21 +31,37 @@ display: block;
 
 .leaflet-routing-container {
 /* display: none; */
-  background-color: #fff5f561;
+display: inline-block;
+  background-color: #ffffffae;
   position: absolute;
   top: 4rem;
   right: 0;
-  width: 37vh;
-  max-height: 40vh;
+  width: 40vh;
+  max-height: 38vh;
   overflow-y: scroll;
   border-radius: 1rem;
-  padding: 1rem 1.5rem;
-  font-size: 90%;
+  padding: 1.5rem 1rem;
+  font-size: 100%;
   color: rgba(0, 0, 0, 0.936);
   border: 2px solid #fff;
-  font-weight: 400;
+  font-weight: 500;
+  cursor: pointer;
 
 }
+
+
+.toast-container {
+ position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+
+.toast-container .toast {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+
 
 
 
