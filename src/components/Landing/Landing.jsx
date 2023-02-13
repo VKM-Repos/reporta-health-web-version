@@ -1,5 +1,4 @@
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import pattern from "@assets/images/pattern.svg";
 import landing from "@assets/images/landing.png";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
@@ -8,30 +7,12 @@ import ToastBox from "@components/ToastBox/ToastBox";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
 import { useRouter } from "next/router";
 import useGetLocation from "@hooks/useGetLocation.hook";
-import axios from "axios";
 
 const Landing = () => {
   const [showDialogue, setShowDialogue] = useState(false);
   const router = useRouter();
   const { data, isLoading, status } = useFetchNearestFacilities();
   const location = useGetLocation();
-
-  //creating IP state
-  const [ip, setIP] = useState("");
-
-  //creating function to load ip address from the API
-  const getData = async () => {
-    const res = await axios.get("https://geolocation-db.com/json/");
-    console.log(res.data);
-    setIP(res.data.IPv4);
-  };
-
-  useEffect(() => {
-    //passing getData method to the lifecycle method
-    getData();
-  }, []);
-
-  console.log("your ip address", ip);
 
   const ShowMyLocation = (e) => {
     e.preventDefault();

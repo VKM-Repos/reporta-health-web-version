@@ -29,7 +29,7 @@ const InputField = ({ type, placeholder, name, value, handleChange }) => {
           </svg>
         </span>
         <input
-          className="w-full px-2 placeholder:text-secondary bg-black/0 focus:outline-none text-xs "
+          className="w-full px-2 placeholder:text-secondary text-black bg-black/0 focus:outline-none text-xs "
           type={type}
           placeholder={placeholder}
           name={name}
