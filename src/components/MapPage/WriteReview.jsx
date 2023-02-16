@@ -1,11 +1,13 @@
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { authInstanceAxios } from "@config/axiosInstance";
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
 
 const WriteReview = ({ facility, onClose }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const [successMsg, setSuccessMsg] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   //creating IP state
@@ -42,23 +44,13 @@ const WriteReview = ({ facility, onClose }) => {
     const res = await authInstanceAxios
       .post("/review", reviewData)
       .then((res) => {
-        if (res.status === 200)
-          toast.success("Review posted", {
-            // position: toast.POSITION.TOP_RIGHT,
-            icon: (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="#242F9B"
-              >
-                <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
-                <path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path>
-              </svg>
-            ),
-          });
-        onClose;
+        if (res.status === 200) setSuccessMsg(true);
+
+        setTimeout(() => {
+          setReview("");
+          setRating(0);
+          onClose();
+        }, 3000);
 
         //  history.push("/login");
       })
@@ -71,6 +63,7 @@ const WriteReview = ({ facility, onClose }) => {
   const handleSubmit = (e) => {
     // Perform any logic for submitting the form data here, such as making an API call, etc.
     e.preventDefault();
+    setIsLoading(true);
 
     const newErrors = {};
     if (!review) {
@@ -84,10 +77,6 @@ const WriteReview = ({ facility, onClose }) => {
     if (Object.keys(newErrors).length === 0) {
       // Submit the form data
       reviewFacility();
-      setTimeout(() => {
-        setReview("");
-        setRating(0);
-      }, 3000);
     }
   };
 
@@ -121,9 +110,11 @@ const WriteReview = ({ facility, onClose }) => {
           placeholder="Describe your experience (Optional)"
           onChange={handleReviewChange}
         />
-        {/* {errors.review && (
-          <p className=" text-danger text-xs mt-0">{errors.review}</p>
-        )} */}
+        {successMsg && (
+          <p className=" text-success font-thin text-xs mt-0">
+            Review successful
+          </p>
+        )}
         {errors.rating && (
           <p className="text-danger text-xs mt-0">{errors.rating}</p>
         )}
@@ -136,26 +127,17 @@ const WriteReview = ({ facility, onClose }) => {
             Cancel
           </button>
           <button
-            className="bg-primary text-white py-2 px-4 mt-4 rounded-md hover:bg-primary-dark"
+            className="bg-primary text-center text-white py-2 px-4 mt-4 rounded-md hover:bg-primary-dark"
             type="submit"
           >
-            Submit
+            {isLoading && !errors.rating ? (
+              <LoadingSpinner text="submitting" />
+            ) : (
+              "submit"
+            )}
           </button>
         </div>
       </form>
-
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        progressStyle={{ backgroundColor: "#242F9B", color: "#242F9B" }}
-      />
     </div>
   );
 };
