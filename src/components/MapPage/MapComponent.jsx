@@ -10,19 +10,13 @@ import {
   Marker,
   Popup,
   TileLayer,
-  Map,
-  useMapEvents,
-  Circle,
   Tooltip,
-  withLeaflet,
   MapContainer,
   useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-routing-machine";
-import { createControlComponent } from "@react-leaflet/core";
-
 import ReportFacilityModal from "@components/Facility/ReportFacilityModal";
 import useGetLocation from "@hooks/useGetLocation.hook";
 import { useFetchNearestFacilities } from "@hooks/useFetchNearestFacility.hook";
@@ -30,7 +24,7 @@ import PopupInfo from "@components/MapPage/PopupInfo";
 import { MapContext } from "@context/mapContext";
 import ReviewFacilityModal from "./ReviewFacilityModal";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
-import CustomTooltip from "./CustomTooltip";
+import TooltipWrapper from "@components/Tooltip/TooltipWrapper";
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
@@ -93,20 +87,58 @@ const MapComponent = ({ className }) => {
     return (
       <div className="flex flex-col items-center justify-center space-y-1">
         <p className="text-[80%] text-black/40 font-bold">zoom</p>
-        <CustomTooltip text="hello">
+        <TooltipWrapper text="zoom in">
           <button
-            className="bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full w-[2rem] aspect-square text-[150%] transition-all ease-in-out duration-150 "
+            className="flex items-center justify-center bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full w-[2rem] aspect-square text-[150%] transition-all ease-in-out duration-150 "
             onClick={handleZoomIn}
           >
-            +
+            <svg
+              className="w-[1.2rem] aspect-square"
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokelinecap="round"
+                strokelinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fill="currentColor"
+                  d="m795.904 750.72 124.992 124.928a32 32 0 0 1-45.248 45.248L750.656 795.904a416 416 0 1 1 45.248-45.248zM480 832a352 352 0 1 0 0-704 352 352 0 0 0 0 704zm-32-384v-96a32 32 0 0 1 64 0v96h96a32 32 0 0 1 0 64h-96v96a32 32 0 0 1-64 0v-96h-96a32 32 0 0 1 0-64h96z"
+                ></path>
+              </g>
+            </svg>
           </button>
-        </CustomTooltip>
-        <button
-          className="bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full w-[2rem] aspect-square text-[150%] transition-all ease-in-out duration-150 "
-          onClick={handleZoomOut}
-        >
-          -
-        </button>
+        </TooltipWrapper>
+        <TooltipWrapper text="zoom out">
+          <button
+            className="flex items-center justify-center bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full w-[2rem] aspect-square text-[150%] transition-all ease-in-out duration-150 "
+            onClick={handleZoomOut}
+          >
+            <svg
+              className="w-[1.2rem] aspect-square"
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokelinecap="round"
+                strokelinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fill="currentColor"
+                  d="m795.904 750.72 124.992 124.928a32 32 0 0 1-45.248 45.248L750.656 795.904a416 416 0 1 1 45.248-45.248zM480 832a352 352 0 1 0 0-704 352 352 0 0 0 0 704zM352 448h256a32 32 0 0 1 0 64H352a32 32 0 0 1 0-64z"
+                ></path>
+              </g>
+            </svg>
+          </button>
+        </TooltipWrapper>
       </div>
     );
   };
@@ -128,25 +160,31 @@ const MapComponent = ({ className }) => {
     };
 
     return (
-      <button className="focus:outline-none" onClick={toggleDirections}>
-        {/* {showDirections ? "Hide" : "Show"} */}
-        <svg
-          fill="currentColor"
-          className="w-[1.9rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
-          viewBox="0 0 32 32"
-          xmlns="http://www.w3.org/2000/svg"
+      <TooltipWrapper text="Show / hide directions">
+        <button
+          className="focus:outline-none"
+          onClick={toggleDirections}
+          disabled={!selectedDirection}
         >
-          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <path d="M 16 3 C 15.23 3 14.457 3.293 13.875 3.875 L 13.75 4.03125 L 4.03125 13.75 L 3.875 13.875 C 2.711 15.039 2.711 16.961 3.875 18.125 L 13.875 28.125 C 15.039 29.289 16.961 29.289 18.125 28.125 L 28.125 18.125 C 29.289 16.961 29.289 15.039 28.125 13.875 L 18.125 3.875 C 17.543 3.293 16.77 3 16 3 z M 16 5 C 16.254 5 16.51975 5.08225 16.71875 5.28125 L 26.71875 15.28125 C 27.11675 15.67925 27.11675 16.31975 26.71875 16.71875 L 16.71875 26.71875 C 16.32075 27.11675 15.68025 27.11675 15.28125 26.71875 L 5.28125 16.71875 C 4.88325 16.32075 4.88325 15.68025 5.28125 15.28125 L 15.28125 5.28125 C 15.48025 5.08225 15.746 5 16 5 z M 17 11 L 17 14 L 13 14 C 11.895 14 11 14.895 11 16 L 11 19 L 13 19 L 13 16 L 17 16 L 17 19 L 21 15 L 17 11 z"></path>
-          </g>
-        </svg>
-      </button>
+          {/* {showDirections ? "Hide" : "Show"} */}
+          <svg
+            fill="currentColor"
+            className="w-[1.9rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M 16 3 C 15.23 3 14.457 3.293 13.875 3.875 L 13.75 4.03125 L 4.03125 13.75 L 3.875 13.875 C 2.711 15.039 2.711 16.961 3.875 18.125 L 13.875 28.125 C 15.039 29.289 16.961 29.289 18.125 28.125 L 28.125 18.125 C 29.289 16.961 29.289 15.039 28.125 13.875 L 18.125 3.875 C 17.543 3.293 16.77 3 16 3 z M 16 5 C 16.254 5 16.51975 5.08225 16.71875 5.28125 L 26.71875 15.28125 C 27.11675 15.67925 27.11675 16.31975 26.71875 16.71875 L 16.71875 26.71875 C 16.32075 27.11675 15.68025 27.11675 15.28125 26.71875 L 5.28125 16.71875 C 4.88325 16.32075 4.88325 15.68025 5.28125 15.28125 L 15.28125 5.28125 C 15.48025 5.08225 15.746 5 16 5 z M 17 11 L 17 14 L 13 14 C 11.895 14 11 14.895 11 16 L 11 19 L 13 19 L 13 16 L 17 16 L 17 19 L 21 15 L 17 11 z"></path>
+            </g>
+          </svg>
+        </button>
+      </TooltipWrapper>
     );
   };
 
@@ -157,38 +195,38 @@ const MapComponent = ({ className }) => {
       map.flyTo(latlng, 17, { duration: 2 });
     };
     return (
-      <button onClick={fly} className="">
-        <svg
-          fill="currentColor"
-          className="w-[1.7rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
-          version="1.1"
-          id="Capa_1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 493.242 493.242"
-          xmlSpace="preserve"
-        >
-          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            {" "}
-            <g>
+      <TooltipWrapper text="Locate me">
+        <button onClick={fly} className="">
+          <svg
+            fill="currentColor"
+            className="w-[1.7rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 493.242 493.242"
+            xmlSpace="preserve"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
               {" "}
-              <path d="M325.42,277.975v38.539c81.537,12.266,129.332,42.092,129.332,64.984c0,29.521-79.18,70.689-208.131,70.689 c-128.95,0-208.131-41.169-208.131-70.689c0-22.893,47.796-52.719,129.35-64.984v-38.555C77.221,290.91,0,326.248,0,381.498 c0,70.912,127.07,109.18,246.621,109.18s246.621-38.267,246.621-109.18C493.242,326.248,416.039,290.927,325.42,277.975z"></path>{" "}
-              <path d="M167.395,222.214c7.088,0,13.492-4.189,16.313-10.691l15.088-34.571v178.053c0,10.737,8.699,19.436,19.438,19.436 c10.737,0,19.435-8.699,19.435-19.436V235.819h17.922v119.186c0,10.737,8.699,19.436,19.438,19.436 c10.738,0,19.436-8.699,19.436-19.436V176.936l15.087,34.588c2.82,6.501,16.315,10.691,16.315,10.691 c5.99,0,11.613-3.026,14.896-8.046c3.298-5.035,3.824-11.358,1.418-16.87l-36.737-84.28c-6.66-15.277-21.763-25.171-38.444-25.171 h-40.735c-16.682,0-31.785,9.877-38.444,25.171l-36.754,84.28c-2.39,5.496-1.864,11.835,1.435,16.87 C155.778,219.187,161.387,222.214,167.395,222.214z"></path>{" "}
-              <path d="M246.621,74.321c12.73,0,23.865-6.692,30.221-16.712c3.538-5.545,5.657-12.092,5.657-19.151 c0-19.835-16.074-35.893-35.878-35.893c-19.803,0-35.861,16.059-35.861,35.893c0,7.06,2.117,13.607,5.641,19.166 C222.771,67.629,233.891,74.321,246.621,74.321z"></path>{" "}
-            </g>{" "}
-          </g>
-        </svg>
-      </button>
+              <g>
+                {" "}
+                <path d="M325.42,277.975v38.539c81.537,12.266,129.332,42.092,129.332,64.984c0,29.521-79.18,70.689-208.131,70.689 c-128.95,0-208.131-41.169-208.131-70.689c0-22.893,47.796-52.719,129.35-64.984v-38.555C77.221,290.91,0,326.248,0,381.498 c0,70.912,127.07,109.18,246.621,109.18s246.621-38.267,246.621-109.18C493.242,326.248,416.039,290.927,325.42,277.975z"></path>{" "}
+                <path d="M167.395,222.214c7.088,0,13.492-4.189,16.313-10.691l15.088-34.571v178.053c0,10.737,8.699,19.436,19.438,19.436 c10.737,0,19.435-8.699,19.435-19.436V235.819h17.922v119.186c0,10.737,8.699,19.436,19.438,19.436 c10.738,0,19.436-8.699,19.436-19.436V176.936l15.087,34.588c2.82,6.501,16.315,10.691,16.315,10.691 c5.99,0,11.613-3.026,14.896-8.046c3.298-5.035,3.824-11.358,1.418-16.87l-36.737-84.28c-6.66-15.277-21.763-25.171-38.444-25.171 h-40.735c-16.682,0-31.785,9.877-38.444,25.171l-36.754,84.28c-2.39,5.496-1.864,11.835,1.435,16.87 C155.778,219.187,161.387,222.214,167.395,222.214z"></path>{" "}
+                <path d="M246.621,74.321c12.73,0,23.865-6.692,30.221-16.712c3.538-5.545,5.657-12.092,5.657-19.151 c0-19.835-16.074-35.893-35.878-35.893c-19.803,0-35.861,16.059-35.861,35.893c0,7.06,2.117,13.607,5.641,19.166 C222.771,67.629,233.891,74.321,246.621,74.321z"></path>{" "}
+              </g>{" "}
+            </g>
+          </svg>
+        </button>
+      </TooltipWrapper>
     );
   };
-
-  // ---------------------MARKERS----------------------------------------------------//
 
   // RENDER USER MARKER
   const UserMarker = ({ position, text }) => {
@@ -216,20 +254,10 @@ const MapComponent = ({ className }) => {
     setShowReviewModal(false);
   };
 
-  // const closeReportModal = (e) => {
-  //   e.stopPropagation();
-  //   e.preventDefault();
-  //   setShowReportModal(false);
-  // };
-
-  // const closeReportModalOnFormSubmit = () => {
-  //   setShowReportModal(false);
-  // };
-
   // RENDER NEAREST FACILITIES MARKER
   const FacilitiesMarker = () => {
     const markerRef = useRef(null);
-    const map = useMap();
+    // const map = useMap();
     const [isSelected, setIsSelected] = useState(null);
     const [openReport, setOpenReport] = useState(null);
     const [openReview, setOpenReview] = useState(null);
@@ -516,6 +544,7 @@ const MapComponent = ({ className }) => {
             />
 
             <ToggleDirection />
+
             <ZoomControl />
           </div>
         </MapContainer>

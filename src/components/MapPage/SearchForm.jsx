@@ -1,9 +1,10 @@
 import InputField from "@components/FormFields/InputField";
 import SelectDropdown from "@components/FormFields/SelectDropdown";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import nigerianStates from "@libs/nigerian-states.json";
 import facilityTypes from "@libs/facility-types.json";
+import { MapContext } from "@context/mapContext";
 
 const SearchForm = ({
   searchTerm,
@@ -14,6 +15,7 @@ const SearchForm = ({
   setFacilityTypeInput,
   setDefaultApi,
 }) => {
+  const { searchFacilities } = useContext(MapContext);
   const locationOptions = nigerianStates;
   const facilityOptions = facilityTypes;
   const [isLocationOpen, setIsLocationOpen] = useState(false);
@@ -40,9 +42,23 @@ const SearchForm = ({
     setIsFacilityTypeOpen(!isFacilityTypeOpen);
   };
 
+  // const filteredData = () => {
+  //   const resultArray = searchFacilities?.pages[0]?.data?.filter(
+  //     (result) =>
+  //       result.reg_fac_name.includes(searchTerm) ||
+  //       result.statename.includes(locationInput)
+  //   );
+  //   // setDataArray(resultArray);
+  //   setSearchTerm(resultArray);
+  // };
+
+  // console.log(searchFacilities?.pages[0]?.data);
+  // console.log(searchTerm);
+
   const submitSearch = (event) => {
     event.preventDefault();
     setSearchTerm(searchTerm);
+    // filteredData();
     setDefaultApi(false);
   };
 

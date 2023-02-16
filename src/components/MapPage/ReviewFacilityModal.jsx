@@ -1,5 +1,8 @@
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { authInstanceAxios } from "@config/axiosInstance";
+import { FETCH_FACILITY_REVIEWS_KEY } from "@config/queryKeys";
 import React, { useEffect, useState } from "react";
+import { useInfiniteQuery } from "react-query";
 import Reviewers from "./Reviewers";
 import StarRatings from "./StarRatings";
 import WriteReview from "./WriteReview";
@@ -17,15 +20,38 @@ const ReviewFacilityModal = ({
     const result = await authInstanceAxios.get(
       `/review/?facility_id=${facility.id}`
     );
-    setfacilityReviewData(result?.data?.data);
-    // return result?.data;
+    return result?.data;
   };
 
-  useEffect(() => {
-    fetchFacilityReviews();
-  }, []);
-
-  console.log(facilityReviewData);
+  // create a useinfinite query hook
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    fetchMore,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
+  } = useInfiniteQuery(
+    [FETCH_FACILITY_REVIEWS_KEY, facility.id],
+    fetchFacilityReviews,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage?.next_page_url) {
+          return pages?.length + 1;
+        } else refetch;
+      },
+      getFetchMore: (lastPage, pages) => {
+        if (lastPage.length > 0) {
+          return pages.length + 1;
+        }
+        return false;
+      },
+      // enabled: false,
+    }
+  );
 
   if (!visible) return null;
 
@@ -97,10 +123,11 @@ const ReviewFacilityModal = ({
                   </svg>
                 </span>
                 <span className="flex space-x-2 items-center">
-                  <p>({facilityReviewData?.length}+)</p>
+                  <p>({data?.pages[0]?.data.length}+)</p>
                   <span
                     onClick={() => {
                       setShowWriteReview(true);
+                      refetch();
                     }}
                     className=" whitespace-nowrap text-black/80 font-extrabold px-1 border border-primary py-1 text-[90%] rounded-md lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
                   >
@@ -115,8 +142,8 @@ const ReviewFacilityModal = ({
               <span className="text-[70%] text-primary font-bold">
                 Total Reviews
               </span>
-              <span className=" lowercase font-extrabold text-[200%]">
-                {facilityReviewData?.length}
+              <span className="lowercase font-extrabold text-[200%]">
+                {data?.pages[0]?.data.length}
               </span>
             </div>
             <div className="w-full h-full border-r border-black/20"></div>
@@ -136,22 +163,81 @@ const ReviewFacilityModal = ({
 
           {/* reviewers list */}
           <div className="relative flex flex-col py- border-t border-black/20 h-[10rem] overflow-y-scroll z-[3000]">
-            {/* fetch and map list of reviews here */}
-            {facilityReviewData?.map((facilityReview) => (
-              <Reviewers
-                key={facilityReview.id}
-                id={facilityReview.id}
-                rating={facility.average_rating}
-                content={facilityReview.content}
-              />
-            ))}
+            {/* fetch and render list of reviews here */}
+            <>
+              {status === "loading" && <LoadingSpinner text="loading" />}
+              {status === "error" && (
+                <div>An error occurred: {error.message}</div>
+              )}
+              {status === "success" && (
+                <>
+                  {data?.pages &&
+                  Array.isArray(data.pages) &&
+                  data?.pages.length !== 0 ? (
+                    data?.pages.map((result) => {
+                      return result?.data?.map((facilityReview) => (
+                        <Reviewers
+                          key={facilityReview.id}
+                          id={facilityReview.id}
+                          rating={facilityReview.rating}
+                          content={facilityReview.content}
+                          created_at={facilityReview.created_at.slice(0, 10)}
+                        />
+                      ));
+                    })
+                  ) : (
+                    <div className="w-full h-full mt-4 flex flex-col items-center justify-center text-black/20">
+                      {/* you can add svg */}
+                      <h4 className="text-xl font-semibold ">
+                        Review not found
+                      </h4>
+                    </div>
+                  )}
+                  <div>
+                    <div
+                      disabled={!hasNextPage || isFetchingNextPage}
+                      className="w-fit mx-auto pb-4"
+                    >
+                      {isFetchingNextPage ? (
+                        <LoadingSpinner text="loading" />
+                      ) : hasNextPage ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault;
+                            fetchNextPage();
+                          }}
+                          className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
+                        >
+                          Load more
+                        </button>
+                      ) : (
+                        <div className="w-full h-full my-4 flex flex-col items-center justify-center text-black/20">
+                          {/* svg optional */}
+                          <h4 className="text-xl font-semibold ">
+                            no more reviews
+                          </h4>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    {isFetching && !isFetchingNextPage ? (
+                      <LoadingSpinner text="loading" />
+                    ) : null}
+                  </div>
+                </>
+              )}
+            </>
           </div>
         </div>
       ) : (
         <div className="relative z-[2001] w-[80vw] md:w-[40vw] lg:w-[30vw]  aspect-square bg-white font-semibold md:p-8 p-4 font-sans justify-center mx-auto shadow-2xl rounded-md transition-all duration-500 ease-in-out transform translate-x-1">
           <WriteReview
             facility={facility}
-            onClose={() => setShowWriteReview(false)}
+            onClose={() => {
+              setShowWriteReview(false), refetch();
+            }}
           />
         </div>
       )}
@@ -160,11 +246,3 @@ const ReviewFacilityModal = ({
 };
 
 export default ReviewFacilityModal;
-
-{
-  /* reviews */
-}
-
-{
-  /* put write review here */
-}

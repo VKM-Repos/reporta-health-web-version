@@ -10,12 +10,7 @@ import React, { useContext, useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
 import FacilityItem from "./FacilityItem";
 
-const FacilityList = ({
-  searchTerm,
-  defaultApi,
-  setDefaultApi,
-  setCloseToggle,
-}) => {
+const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
   const {
     status,
     data,
@@ -99,7 +94,14 @@ const FacilityList = ({
               data?.pages.length !== 0 ? (
                 data?.pages.map((result) => {
                   return result?.data?.map((facility) => (
-                    <div key={facility.id}>
+                    <div
+                      key={facility.id}
+                      onClick={() => {
+                        setSelectedFacility(facility);
+                        toggle();
+                        refetch();
+                      }}
+                    >
                       <FacilityItem
                         reg_fac_name={facility.reg_fac_name}
                         average_rating={facility.average_rating}
@@ -200,6 +202,8 @@ const FacilityList = ({
                       key={facility.id}
                       onClick={() => {
                         setSelectedFacility(facility);
+                        toggle();
+                        searchRefetch();
                       }}
                     >
                       <FacilityItem

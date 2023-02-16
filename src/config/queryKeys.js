@@ -10,3 +10,5 @@ export const USER_QUERY_KEY = "USER_QUERY_KEY"; // fetch user details key
 export const SEARCH_FACILITY_KEY = "SEARCH_FACILITY_KEY"; // search facility key
 
 export const FETCH_NEAREST_FACILITY_KEY = "FETCH_NEAREST_FACILITY_KEY"; // fetch nearest facility key
+
+export const FETCH_FACILITY_REVIEWS_KEY = "FETCH_FACILITY_REVIEWS_KEY"; // fetch facility reviews key
