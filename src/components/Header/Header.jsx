@@ -61,16 +61,16 @@ const Header = () => {
 
   return (
     <header className="w-full absolute top-0 bg-transparent z-50">
-      <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-2  ">
+      <nav className=" mx-auto grid grid-cols-2 lg:grid-cols-5 items-center justify-between px-6 py-4  ">
         {/* logo */}
         <Link href="/">
-          <a className="w-[5rem] h-[2rem]">
+          <a className="w-[7rem] h-[3rem]">
             <Image src={logo} alt="reporta-health-logo" />
           </a>
         </Link>
 
         {/* nav links */}
-        <div className="hidden lg:col-span-3 lg:flex flex-row items-center justify-center mr-16 text-seconary text-sm">
+        <div className="hidden lg:col-span-3 lg:flex flex-row items-center justify-center mr-16 text-seconary text-lg">
           <Link href="/">
             <a
               className={
@@ -172,7 +172,7 @@ const Header = () => {
           ) : (
             <div className="flex justify-end">
               <Link href="login">
-                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-sm font-normal px-6 py-1 border border-primary rounded-xl lg:transition ease-in-out lg:hover:scale-95 duration-300">
+                <button className="hidden text-primary tracking-wide leading-loose lg:flex items-center text-lg font-normal px-6 py-2 border border-primary rounded-lg lg:transition ease-in-out lg:hover:scale-95 duration-300">
                   Login
                 </button>
               </Link>

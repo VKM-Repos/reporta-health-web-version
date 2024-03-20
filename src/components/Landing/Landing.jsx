@@ -38,7 +38,7 @@ const Landing = () => {
   };
 
   return (
-    <section className="w-screen font-jarkata">
+    <section className="w-screen h-screen font-jarkata bg-background grid grid-cols-1 lg:grid-cols-5 justify-items-stretch">
       {/* TODO: REPLACE DIALOGUE MODAL WITH TOAST COMPONENT */}
       <ToastBox
         show={showDialogue}
@@ -46,12 +46,12 @@ const Landing = () => {
         title="Network error"
         message="There has been an error, please refresh page and try again"
       />
-      <div className="w-screen lg:w-2/3 bg-background noisy min-h-screen pt-[8%]">
-        <div className="lg:w-4/6 w-screen relative flex flex-col items-start justify-center px-[5%]">
-          <h1 className="text-black font-extrabold lg:text-[3.5vw] md:text-[5vw] text-[8vw] tracking-normal leading-tight mt-[4rem]">
+      <div className="w-full lg:col-span-3 flex flex-col items-start justify-center">
+        <div className="lg:w-4/6 w-full relative flex flex-col items-start justify-center px-[5%]">
+          <h1 className="text-black font-extrabold lg:text-[70px] md:text-[50px] text-[45px] leading-none tracking-normal">
             Find healthcare facilites close to you.
           </h1>
-          <p className="text-black lg:text-[0.9rem] md:text-[1rem] text-xs tracking-wide leading-normal my-6 lg:w-[80%]">
+          <p className="text-black text-lg tracking-wide leading-normal my-6 lg:w-[80%]">
             Reporta Health allows you search for the nearest healthcare
             facilities to you. It also allows you report unregistered facilities
             to the supervising authorities.
@@ -61,14 +61,14 @@ const Landing = () => {
             <button
               type="submit"
               value="Find facility"
-              className="md:w-fit w-full px-8 lg:col-span-1 col-span-2 py-4 text-xs lg:text-sm rounded-md bg-primary lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer text-white"
+              className="md:w-fit w-full px-8 lg:col-span-1 col-span-2 py-4 text-sm lg:text-sm rounded-md bg-primary lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer text-white"
               disabled={isLoading}
               onClick={ShowMyLocation}
             >
-              Search nearest facility
+              Search nearest facilities
             </button>
           ) : status === "error" ? (
-            <div>error</div>
+            <div>error: cannot get your location</div>
           ) : (
             <div>
               <LoadingSpinner text="getting your location" />
@@ -82,16 +82,7 @@ const Landing = () => {
               backgroundRepeat: "no-repeat",
               backgroundPosition: "top center",
             }}
-            className="hidden lg:block absolute z-20 top-[30%] lg:-right-[45%] w-[55%] -right-10 aspect-square "
-          ></div>
-          <div
-            style={{
-              backgroundImage: `url(${landing.src})`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "top center",
-            }}
-            className="lg:hidden my-12 w-full aspect-square "
+            className="hidden lg:block absolute z-20 top-[10%] lg:-right-[60%] w-[70%] -right-10 aspect-square "
           ></div>
         </div>
       </div>
@@ -102,7 +93,7 @@ const Landing = () => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "top center",
         }}
-        className="hidden z-20 lg:block absolute top-[15%] w-[50%] -right-10 aspect-square shadow-xl"
+        className="w-full lg:col-span-2"
       ></div>
     </section>
   );

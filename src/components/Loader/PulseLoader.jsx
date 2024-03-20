@@ -22,10 +22,7 @@ const PulseLoader = () => {
             <h6 className="w-2/3 my-2 h-2 bg-black bg-opacity-20 rounded-lg"></h6>
             <h6 className="w-3/4 h-2 bg-black bg-opacity-20 rounded-lg"></h6>
           </div>
-          <div className="animate-pulse basis-1/5 flex flex-col items-end lg:items-center justify-start">
-            <span className="w-10 h-10 p-2 bg-black bg-opacity-20 rounded-full"></span>
-            <h6 className="my-2 w-16 h-2 bg-black bg-opacity-20 rounded-lg "></h6>
-          </div>
+          <div className="animate-pulse basis-1/5 flex flex-col items-end lg:items-center justify-start"></div>
         </div>
       ))}
     </div>
