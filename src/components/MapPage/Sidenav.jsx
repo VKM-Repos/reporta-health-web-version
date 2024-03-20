@@ -16,7 +16,7 @@ export default function Sidenav() {
   return (
     <aside
       ref={ref}
-      className={`w-[18rem] md:w-[22rem] bg-white/70 backdrop-blur-sm inset-y-0 -left-[100%] text-white h-screen  relative z-[1000]  pt-1 grid grid-cols-1   justify-items-stretch
+      className={`w-[20rem] md:w-[26rem] bg-white/70 backdrop-blur-sm inset-y-0 -left-[100%] text-white h-screen  relative z-[1000]  pt-1 grid grid-cols-1   justify-items-stretch
         ${
           open
             ? "translate-x-full fixed duration-300 ease-in transition-all"
@@ -34,7 +34,7 @@ export default function Sidenav() {
               setDefaultApi(true);
             }, 1000);
         }}
-        className="p-2 rounded-md bg-black/40 backdrop-blur fixed top-[9%] -right-[2.9rem] md:-right-[3rem] lg:-right-[3rem] text-[90%] text-black focus:outline-none text-center lg:flex items-center  justify-center cursor-pointer"
+        className="p-2 rounded-md bg-black/40 backdrop-blur fixed top-[9%] -right-[2.9rem] md:-right-[3rem] lg:-right-[3rem] text-black focus:outline-none text-center lg:flex items-center  justify-center cursor-pointer"
       >
         {open ? (
           <TooltipWrapper text="hide facilities">
@@ -46,7 +46,7 @@ export default function Sidenav() {
               viewBox="0 0 492 492"
               xmlSpace="preserve"
               fill="currentColor"
-              className="w-[1.7rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
+              className="w-6 aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
@@ -76,7 +76,7 @@ export default function Sidenav() {
               viewBox="0 0 512.00 512.00"
               xmlpace="preserve"
               fill="currentColor"
-              className="w-[1.8rem] aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
+              className="w-6 aspect-square bg-white/30 hover:bg-primary hover:text-white text-black/40 font-extrabold rounded-full p-1"
               strokeWidth="16.384"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

@@ -13,7 +13,7 @@ function TooltipWrapper({ children, text, className }) {
 
   return (
     <div
-      className={`relative md:inline-block hidden ${className}`}
+      className={`relative md:inline-block ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

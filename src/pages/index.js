@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import "bootstrap/dist/css/bootstrap.css";
 import Landing from "@components/Landing/Landing";
 import Layout from "@components/Layout/Layout";
 
@@ -9,7 +8,8 @@ export default function Home() {
       <Layout
         pageMeta={{
           title: "Reporta Health - Search and report a facility",
-          description: "give any description here",
+          description:
+            "A crowd sourcing health facility app for checking registered and unregistered health facilities and reporting unregistered health facilities for enhanced quality health service delivery in Nigeria.",
         }}
       >
         <Landing />

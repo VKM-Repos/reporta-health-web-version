@@ -1,6 +1,7 @@
 import { MapContext } from "@context/mapContext";
 import React, { useContext, useState } from "react";
 import StarRatings from "./StarRatings";
+import useGetLocation from "@hooks/useGetLocation.hook";
 
 export default function PopupInfo({
   facility,
@@ -8,6 +9,22 @@ export default function PopupInfo({
   openReviewModal,
 }) {
   const { setSelectedDirection } = useContext(MapContext);
+
+  const location = useGetLocation();
+
+  const handleGetDirection = () => {
+    window.open(
+      "https://www.google.com/maps/dir/?api=1&origin=" +
+        location.coordinates.lat +
+        "," +
+        location.coordinates.lng +
+        "&destination=" +
+        facility.latitude +
+        "," +
+        facility.longitude +
+        "&travelmode=driving"
+    );
+  };
   return (
     <section className="relative">
       <div className="w-[70vw] md:w-[35vw] lg:w-[25vw] aspect-square bg-white font-semibold px-2 font-sans">
@@ -116,9 +133,10 @@ export default function PopupInfo({
             Report facility
           </button>
           <button
-            onClick={() => {
-              setSelectedDirection(facility);
-            }}
+            // onClick={() => {
+            //   setSelectedDirection(facility);
+            // }}
+            onClick={handleGetDirection}
             className="bg-primary w-fit text-[90%] font-light px-3 py-2 rounded-md flex items-end justify-self-end text-white lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer"
           >
             Get Direction

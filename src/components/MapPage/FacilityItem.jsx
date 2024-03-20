@@ -21,7 +21,7 @@ const FacilityItem = ({
           <div className="flex flex-col space-y-2 items-start justify-start">
             <span className="">
               <StarRatings
-                className="w-[1rem]"
+                className="w-[0.8rem] text-secondary"
                 rating={Math.round(average_rating)}
               />
             </span>

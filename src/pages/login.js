@@ -200,7 +200,7 @@ export default function Login() {
         </Button>
         <p className="mt-5 text-center text-sm ">
           Don&apos;t have an account yet?{" "}
-          <Link href="signup">
+          <Link href="/signup">
             <a className="text-primary">Sign up</a>
           </Link>{" "}
         </p>
