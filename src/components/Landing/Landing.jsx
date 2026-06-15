@@ -65,7 +65,7 @@ const Landing = () => {
   };
 
   return (
-    <section className="relative h-screen w-screen overflow-hidden font-jarkata">
+    <section className="relative min-h-screen w-screen overflow-hidden font-jarkata">
       {/* background image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -92,7 +92,7 @@ const Landing = () => {
       />
 
       {/* content */}
-      <div className="relative z-10 flex h-full flex-col px-6 lg:px-10">
+      <div className="relative z-10 flex min-h-screen flex-col px-6 lg:px-10">
         {/* nav */}
         <nav className="flex items-center justify-between py-6">
           <Link href="/">
@@ -151,7 +151,7 @@ const Landing = () => {
             type="button"
             onClick={ShowMyLocation}
             disabled={isLoading}
-            className="mt-16 flex items-center gap-2 rounded-md border border-white/20 bg-primary px-6 py-3.5 text-sm text-white shadow-md transition duration-300 hover:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
+            className="mt-10 flex items-center gap-2 rounded-md border border-white/20 bg-primary px-6 py-3.5 text-sm text-white shadow-md transition duration-300 hover:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
           >
             <FiMapPin className="text-base" />
             Find Healthcare Facilities Near You
@@ -159,7 +159,7 @@ const Landing = () => {
         </div>
 
         {/* feature card */}
-        <div className="mx-auto mb-24 w-full max-w-4xl -translate-y-12 rounded-xl border border-white/15 bg-white/5 px-6 py-6 backdrop-blur-sm md:px-10">
+        <div className="mx-auto mb-10 mt-8 w-full max-w-4xl rounded-xl border border-white/15 bg-white/5 px-6 py-6 backdrop-blur-sm md:px-10">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {features.map((feature) => (
               <div key={feature.title} className="flex items-start gap-3">
