@@ -1,5 +1,5 @@
 import PulseLoader from "@components/Loader/PulseLoader";
-import { authInstanceAxios } from "@config/axiosInstance";
+import { publicInstanceAxios } from "@config/axiosInstance"; // changed: was authInstanceAxios, search is public
 import {
   FETCH_NEAREST_FACILITY_KEY,
   SEARCH_FACILITY_KEY,
@@ -16,7 +16,6 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     data,
     error,
     isFetching,
-    fetchMore,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
@@ -25,22 +24,12 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     enabled: defaultApi,
     cacheTime: 3600000,
     refetchOnWindowFocus: false,
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage?.next_page_url) {
-        return pages?.length + 1;
-      } else refetch;
-    },
-    getFetchMore: (lastPage, pages) => {
-      if (lastPage.length > 0) {
-        return pages.length + 1;
-      }
-      return false;
-    },
+    getNextPageParam: () => null, // changed: new API returns all results at once
   });
 
-  const searchFacility = async () => {
-    const result = await authInstanceAxios.get(`/search/?query=${searchTerm}`);
-    return result?.data?.data;
+  const searchFacility = async ({ pageParam = 1 }) => { // changed: added pageParam for consistency
+    const result = await publicInstanceAxios.get(`/facilities/?search=${searchTerm}`); // changed: was /search/?query=, switched to publicInstanceAxios
+    return result?.data; // changed: was result?.data?.data, new API doesn't nest under .data
   };
 
   const {
@@ -48,25 +37,16 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     data: searchData,
     error: searchError,
     isFetching: searchIsFetching,
-    fetchMore: searchFetchMore,
     hasNextPage: searchHasNextPage,
     isFetchingNextPage: searchIsFetchingNextPage,
     fetchNextPage: searchFetchNextPage,
     refetch: searchRefetch,
   } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchTerm], searchFacility, {
-    enabled: !defaultApi,
+    enabled: !defaultApi && !!searchTerm, // changed: added !!searchTerm guard so it doesn't fire with empty string
     cacheTime: 3600000,
     refetchOnWindowFocus: false,
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage?.next_page_url) {
-        return pages?.length + 1;
-      } else searchRefetch;
-    },
-    getFetchMore: (lastPage, pages) => {
-      if (lastPage.length > 0) {
-        return pages.length + 1;
-      }
-      return false;
+    getNextPageParam: (lastPage) => {
+      return lastPage?.next ? true : null; // changed: was checking next_page_url, new API uses next (DRF pagination)
     },
   });
 
@@ -92,8 +72,8 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
               {data?.pages &&
               Array.isArray(data.pages) &&
               data?.pages.length !== 0 ? (
-                data?.pages.map((result) => {
-                  return result?.data?.map((facility) => (
+                data?.pages.map((page) => {
+                  return page?.results?.map((facility) => ( // changed: was result?.data?.map, new API uses results[]
                     <div
                       key={facility.id}
                       onClick={() => {
@@ -103,11 +83,11 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                       }}
                     >
                       <FacilityItem
-                        reg_fac_name={facility.reg_fac_name}
+                        reg_fac_name={facility.name} // changed: was facility.reg_fac_name, new API uses name
                         average_rating={facility.average_rating}
-                        facility_level={facility.facility_level}
-                        street_name={facility.street_name}
-                        statename={facility.statename}
+                        facility_level={facility.facility_type} // changed: was facility.facility_level, new API uses facility_type
+                        street_name={facility.address} // changed: was facility.street_name, new API uses address
+                        statename={facility.state} // changed: was facility.statename, new API uses state
                         operational_hours={facility.operational_hours}
                         services={facility.services}
                         getFacility={() => {
@@ -133,7 +113,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                       </g>
                     </g>
                   </svg>
-                  <h4 className="text-xl font-semibold ">Location not found</h4>
+                  <h4 className="text-xl font-semibold">Location not found</h4>
                 </div>
               )}
               <div>
@@ -147,36 +127,14 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        e.preventDefault;
+                        e.preventDefault();
                         fetchNextPage();
                       }}
-                      className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
+                      className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer"
                     >
                       Load more
                     </button>
-                  ) : (
-                    <div className="w-full h-full my-[1rem] flex flex-col items-center justify-center text-black/20">
-                      <svg
-                        className="w-1/3"
-                        viewBox="0 0 48 48"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g id="Layer_2" data-name="Layer 2">
-                          <g id="invisible_box" data-name="invisible box">
-                            <rect width="48" height="48" fill="none" />
-                          </g>
-                          <g
-                            id="icons_Q2"
-                            data-name="icons Q2"
-                            fill="currentColor"
-                          >
-                            <path d="M24,2C14.1,2,7,10.1,7,20S18.5,41.3,22.6,45.4a1.9,1.9,0,0,0,2.8,0C29.5,41.3,41,30.1,41,20S33.9,2,24,2Zm0,8a8.7,8.7,0,0,1,4.8,1.4L16.4,23.8A8.7,8.7,0,0,1,15,19,9,9,0,0,1,24,10Zm0,18a8.7,8.7,0,0,1-4.8-1.4L31.6,14.2A8.7,8.7,0,0,1,33,19,9,9,0,0,1,24,28Z" />
-                          </g>
-                        </g>
-                      </svg>
-                      <h4 className="text-xl font-semibold ">no data</h4>
-                    </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
               <div>
@@ -196,8 +154,8 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
               {searchData?.pages &&
               Array.isArray(searchData.pages) &&
               searchData?.pages.length !== 0 ? (
-                searchData?.pages.map((result) => {
-                  return result?.data?.map((facility) => (
+                searchData?.pages.map((page) => {
+                  return page?.results?.map((facility) => ( // changed: was result?.data?.map, new API uses results[]
                     <div
                       key={facility.id}
                       onClick={() => {
@@ -207,11 +165,11 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                       }}
                     >
                       <FacilityItem
-                        reg_fac_name={facility.reg_fac_name}
+                        reg_fac_name={facility.name} // changed: was facility.reg_fac_name, new API uses name
                         average_rating={facility.average_rating}
-                        facility_level={facility.facility_level}
-                        street_name={facility.street_name}
-                        statename={facility.statename}
+                        facility_level={facility.facility_type} // changed: was facility.facility_level, new API uses facility_type
+                        street_name={facility.address} // changed: was facility.street_name, new API uses address
+                        statename={facility.state} // changed: was facility.statename, new API uses state
                         operational_hours={facility.operational_hours}
                         services={facility.services}
                         direction={facility}
@@ -235,7 +193,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                       </g>
                     </g>
                   </svg>
-                  <h4 className="text-xl font-semibold ">Location not found</h4>
+                  <h4 className="text-xl font-semibold">Location not found</h4>
                 </div>
               )}
               <div>
@@ -249,36 +207,14 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        e.preventDefault;
+                        e.preventDefault();
                         searchFetchNextPage();
                       }}
-                      className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer "
+                      className="w-full my-4 px-8 py-2 font-semibold text-primary text-center mx-auto cursor-pointer"
                     >
                       Load more
                     </button>
-                  ) : (
-                    <div className="w-full h-full my-[1rem] flex flex-col items-center justify-center text-black/20">
-                      <svg
-                        className="w-1/3"
-                        viewBox="0 0 48 48"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g id="Layer_2" data-name="Layer 2">
-                          <g id="invisible_box" data-name="invisible box">
-                            <rect width="48" height="48" fill="none" />
-                          </g>
-                          <g
-                            id="icons_Q2"
-                            data-name="icons Q2"
-                            fill="currentColor"
-                          >
-                            <path d="M24,2C14.1,2,7,10.1,7,20S18.5,41.3,22.6,45.4a1.9,1.9,0,0,0,2.8,0C29.5,41.3,41,30.1,41,20S33.9,2,24,2Zm0,8a8.7,8.7,0,0,1,4.8,1.4L16.4,23.8A8.7,8.7,0,0,1,15,19,9,9,0,0,1,24,10Zm0,18a8.7,8.7,0,0,1-4.8-1.4L31.6,14.2A8.7,8.7,0,0,1,33,19,9,9,0,0,1,24,28Z" />
-                          </g>
-                        </g>
-                      </svg>
-                      <h4 className="text-xl font-semibold ">no data</h4>
-                    </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
               <div>

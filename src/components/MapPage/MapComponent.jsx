@@ -25,6 +25,8 @@ import { MapContext } from "@context/mapContext";
 import ReviewFacilityModal from "./ReviewFacilityModal";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import TooltipWrapper from "@components/Tooltip/TooltipWrapper";
+import { useFacilityClusters } from "@hooks/useFacilityClusters.hook";
+
 
 const icon = L.icon({
   iconUrl: "map-marker.png",
@@ -55,9 +57,9 @@ const MapComponent = ({ className }) => {
             lng: position.coords.longitude,
           });
         },
-        () => {
-          console.error("Geolocation is not supported by your browser.");
-        }
+        (err) => { // changed: now logs the actual GeolocationPositionError
+        console.error("Geolocation error:", err.code, err.message);
+      }
       );
     }
   }, []);
@@ -276,11 +278,11 @@ const MapComponent = ({ className }) => {
 
     return (
       <>
-        {data?.pages.map((result) => {
-          return result?.data?.map((facility, index) => (
+        {data?.pages.map((page) => {
+          return page?.results?.map((facility, index) => ( // changed: was result?.data?.map, new API uses results[]
             <Fragment key={facility.id}>
               <Marker
-                position={[facility?.latitude, facility?.longitude]}
+                position={[facility?.location?.latitude, facility?.location?.longitude]}
                 icon={icon}
                 ref={markerRef}
               >
@@ -336,6 +338,137 @@ const MapComponent = ({ className }) => {
     );
   };
 
+  // RENDER CLUSTERS OR INDIVIDUAL FACILITIES BASED ON VIEWPORT
+const ClusterLayer = () => {
+  const map = useMap();
+  const { data, fetchByBounds, fetchNearby } = useFacilityClusters();
+  const modeRef = useRef("loading"); // 'nearby' | 'browse'
+  const moveTimerRef = useRef(null);
+  const zoomTimerRef = useRef(null);
+
+  const getBboxString = () => {
+    const bounds = map.getBounds();
+    return `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`;
+  };
+
+  const handleFetchByBounds = useCallback(() => {
+    fetchByBounds(getBboxString(), map.getZoom());
+  }, [map, fetchByBounds]);
+
+  useEffect(() => {
+    // on mount: try geolocation first, fall back to browse mode
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+          modeRef.current = "nearby";
+          map.setView([coords.latitude, coords.longitude], 13, { animate: true });
+          fetchNearby(coords.latitude, coords.longitude, map.getZoom());
+        },
+        () => {
+          modeRef.current = "browse";
+          handleFetchByBounds();
+        },
+        { timeout: 6000, maximumAge: 60000 }
+      );
+    } else {
+      modeRef.current = "browse";
+      handleFetchByBounds();
+    }
+
+    const handleMoveEnd = () => {
+      modeRef.current = "browse";
+      clearTimeout(moveTimerRef.current);
+      moveTimerRef.current = setTimeout(handleFetchByBounds, 600);
+    };
+
+    const handleZoomEnd = () => {
+      modeRef.current = "browse";
+      clearTimeout(zoomTimerRef.current);
+      clearTimeout(moveTimerRef.current);
+      zoomTimerRef.current = setTimeout(handleFetchByBounds, 200);
+    };
+
+    map.on("moveend", handleMoveEnd);
+    map.on("zoomend", handleZoomEnd);
+
+    return () => {
+      map.off("moveend", handleMoveEnd);
+      map.off("zoomend", handleZoomEnd);
+      clearTimeout(moveTimerRef.current);
+      clearTimeout(zoomTimerRef.current);
+    };
+  }, [map, handleFetchByBounds, fetchNearby]);
+
+  const handleClusterZoomIn = (lat, lng, bounds) => {
+    if (bounds) {
+      map.fitBounds([
+        [bounds.min_lat, bounds.min_lng],
+        [bounds.max_lat, bounds.max_lng],
+      ]);
+    } else {
+      map.setView([lat, lng], map.getZoom() + 3, { animate: true });
+    }
+  };
+
+  if (!data) return null;
+
+  if (data.type === "clusters") {
+    return (
+      <>
+        {data.results.map((c, i) => {
+          if (!c.lat || !c.lng) return null;
+          return (
+            <Marker
+              key={i}
+              position={[c.lat, c.lng]}
+              icon={L.divIcon({
+                className: "",
+                html: `<div style="
+                  background:#0f6b4f;color:#fff;border-radius:50%;
+                  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+                  font-weight:700;font-size:13px;border:2px solid #fff;
+                  box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;
+                ">${c.count > 999 ? Math.round(c.count / 1000) + "k" : c.count}</div>`,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+              })}
+              eventHandlers={{
+                click: () => handleClusterZoomIn(c.lat, c.lng, c.bounds),
+              }}
+            >
+              <Popup>
+                {c.label && <div className="font-bold text-primary">{c.label}</div>}
+                <div>{c.count} facilities</div>
+                {c.avg_rating && <div>⭐ {c.avg_rating} avg rating</div>}
+              </Popup>
+            </Marker>
+          );
+        })}
+      </>
+    );
+  }
+
+  // type === "facilities"
+  return (
+    <>
+      {data.results.map((facility) => (
+        <Marker
+          key={facility.id}
+          position={[facility?.location?.latitude, facility?.location?.longitude]}
+          icon={icon}
+        >
+          <Tooltip direction="bottom" offset={[0, 10]} opacity={0.8} permanent>
+            <h2 className="text-[100%] font-bold text-primary">{facility.name}</h2>
+          </Tooltip>
+          <Popup maxWidth="auto" maxHeight="auto" offset={[0, 150]}>
+            <PopupInfo facility={facility} />
+          </Popup>
+        </Marker>
+      ))}
+    </>
+  );
+};
+
   // RENDER GET DIRECTIONS MARKER
 
   const GetDirectionToFacilitiesMarker = () => {
@@ -356,7 +489,7 @@ const MapComponent = ({ className }) => {
       const control = L.Routing.control({
         waypoints: [
           L.latLng(location.coordinates.lat, location.coordinates.lng),
-          L.latLng(selectedDirection?.latitude, selectedDirection?.longitude),
+          L.latLng(selectedDirection?.location?.latitude, selectedDirection?.location?.longitude), // changed: was selectedDirection?.latitude/longitude
         ],
         show: false,
         fitSelectedRoutes: selectedDirection ? false : true,
@@ -394,7 +527,7 @@ const MapComponent = ({ className }) => {
         .getPlan()
         .setWaypoints([
           L.latLng(location.coordinates.lat, location.coordinates.lng),
-          L.latLng(selectedDirection?.latitude, selectedDirection?.longitude),
+          L.latLng(selectedDirection?.location?.latitude, selectedDirection?.location?.longitude), // changed: was selectedDirection?.latitude/longitude
         ]);
     }, []);
 
@@ -404,8 +537,9 @@ const MapComponent = ({ className }) => {
           <Fragment>
             <Marker
               position={[
-                selectedDirection?.latitude,
-                selectedDirection?.longitude,
+                selectedDirection?.location?.latitude, // changed: was selectedDirection?.latitude
+                selectedDirection?.location?.longitude, // changed: was selectedDirection?.longitude
+
               ]}
               ref={markerRef}
               icon={icon}
@@ -454,8 +588,8 @@ const MapComponent = ({ className }) => {
         // Perform any custom logic on the marker here,
         // such as setting the icon, popup content, etc.
         map.flyTo(
-          [selectedFacility?.latitude, selectedFacility?.longitude],
-          18,
+           [selectedFacility?.location?.latitude, selectedFacility?.location?.longitude], // changed: was selectedFacility?.latitude/longitude
+      18,
           { duration: 4 }
         );
 
@@ -472,8 +606,9 @@ const MapComponent = ({ className }) => {
           <Fragment>
             <Marker
               position={[
-                selectedFacility?.latitude,
-                selectedFacility?.longitude,
+                selectedFacility?.location?.latitude, // changed: was selectedFacility?.latitude
+                selectedFacility?.location?.longitude, // changed: was selectedFacility?.longitude
+
               ]}
               icon={icon}
               ref={markerRef}
@@ -530,7 +665,7 @@ const MapComponent = ({ className }) => {
             url="https://tile.osm.ch/switzerland/{z}/{x}/{y}.png"
           />
 
-          <FacilitiesMarker />
+          <ClusterLayer />
           <SelectedFacilitiesMarker />
           <GetDirectionToFacilitiesMarker />
           <UserMarker

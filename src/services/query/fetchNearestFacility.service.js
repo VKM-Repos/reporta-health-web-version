@@ -1,4 +1,4 @@
-import { authInstanceAxios } from "@config/axiosInstance";
+import { publicInstanceAxios } from "@config/axiosInstance"; // changed: was authInstanceAxios, nearby is public
 
 /**
  * @desc fetches all nearest facilities within user location
@@ -7,30 +7,26 @@ import { authInstanceAxios } from "@config/axiosInstance";
 
 function getPreciseLocation() {
   return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      resolve([pos.coords.latitude, pos.coords.longitude]);
-    });
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve([pos.coords.latitude, pos.coords.longitude]), // changed: success callback now only resolves
+      (err) => reject(err) // changed: error callback properly passed as 2nd arg to getCurrentPosition
+    );
   });
 }
 
 export const fetchNearestFacility = async ({ pageParam = 1 }) => {
-  // const page = 1;
-  let fac_type = 1; // facility type value of 1 is given to hospitals
   try {
     if (typeof window === "object" && "geolocation" in navigator) {
-      // get coords (getPreciseLocation => [lat, lng])
-      let coords = await getPreciseLocation();
+      const [lat, lng] = await getPreciseLocation(); // changed: was "let coords = ...", now destructures lat/lng directly
 
-      const response = await authInstanceAxios.get(
-        `/fetch_nearest_facilities?latitude=${coords[0]}&longitude=${coords[1]}&fac_type=${fac_type}&page=${pageParam}`
+      const response = await publicInstanceAxios.get(
+        `/facilities/nearby/?lat=${lat}&lng=${lng}` // changed: now uses the destructured lat/lng instead of undefined vars
       );
-      return response?.data?.data;
+      return response?.data;
     } else {
-      // eslint-disable-next-line no-console
-      console.log(`Error: Geolocation Not Supported: ${err}`);
+      console.log("Error: Geolocation Not Supported");
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(`Error: Unable to Fetch GeoLocation data: ${err}`);
   }
 };
