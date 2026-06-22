@@ -13,6 +13,7 @@ export const useLogin = () => {
   const { mutate, isLoading, isError, isSuccess, reset, data } = useMutation({
     mutationKey: LOGIN_MUTATION_KEY,
     mutationFn: loginData,
+    retry: false,
     onSuccess: (returnedData) => {
       populateUserInfoAndJwt(returnedData?.data);
       return returnedData;

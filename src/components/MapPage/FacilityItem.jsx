@@ -26,9 +26,9 @@ const FacilityItem = ({
               />
             </span>
             <span className="my-1 flex flex-row font-semibold items-center justify-between text-black/70 text-xs">
-              <span className="mr-1 font-semibold text-black/60">
-                {services[0]}
-              </span>
+             <span className="mr-1 font-semibold text-black/60">
+              {services?.[0] ?? facility_level} {/* changed: was services[0], crashes if services is null; falls back to facility_level */}
+            </span>
               &bull;
               <span className="mx-1 font-semibold text-black/60">
                 {facility_level}
@@ -38,8 +38,8 @@ const FacilityItem = ({
               {street_name ? street_name + ", " : null} {" " + statename}
             </h6>
             <h6 className="my-1 text-primary font-bold text-xs">
-              Open {operational_hours || 24} hours
-            </h6>
+            Open {operational_hours ?? "24"} hours {/* changed: was operational_hours || 24, || treats empty string as falsy; ?? is safer */}
+          </h6>
           </div>
         </div>
       </div>

@@ -192,7 +192,6 @@ export default function Login() {
           </a>{" "}
         </p>
         <Button
-          onClick={formik.handleSubmit}
           className="bg-primary text-white hover:scale-95 ease-out duration-300 hover:bg-opacity-90 rounded-md py-4 px-4"
           type="submit"
         >
