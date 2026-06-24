@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Sidenav from "@components/MapPage/Sidenav";
 import MapHeader from "@components/MapPage/MapHeader";
 // import Map from "@components/SearchPage/Map"
+console.log({ Sidenav, MapHeader });
 
 const MapComponent = dynamic(() => import("@components/MapPage/MapComponent"), {
   ssr: false,
