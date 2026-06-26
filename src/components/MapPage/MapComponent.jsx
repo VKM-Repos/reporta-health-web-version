@@ -27,7 +27,7 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import TooltipWrapper from "@components/Tooltip/TooltipWrapper";
 import { useFacilityClusters } from "@hooks/useFacilityClusters.hook";
 import { getFacilityIcon } from "../../constants/facilityIcons";
-
+import { fetchFacilityById } from "@services/query/fetchFacilityClusters.service";
 
 
 const icon = L.icon({
@@ -49,7 +49,9 @@ const MapComponent = ({ className }) => {
   const [position, setPosition] = useState({});
   const [showReportModal, setShowReportModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
-
+  // In MapComponent, above the component definitions:
+  const isFlyingRef = useRef(false);
+  const flyZoomPendingRef = useRef(false);
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -345,9 +347,13 @@ const MapComponent = ({ className }) => {
 const ClusterLayer = () => {
   const map = useMap();
   const { data, fetchByBounds, fetchNearby } = useFacilityClusters();
+  const [selectedPopupFacility, setSelectedPopupFacility] = useState(null);
   const modeRef = useRef("loading"); // 'nearby' | 'browse'
   const moveTimerRef = useRef(null);
   const zoomTimerRef = useRef(null);
+  const isFlyingRef = useRef(false); // ← add this line with the other refs at the top of ClusterLayer
+  const flyZoomPendingRef = useRef(false); // changed: track that a fly-triggered zoomend is still coming
+  
 
   const getBboxString = () => {
     const bounds = map.getBounds();
@@ -358,49 +364,51 @@ const ClusterLayer = () => {
     fetchByBounds(getBboxString(), map.getZoom());
   }, [map, fetchByBounds]);
 
-  useEffect(() => {
-    // on mount: try geolocation first, fall back to browse mode
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) => {
-          modeRef.current = "nearby";
-          map.setView([coords.latitude, coords.longitude], 13, { animate: true });
-          fetchNearby(coords.latitude, coords.longitude, map.getZoom());
-        },
-        () => {
-          modeRef.current = "browse";
-          handleFetchByBounds();
-        },
-        { timeout: 6000, maximumAge: 60000 }
-      );
-    } else {
-      modeRef.current = "browse";
-      handleFetchByBounds();
-    }
 
-    const handleMoveEnd = () => {
-      modeRef.current = "browse";
-      clearTimeout(moveTimerRef.current);
-      moveTimerRef.current = setTimeout(handleFetchByBounds, 600);
-    };
+useEffect(() => {
+  if ("geolocation" in navigator) {
+     isFlyingRef.current = true;       // changed: set before flyTo so ClusterLayer ignores the events
+      flyZoomPendingRef.current = true;
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        modeRef.current = "nearby";
+        map.setView([coords.latitude, coords.longitude], 13, { animate: true });
+        fetchNearby(coords.latitude, coords.longitude, map.getZoom());
+      },
+      () => {
+        modeRef.current = "browse";
+        handleFetchByBounds();
+      },
+      { timeout: 6000, maximumAge: 0 }
+    );
+  } else {
+    modeRef.current = "browse";
+    handleFetchByBounds();
+  }
 
-    const handleZoomEnd = () => {
-      modeRef.current = "browse";
-      clearTimeout(zoomTimerRef.current);
-      clearTimeout(moveTimerRef.current);
-      zoomTimerRef.current = setTimeout(handleFetchByBounds, 200);
-    };
+const handleMoveEnd = () => {
+  modeRef.current = "browse";
+  clearTimeout(moveTimerRef.current);
+  moveTimerRef.current = setTimeout(handleFetchByBounds, 1000);
+};
 
-    map.on("moveend", handleMoveEnd);
-    map.on("zoomend", handleZoomEnd);
+const handleZoomEnd = () => {
+  modeRef.current = "browse";
+  clearTimeout(zoomTimerRef.current);
+  clearTimeout(moveTimerRef.current);
+  zoomTimerRef.current = setTimeout(handleFetchByBounds, 200);
+};
 
-    return () => {
-      map.off("moveend", handleMoveEnd);
-      map.off("zoomend", handleZoomEnd);
-      clearTimeout(moveTimerRef.current);
-      clearTimeout(zoomTimerRef.current);
-    };
-  }, [map, handleFetchByBounds, fetchNearby]);
+  map.on("moveend", handleMoveEnd);
+  map.on("zoomend", handleZoomEnd);
+
+  return () => {
+    map.off("moveend", handleMoveEnd);
+    map.off("zoomend", handleZoomEnd);
+    clearTimeout(moveTimerRef.current);
+    clearTimeout(zoomTimerRef.current);
+  };
+}, [map, handleFetchByBounds, fetchNearby]);
 
   const handleClusterZoomIn = (lat, lng, bounds) => {
     if (bounds) {
@@ -451,23 +459,34 @@ const ClusterLayer = () => {
     );
   }
 
-  // type === "facilities"
-  return (
-    <>
-      {data.results.map((facility) => (
-        <Marker
-          key={facility.id}
-          position={[facility?.location?.latitude, facility?.location?.longitude]}
-          icon={getFacilityIcon(facility.facility_type)}
-          // icon={icon}
-        >
-          <Tooltip direction="bottom" offset={[0, 10]} opacity={0.8}>
-            <h2 className="text-[100%] font-bold text-primary">{facility.name}</h2>
-          </Tooltip>
-          <Popup maxWidth="auto" maxHeight="auto" offset={[0, 150]}>
-            <PopupInfo facility={facility} />
-          </Popup>
-        </Marker>
+ // type === "facilities"
+
+return (
+  <>
+    {data.results.map((facility) => (
+      <Marker
+        key={facility.id}
+        position={[facility?.location?.latitude, facility?.location?.longitude]}
+        icon={getFacilityIcon(facility.facility_type)}
+        eventHandlers={{
+          click: async () => {
+            const full = await fetchFacilityById(facility.id);
+            setSelectedPopupFacility(full);
+          },
+        }}
+      >
+        <Tooltip direction="bottom" offset={[0, 10]} opacity={0.8}>
+          <h2 className="text-[100%] font-bold text-primary">{facility.name}</h2>
+        </Tooltip>
+        <Popup maxWidth="auto" maxHeight="auto" offset={[0, 150]}>
+          {selectedPopupFacility?.id === facility.id ? (
+            <PopupInfo facility={selectedPopupFacility} />
+          ) : (
+            <div className="p-4 text-sm text-black/50">Loading...</div>
+          )}
+        </Popup>
+      </Marker>
+
       ))}
     </>
   );
@@ -566,8 +585,10 @@ const ClusterLayer = () => {
   // RENDER SELECTED FACILITIES MARKER
   const SelectedFacilitiesMarker = () => {
     const markerRef = useRef(null);
+    const isPanningRef = useRef(false);
     const map = useMap(); // available when component nested inside MapContainer
-
+    isFlyingRef.current = true;        // changed: added
+    flyZoomPendingRef.current = true;  
     const [showReportModal, setShowReportModal] = useState(false);
     const [showReviewModal, setShowReviewModal] = useState(false);
 
@@ -587,23 +608,19 @@ const ClusterLayer = () => {
       setShowReportModal(false);
     };
 
-    useEffect(() => {
-      if (markerRef.current) {
-        // Perform any custom logic on the marker here,
-        // such as setting the icon, popup content, etc.
-        map.flyTo(
-           [selectedFacility?.location?.latitude, selectedFacility?.location?.longitude], // changed: was selectedFacility?.latitude/longitude
-      18,
-          { duration: 4 }
-        );
+   useEffect(() => {
+  if (!selectedFacility) return;
+  
+  isPanningRef.current = true;
+  map.panTo(
+    [selectedFacility?.location?.latitude, selectedFacility?.location?.longitude],
+    { animate: true, duration: 1 }
+  );
 
-        markerRef?.current.openPopup();
-        return () => {
-          markerRef.current = null;
-        };
-      }
-    }, [map]);
-
+  if (markerRef.current) {
+    markerRef.current.openPopup();
+  }
+}, [selectedFacility]); // changed: was [map], now watches selectedFacility
     return (
       <>
         {selectedFacility && (

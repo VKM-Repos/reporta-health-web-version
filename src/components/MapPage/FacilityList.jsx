@@ -1,11 +1,12 @@
 import PulseLoader from "@components/Loader/PulseLoader";
-import { publicInstanceAxios } from "@config/axiosInstance"; // changed: was authInstanceAxios, search is public
+import { publicInstanceAxios } from "@config/axiosInstance";
 import {
   FETCH_NEAREST_FACILITY_KEY,
   SEARCH_FACILITY_KEY,
 } from "@config/queryKeys";
 import { MapContext } from "@context/mapContext";
 import { fetchNearestFacility } from "@services/query/fetchNearestFacility.service";
+import { fetchFacilityById } from "@services/query/fetchFacilityClusters.service"; // changed: added fetchFacilityById import
 import React, { useContext, useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
 import FacilityItem from "./FacilityItem";
@@ -24,12 +25,12 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     enabled: defaultApi,
     cacheTime: 3600000,
     refetchOnWindowFocus: false,
-    getNextPageParam: () => null, // changed: new API returns all results at once
+    getNextPageParam: () => null,
   });
 
-  const searchFacility = async ({ pageParam = 1 }) => { // changed: added pageParam for consistency
-    const result = await publicInstanceAxios.get(`/facilities/?search=${searchTerm}`); // changed: was /search/?query=, switched to publicInstanceAxios
-    return result?.data; // changed: was result?.data?.data, new API doesn't nest under .data
+  const searchFacility = async ({ pageParam = 1 }) => {
+    const result = await publicInstanceAxios.get(`/facilities/?search=${searchTerm}`);
+    return result?.data;
   };
 
   const {
@@ -42,11 +43,11 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     fetchNextPage: searchFetchNextPage,
     refetch: searchRefetch,
   } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchTerm], searchFacility, {
-    enabled: !defaultApi && !!searchTerm, // changed: added !!searchTerm guard so it doesn't fire with empty string
+    enabled: !defaultApi && !!searchTerm,
     cacheTime: 3600000,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      return lastPage?.next ? true : null; // changed: was checking next_page_url, new API uses next (DRF pagination)
+      return lastPage?.next ? true : null;
     },
   });
 
@@ -73,25 +74,27 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
               Array.isArray(data.pages) &&
               data?.pages.length !== 0 ? (
                 data?.pages.map((page) => {
-                  return page?.results?.map((facility) => ( // changed: was result?.data?.map, new API uses results[]
+                  return page?.results?.map((facility) => (
                     <div
                       key={facility.id}
-                      onClick={() => {
-                        setSelectedFacility(facility);
+                      onClick={async () => { // changed: fetch full facility before setting, prevents minimal data flash
+                        const full = await fetchFacilityById(facility.id);
+                        setSelectedFacility(full);
                         toggle();
                         refetch();
                       }}
                     >
                       <FacilityItem
-                        reg_fac_name={facility.name} // changed: was facility.reg_fac_name, new API uses name
+                        reg_fac_name={facility.name}
                         average_rating={facility.average_rating}
-                        facility_level={facility.facility_type} // changed: was facility.facility_level, new API uses facility_type
-                        street_name={facility.address} // changed: was facility.street_name, new API uses address
-                        statename={facility.state} // changed: was facility.statename, new API uses state
-                        operational_hours={facility.operational_hours}
+                        facility_level={facility.facility_type}
+                        street_name={facility.address}
+                        statename={facility.state}
+                        operational_hours={facility.operating_hours} // changed: was facility.operational_hours
                         services={facility.services}
-                        getFacility={() => {
-                          setSelectedFacility(facility);
+                        getFacility={async () => { // changed: fetch full facility before setting
+                          const full = await fetchFacilityById(facility.id);
+                          setSelectedFacility(full);
                         }}
                       />
                     </div>
@@ -155,23 +158,28 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
               Array.isArray(searchData.pages) &&
               searchData?.pages.length !== 0 ? (
                 searchData?.pages.map((page) => {
-                  return page?.results?.map((facility) => ( // changed: was result?.data?.map, new API uses results[]
+                  return page?.results?.map((facility) => (
                     <div
                       key={facility.id}
-                      onClick={() => {
-                        setSelectedFacility(facility);
+                      onClick={async () => { // changed: fetch full facility before setting, prevents minimal data flash
+                        const full = await fetchFacilityById(facility.id);
+                        setSelectedFacility(full);
                         toggle();
                         searchRefetch();
                       }}
                     >
                       <FacilityItem
-                        reg_fac_name={facility.name} // changed: was facility.reg_fac_name, new API uses name
+                        reg_fac_name={facility.name}
                         average_rating={facility.average_rating}
-                        facility_level={facility.facility_type} // changed: was facility.facility_level, new API uses facility_type
-                        street_name={facility.address} // changed: was facility.street_name, new API uses address
-                        statename={facility.state} // changed: was facility.statename, new API uses state
-                        operational_hours={facility.operational_hours}
+                        facility_level={facility.facility_type}
+                        street_name={facility.address}
+                        statename={facility.state}
+                        operational_hours={facility.operating_hours} // changed: was facility.operational_hours
                         services={facility.services}
+                        getFacility={async () => { // changed: added getFacility, fetches full facility before setting
+                          const full = await fetchFacilityById(facility.id);
+                          setSelectedFacility(full);
+                        }}
                         direction={facility}
                       />
                     </div>

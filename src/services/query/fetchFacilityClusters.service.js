@@ -11,3 +11,9 @@ export const fetchFacilityClusters = async (params) => {
   const response = await publicInstanceAxios.get(`/facilities/clusters/?${query}`);
   return response?.data;
 };
+
+// Fetch a single facility by ID
+export const fetchFacilityById = async (id) => {
+  const result = await publicInstanceAxios.get(`/facilities/${id}/`);
+  return result?.data;
+};

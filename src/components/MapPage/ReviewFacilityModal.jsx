@@ -38,6 +38,7 @@ const ReviewFacilityModal = ({
     [FETCH_FACILITY_REVIEWS_KEY, facility.id],
     fetchFacilityReviews,
     {
+      enabled: visible, 
       getNextPageParam: (lastPage, pages) => {
         if (lastPage?.next_page_url) {
           return pages?.length + 1;
