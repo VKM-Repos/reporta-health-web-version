@@ -1,15 +1,19 @@
 import { useToggle } from "@context/sidebarContext";
 import SearchForm from "./SearchForm";
 import FacilityList from "./FacilityList";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import TooltipWrapper from "@components/Tooltip/TooltipWrapper";
+import { MapContext } from "@context/mapContext"; // added: import MapContext
 
 export default function Sidenav() {
   const [searchTerm, setSearchTerm] = useState("");
   const [defaultApi, setDefaultApi] = useState(true);
-
   const [locationInput, setLocationInput] = useState("");
   const [facilityTypeInput, setFacilityTypeInput] = useState("");
+
+  // added: read servicesFilter from context instead of local state
+  // so ClusterLayer in MapComponent can react to chip changes
+  const { servicesFilter, setServicesFilter } = useContext(MapContext);
 
   const { open, ref, toggle } = useToggle();
 
@@ -27,12 +31,14 @@ export default function Sidenav() {
         type="button"
         aria-expanded="false"
         aria-label="Toggle sidenav"
-        // onClick={toggle}
         onMouseDown={() => {
           toggle(),
-            setTimeout(() => {
-              setDefaultApi(true);
-            }, 1000);
+           setTimeout(() => {
+  if (!Object.values(servicesFilter).some(Boolean)) {
+    setDefaultApi(true);
+  }
+}, 1000);
+
         }}
         className="p-2 rounded-md bg-black/40 backdrop-blur fixed top-[9%] -right-[2.9rem] md:-right-[3rem] lg:-right-[3rem] text-black focus:outline-none text-center lg:flex items-center  justify-center cursor-pointer"
       >
@@ -99,6 +105,7 @@ export default function Sidenav() {
           </TooltipWrapper>
         )}
       </button>
+
       <SearchForm
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -107,12 +114,16 @@ export default function Sidenav() {
         facilityTypeInput={facilityTypeInput}
         setFacilityTypeInput={setFacilityTypeInput}
         setDefaultApi={setDefaultApi}
+        servicesFilter={servicesFilter}
+        setServicesFilter={setServicesFilter}
       />
+
       <FacilityList
         defaultApi={defaultApi}
         setDefaultApi={setDefaultApi}
         searchTerm={searchTerm}
         toggle={toggle}
+        servicesFilter={servicesFilter}
       />
     </aside>
   );
