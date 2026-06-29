@@ -6,8 +6,8 @@ export const useQueryClientAndsettings = () => {
     defaultOptions: {
       queries: {
         retry: 1,
-        refetchOnMount: "false",
-        refetchOnWindowFocus: "true",
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
         refetchOnReconnect: "always",
         cacheTime: 3.6e6,
         refetchInterval: 3.6e6, //1 hour

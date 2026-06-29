@@ -9,6 +9,13 @@ const MapContextProvider = ({ children }) => {
     const [searchFacilities, setSearchFacilities] = useState(null);
     const [routingControl, setRoutingControl] = useState(null);
 
+    // added: global services filter so ClusterLayer can react to chip selections
+    const [servicesFilter, setServicesFilter] = useState({
+        has_gbv_services: false,
+        has_sarcs: false,
+        has_fistula_programme: false,
+    });
+
     useEffect(() => {
         setSelectedFacility(selectedFacility)
         setNearestFacilities(nearestFacilities);
@@ -28,7 +35,9 @@ const MapContextProvider = ({ children }) => {
                 selectedDirection,
                 setSelectedDirection,
                 setRoutingControl,
-                routingControl
+                routingControl,
+                servicesFilter,         // added: expose filter state
+                setServicesFilter,      // added: expose filter setter
             }}
         >
             {children}

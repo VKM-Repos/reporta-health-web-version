@@ -6,12 +6,18 @@ import {
 } from "@config/queryKeys";
 import { MapContext } from "@context/mapContext";
 import { fetchNearestFacility } from "@services/query/fetchNearestFacility.service";
-import { fetchFacilityById } from "@services/query/fetchFacilityClusters.service"; // changed: added fetchFacilityById import
+import { fetchFacilityById } from "@services/query/fetchFacilityClusters.service";
 import React, { useContext, useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
 import FacilityItem from "./FacilityItem";
 
-const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
+const FacilityList = ({
+  searchTerm,
+  defaultApi,
+  setDefaultApi,
+  toggle,
+  servicesFilter, // added: receive services filter from Sidebar
+}) => {
   const {
     status,
     data,
@@ -28,8 +34,21 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     getNextPageParam: () => null,
   });
 
+  // added: build query string from searchTerm + active service filter chips
+  const buildSearchUrl = () => {
+    let url = `/facilities/?search=${searchTerm}`;
+
+    // added: append each active service filter as a query param
+    Object.entries(servicesFilter).forEach(([key, value]) => {
+      if (value) url += `&${key}=true`;
+    });
+
+    return url;
+  };
+
   const searchFacility = async ({ pageParam = 1 }) => {
-    const result = await publicInstanceAxios.get(`/facilities/?search=${searchTerm}`);
+    // added: use buildSearchUrl so service filters are included in the request
+    const result = await publicInstanceAxios.get(buildSearchUrl());
     return result?.data;
   };
 
@@ -42,14 +61,18 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
     isFetchingNextPage: searchIsFetchingNextPage,
     fetchNextPage: searchFetchNextPage,
     refetch: searchRefetch,
-  } = useInfiniteQuery([SEARCH_FACILITY_KEY, searchTerm], searchFacility, {
-    enabled: !defaultApi && !!searchTerm,
-    cacheTime: 3600000,
-    refetchOnWindowFocus: false,
-    getNextPageParam: (lastPage) => {
-      return lastPage?.next ? true : null;
-    },
-  });
+  } = useInfiniteQuery(
+    [SEARCH_FACILITY_KEY, searchTerm, servicesFilter], // added: include servicesFilter in query key so react-query refetches when chips change
+    searchFacility,
+    {
+      enabled: !defaultApi && (!!searchTerm || Object.values(servicesFilter).some(Boolean)), // added: also enable if any chip is active even without a search term
+      cacheTime: 3600000,
+      refetchOnWindowFocus: false,
+      getNextPageParam: (lastPage) => {
+        return lastPage?.next ? true : null;
+      },
+    }
+  );
 
   const { setNearestFacilities, setSearchFacilities, setSelectedFacility } =
     useContext(MapContext);
@@ -77,7 +100,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                   return page?.results?.map((facility) => (
                     <div
                       key={facility.id}
-                      onClick={async () => { // changed: fetch full facility before setting, prevents minimal data flash
+                      onClick={async () => {
                         const full = await fetchFacilityById(facility.id);
                         setSelectedFacility(full);
                         toggle();
@@ -90,9 +113,9 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                         facility_level={facility.facility_type}
                         street_name={facility.address}
                         statename={facility.state}
-                        operational_hours={facility.operating_hours} // changed: was facility.operational_hours
+                        operational_hours={facility.operating_hours}
                         services={facility.services}
-                        getFacility={async () => { // changed: fetch full facility before setting
+                        getFacility={async () => {
                           const full = await fetchFacilityById(facility.id);
                           setSelectedFacility(full);
                         }}
@@ -161,7 +184,7 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                   return page?.results?.map((facility) => (
                     <div
                       key={facility.id}
-                      onClick={async () => { // changed: fetch full facility before setting, prevents minimal data flash
+                      onClick={async () => {
                         const full = await fetchFacilityById(facility.id);
                         setSelectedFacility(full);
                         toggle();
@@ -174,9 +197,9 @@ const FacilityList = ({ searchTerm, defaultApi, setDefaultApi, toggle }) => {
                         facility_level={facility.facility_type}
                         street_name={facility.address}
                         statename={facility.state}
-                        operational_hours={facility.operating_hours} // changed: was facility.operational_hours
+                        operational_hours={facility.operating_hours}
                         services={facility.services}
-                        getFacility={async () => { // changed: added getFacility, fetches full facility before setting
+                        getFacility={async () => {
                           const full = await fetchFacilityById(facility.id);
                           setSelectedFacility(full);
                         }}

@@ -287,7 +287,7 @@ const MapComponent = ({ className }) => {
             <Fragment key={facility.id}>
               <Marker
                 position={[facility?.location?.latitude, facility?.location?.longitude]}
-                icon={getFacilityIcon(facility.facility_type)}
+                icon={getFacilityIcon(facility.facility_type, facility)}
                 // icon={icon}
                 ref={markerRef}
               >
@@ -347,12 +347,19 @@ const MapComponent = ({ className }) => {
 const ClusterLayer = () => {
   const map = useMap();
   const { data, fetchByBounds, fetchNearby } = useFacilityClusters();
+  const { servicesFilter } = useContext(MapContext);
   const [selectedPopupFacility, setSelectedPopupFacility] = useState(null);
   const modeRef = useRef("loading"); // 'nearby' | 'browse'
   const moveTimerRef = useRef(null);
   const zoomTimerRef = useRef(null);
-  const isFlyingRef = useRef(false); // ← add this line with the other refs at the top of ClusterLayer
-  const flyZoomPendingRef = useRef(false); // changed: track that a fly-triggered zoomend is still coming
+  const isFlyingRef = useRef(false);
+  const flyZoomPendingRef = useRef(false);
+  const servicesFilterRef = useRef(servicesFilter);
+  const coordsRef = useRef(null);
+  const lastBboxFetchRef = useRef("");
+  const lastNearbyFetchRef = useRef("");
+  const prevFilterRef = useRef("");
+  const filterTimerRef = useRef(null);
   
 
   const getBboxString = () => {
@@ -360,8 +367,14 @@ const ClusterLayer = () => {
     return `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`;
   };
 
+  useEffect(() => { servicesFilterRef.current = servicesFilter; }, [servicesFilter]);
+
   const handleFetchByBounds = useCallback(() => {
-    fetchByBounds(getBboxString(), map.getZoom());
+    const bbox = getBboxString();
+    const url = bbox + ":" + map.getZoom() + ":" + JSON.stringify(servicesFilterRef.current);
+    if (lastBboxFetchRef.current === url) return;
+    lastBboxFetchRef.current = url;
+    fetchByBounds(bbox, map.getZoom(), servicesFilterRef.current);
   }, [map, fetchByBounds]);
 
 
@@ -372,8 +385,9 @@ useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         modeRef.current = "nearby";
+        coordsRef.current = { lat: coords.latitude, lng: coords.longitude };
         map.setView([coords.latitude, coords.longitude], 13, { animate: true });
-        fetchNearby(coords.latitude, coords.longitude, map.getZoom());
+        fetchNearby(coords.latitude, coords.longitude, map.getZoom(), 10, servicesFilterRef.current);
       },
       () => {
         modeRef.current = "browse";
@@ -409,6 +423,24 @@ const handleZoomEnd = () => {
     clearTimeout(zoomTimerRef.current);
   };
 }, [map, handleFetchByBounds, fetchNearby]);
+
+  // re-fetch when chips change
+  useEffect(() => {
+    const filterKey = JSON.stringify(servicesFilter);
+    if (filterKey === prevFilterRef.current) return;
+    prevFilterRef.current = filterKey;
+    clearTimeout(filterTimerRef.current);
+    filterTimerRef.current = setTimeout(() => {
+      if (modeRef.current === "nearby" && coordsRef.current) {
+        const url = "nearby:" + coordsRef.current.lat + ":" + coordsRef.current.lng + ":" + filterKey;
+        if (lastNearbyFetchRef.current === url) return;
+        lastNearbyFetchRef.current = url;
+        fetchNearby(coordsRef.current.lat, coordsRef.current.lng, map.getZoom(), 10, servicesFilterRef.current);
+        return;
+      }
+      handleFetchByBounds();
+    }, 300);
+  }, [servicesFilter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClusterZoomIn = (lat, lng, bounds) => {
     if (bounds) {
@@ -467,7 +499,7 @@ return (
       <Marker
         key={facility.id}
         position={[facility?.location?.latitude, facility?.location?.longitude]}
-        icon={getFacilityIcon(facility.facility_type)}
+        icon={getFacilityIcon(facility.facility_type, facility)}
         eventHandlers={{
           click: async () => {
             const full = await fetchFacilityById(facility.id);
@@ -631,7 +663,7 @@ return (
                 selectedFacility?.location?.longitude, // changed: was selectedFacility?.longitude
 
               ]}
-              icon={getFacilityIcon(selectedFacility.facility_type)}
+              icon={getFacilityIcon(selectedFacility.facility_type, selectedFacility)}
               // icon={icon}
               ref={markerRef}
             >

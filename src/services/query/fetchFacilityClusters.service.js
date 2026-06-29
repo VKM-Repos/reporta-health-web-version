@@ -1,15 +1,22 @@
 import { publicInstanceAxios } from "@config/axiosInstance";
 
-/**
- * @desc fetches facility clusters or individual facilities for map display
- * @param {Object} params - either { bbox, zoom, ...filters } for browse mode
- *                           or { lat, lng, zoom, radius_km, ...filters } for nearby mode
- * @returns {Object} { type: 'clusters' | 'facilities', count, results }
- */
+// Deduplicate identical in-flight requests — collapses React re-render storms into one fetch
+const inFlight = new Map();
+
 export const fetchFacilityClusters = async (params) => {
   const query = new URLSearchParams(params).toString();
-  const response = await publicInstanceAxios.get(`/facilities/clusters/?${query}`);
-  return response?.data;
+  const url = `/facilities/clusters/?${query}`;
+
+  if (inFlight.has(url)) {
+    return inFlight.get(url);
+  }
+
+  const promise = publicInstanceAxios.get(url)
+    .then(res => res?.data)
+    .finally(() => inFlight.delete(url));
+
+  inFlight.set(url, promise);
+  return promise;
 };
 
 // Fetch a single facility by ID
