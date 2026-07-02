@@ -1,5 +1,5 @@
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
-import { authInstanceAxios } from "@config/axiosInstance";
+import { publicInstanceAxios } from "@config/axiosInstance";
 import { FETCH_FACILITY_REVIEWS_KEY } from "@config/queryKeys";
 import React, { useEffect, useState } from "react";
 import { useInfiniteQuery } from "react-query";
@@ -16,9 +16,9 @@ const ReviewFacilityModal = ({
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [facilityReviewData, setfacilityReviewData] = useState({});
 
-  const fetchFacilityReviews = async () => {
-    const result = await authInstanceAxios.get(
-      `/review/?facility_id=${facility.id}`
+  const fetchReviews = async ({ pageParam = 1 }) => {
+    const result = await publicInstanceAxios.get(
+      `/facilities/${facility.id}/reviews/?page=${pageParam}`
     );
     return result?.data;
   };
@@ -36,21 +36,12 @@ const ReviewFacilityModal = ({
     refetch,
   } = useInfiniteQuery(
     [FETCH_FACILITY_REVIEWS_KEY, facility.id],
-    fetchFacilityReviews,
+    fetchReviews,
     {
       enabled: visible, 
       getNextPageParam: (lastPage, pages) => {
-        if (lastPage?.next_page_url) {
-          return pages?.length + 1;
-        } else refetch;
+        return lastPage?.next ? pages.length + 1 : undefined;
       },
-      getFetchMore: (lastPage, pages) => {
-        if (lastPage.length > 0) {
-          return pages.length + 1;
-        }
-        return false;
-      },
-      // enabled: false,
     }
   );
 
@@ -124,7 +115,7 @@ const ReviewFacilityModal = ({
                   </svg>
                 </span>
                 <span className="flex space-x-2 items-center">
-                  <p>({data?.pages[0]?.data.length}+)</p>
+                  <p>({facility?.review_count ?? data?.pages[0]?.count ?? 0})</p>
                   <span
                     onClick={() => {
                       setShowWriteReview(true);
@@ -144,7 +135,7 @@ const ReviewFacilityModal = ({
                 Total Reviews
               </span>
               <span className="lowercase font-extrabold text-[200%]">
-                {data?.pages[0]?.data.length}
+                {data?.pages[0]?.count ?? 0}
               </span>
             </div>
             <div className="w-full h-full border-r border-black/20"></div>
@@ -174,15 +165,15 @@ const ReviewFacilityModal = ({
                 <>
                   {data?.pages &&
                   Array.isArray(data.pages) &&
-                  data?.pages.length !== 0 ? (
+                  data?.pages.some((p) => p?.results?.length > 0) ? (
                     data?.pages.map((result) => {
-                      return result?.data?.map((facilityReview) => (
+                      return result?.results?.map((facilityReview) => (
                         <Reviewers
                           key={facilityReview.id}
-                          id={facilityReview.id}
                           rating={facilityReview.rating}
-                          content={facilityReview.content}
-                          created_at={facilityReview.created_at.slice(0, 10)}
+                          body={facilityReview.body}
+                          created_at={facilityReview.created_at?.slice(0, 10)}
+                          username={facilityReview.is_anonymous ? 'Anonymous' : (facilityReview.user?.full_name || facilityReview.user?.username || 'User')}
                         />
                       ));
                     })

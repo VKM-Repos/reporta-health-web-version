@@ -8,12 +8,14 @@ import { MapContext } from "@context/mapContext"; // added: import MapContext
 export default function Sidenav() {
   const [searchTerm, setSearchTerm] = useState("");
   const [defaultApi, setDefaultApi] = useState(true);
-  const [locationInput, setLocationInput] = useState("");
-  const [facilityTypeInput, setFacilityTypeInput] = useState("");
 
-  // added: read servicesFilter from context instead of local state
-  // so ClusterLayer in MapComponent can react to chip changes
-  const { servicesFilter, setServicesFilter } = useContext(MapContext);
+  // changed: locationInput/facilityTypeInput now also shared via context
+  // so ClusterLayer in MapComponent can react to them, same as servicesFilter
+  const {
+    servicesFilter, setServicesFilter,
+    locationInput, setLocationInput,
+    facilityTypeInput, setFacilityTypeInput,
+  } = useContext(MapContext);
 
   const { open, ref, toggle } = useToggle();
 
@@ -124,6 +126,8 @@ export default function Sidenav() {
         searchTerm={searchTerm}
         toggle={toggle}
         servicesFilter={servicesFilter}
+        locationInput={locationInput}
+        facilityTypeInput={facilityTypeInput}
       />
     </aside>
   );

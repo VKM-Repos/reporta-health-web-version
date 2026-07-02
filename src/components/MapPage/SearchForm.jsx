@@ -56,6 +56,22 @@ const SearchForm = ({
     { label: "Fistula", key: "has_fistula_programme" },
   ];
 
+  // added: reset all active filters (chips, location, facility type) back to defaults
+  const clearFilters = () => {
+    setLocationInput("");
+    setFacilityTypeInput("");
+    setServicesFilter({
+      has_gbv_services: false,
+      has_sarcs: false,
+      has_fistula_programme: false,
+    });
+  };
+
+  const hasActiveFilters =
+    !!locationInput ||
+    !!facilityTypeInput ||
+    Object.values(servicesFilter).some(Boolean);
+
   const submitSearch = (event) => {
     event.preventDefault();
     setSearchTerm(searchTerm);
@@ -106,7 +122,8 @@ const SearchForm = ({
               type="button"  // added: prevent form submit on chip click
               onClick={() => {
                 toggleServiceChip(key);
-                setDefaultApi(false); // added: trigger search mode when a chip is toggled
+                // only switch to search mode if there's a search term
+                // otherwise keep defaultApi=true so nearby endpoint is used with service filters
               }}
               className={`text-xs px-3 py-1 rounded-full border font-semibold transition-all duration-200
                 ${
@@ -119,6 +136,19 @@ const SearchForm = ({
             </button>
           ))}
         </div>
+
+        {/* added: clear all active filters (chips, location, facility type) */}
+        {hasActiveFilters && (
+          <div className="col-span-2 pt-1">
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="text-xs px-3 py-1 rounded-full border font-semibold text-black/50 border-black/20 hover:border-red-400 hover:text-red-500 transition-all duration-200"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
 
         {/* submit button — unchanged */}
         <button

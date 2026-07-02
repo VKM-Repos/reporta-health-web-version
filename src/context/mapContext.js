@@ -15,6 +15,9 @@ const MapContextProvider = ({ children }) => {
         has_sarcs: false,
         has_fistula_programme: false,
     });
+    // added: shared location/facility-type filters so ClusterLayer can react to them too
+    const [locationInput, setLocationInput] = useState("");
+    const [facilityTypeInput, setFacilityTypeInput] = useState("");
 
     useEffect(() => {
         setSelectedFacility(selectedFacility)
@@ -38,6 +41,10 @@ const MapContextProvider = ({ children }) => {
                 routingControl,
                 servicesFilter,         // added: expose filter state
                 setServicesFilter,      // added: expose filter setter
+                locationInput,          // added: expose location filter
+                setLocationInput,
+                facilityTypeInput,      // added: expose facility type filter
+                setFacilityTypeInput,
             }}
         >
             {children}

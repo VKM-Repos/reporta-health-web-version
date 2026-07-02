@@ -1,7 +1,8 @@
-import { authInstanceAxios } from "@config/axiosInstance";
+import { publicInstanceAxios } from "@config/axiosInstance";
 
-
-export const fetchFacilityReviews = async () => {
-    // const result = await authInstanceAxios.get('https://api.reportahealth.org/v1/facility_count_in_all_states')
-    return result
-}
+export const fetchFacilityReviews = async ({ pageParam = 1, facilityId }) => {
+  const result = await publicInstanceAxios.get(
+    `/facilities/${facilityId}/reviews/?page=${pageParam}`
+  );
+  return result?.data;
+};

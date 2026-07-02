@@ -10,7 +10,15 @@ const FacilityItem = ({
   operational_hours,
   services,
   getFacility,
+  has_sarcs,
+  has_gbv_services,
+  has_fistula_programme,
 }) => {
+  const SERVICE_BADGES = [
+    { key: has_sarcs,             label: "SARC",            bg: "bg-red-100",    text: "text-red-700" },
+    { key: has_gbv_services,      label: "GBV Services",    bg: "bg-pink-100",   text: "text-pink-700" },
+    { key: has_fistula_programme, label: "Fistula",         bg: "bg-purple-100", text: "text-purple-700" },
+  ].filter(b => b.key);
   return (
     <div className="w-full lg:h-fit bg-transparent hover:bg-black/20 border-b hover:rounded-md border-black/20 px-2 py-3 flex items-center lg:transition ease-in-out lg:hover:scale-95 duration-300 cursor-pointer overflow-x-hidden">
       <div onClick={getFacility} className=" w-full">
@@ -25,6 +33,15 @@ const FacilityItem = ({
                 rating={Math.round(average_rating)}
               />
             </span>
+            {SERVICE_BADGES.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {SERVICE_BADGES.map(({ label, bg, text }) => (
+                  <span key={label} className={`text-[60%] ${bg} ${text} px-2 py-0.5 rounded-full font-bold`}>
+                    {label}
+                  </span>
+                ))}
+              </div>
+            )}
             <span className="my-1 flex flex-row font-semibold items-center justify-between text-black/70 text-xs">
              <span className="mr-1 font-semibold text-black/60">
 

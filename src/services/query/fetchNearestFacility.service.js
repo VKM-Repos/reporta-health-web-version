@@ -14,13 +14,13 @@ function getPreciseLocation() {
   });
 }
 
-export const fetchNearestFacility = async ({ pageParam = 1 }) => {
+export const fetchNearestFacility = async ({ pageParam = 1, meta }) => {
   try {
     if (typeof window === "object" && "geolocation" in navigator) {
       const [lat, lng] = await getPreciseLocation(); // changed: was "let coords = ...", now destructures lat/lng directly
 
       const response = await publicInstanceAxios.get(
-        `/facilities/nearby/?lat=${lat}&lng=${lng}` // changed: now uses the destructured lat/lng instead of undefined vars
+        `/facilities/nearby/?lat=${lat}&lng=${lng}${meta?.serviceParams || ""}` // added: append service/location filters
       );
       return response?.data;
     } else {

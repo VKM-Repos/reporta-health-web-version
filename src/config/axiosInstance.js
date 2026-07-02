@@ -44,7 +44,7 @@ const publicInstanceAxios = axios.create(instanceSettings);
 authInstanceAxios.interceptors.request.use(
   (config) => {
     const token =
-      useUserCredentialsStore.getState()?.userDetails?.accessToken;
+      useUserCredentialsStore.getState()?.userDetails?.access;
 
     if (token) {
       config.headers = config.headers ?? {};
