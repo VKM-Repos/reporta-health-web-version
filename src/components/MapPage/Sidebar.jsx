@@ -6,9 +6,11 @@ import { MapContext } from "@context/mapContext";
 const Sidebar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [defaultApi, setDefaultApi] = useState(true);
-  const [locationInput, setLocationInput] = useState("");
-  const [facilityTypeInput, setFacilityTypeInput] = useState("");
-  const { servicesFilter, setServicesFilter } = useContext(MapContext); // use shared context instead of local state
+  const {
+    servicesFilter, setServicesFilter,
+    locationInput, setLocationInput,           // changed: now from shared context
+    facilityTypeInput, setFacilityTypeInput,   // changed: now from shared context
+  } = useContext(MapContext);
 
   return (
     <div className="pt-[3rem] h-fit relative grid grid-cols-1 backdrop-blur text-black justify-items-stretch">
@@ -27,7 +29,9 @@ const Sidebar = () => {
         defaultApi={defaultApi}
         setDefaultApi={setDefaultApi}
         searchTerm={searchTerm}
-        servicesFilter={servicesFilter}  // added: FacilityList uses this to build query params
+        servicesFilter={servicesFilter}
+        locationInput={locationInput}
+        facilityTypeInput={facilityTypeInput}
       />
     </div>
   );

@@ -149,26 +149,42 @@ export default function PopupInfo({ facility, showReportModal, openReviewModal }
           <span className="text-[85%] break-words">{facility?.services || "N/A"}</span>
         </div>
 
-        {/* added: GBV profile detail section — only renders if facility has GBV services */}
         {facility?.has_gbv_services && facility?.gbv_profile && (
           <div className="grid grid-cols-1 gap-2 py-2 border-t border-black/20">
-            <span className="text-[70%] text-primary font-bold">GBV Services Detail</span>
-            {/* added: show target group if available */}
-            {facility.gbv_profile?.target_group && (
-              <span className="text-[80%] text-black/70">
-                Target group: <span className="font-semibold capitalize">{facility.gbv_profile.target_group.replace(/_/g, " ")}</span>
-              </span>
+            <span className="text-[70%] text-primary font-bold">GBV Services</span>
+            {facility.gbv_profile?.service_types?.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {facility.gbv_profile.service_types.map((stype) => {
+                  const CHIP_STYLES = {
+                    health:          { bg: "bg-blue-100",   text: "text-blue-700",   label: "Health" },
+                    psychosocial:    { bg: "bg-purple-100", text: "text-purple-700", label: "Psychosocial" },
+                    legal_aid:       { bg: "bg-yellow-100", text: "text-yellow-700", label: "Legal Aid" },
+                    police_security: { bg: "bg-gray-100",   text: "text-gray-700",   label: "Police/Security" },
+                    shelter:         { bg: "bg-orange-100", text: "text-orange-700", label: "Shelter" },
+                    economic:        { bg: "bg-green-100",  text: "text-green-700",  label: "Economic Support" },
+                  };
+                  const style = CHIP_STYLES[stype] || { bg: "bg-gray-100", text: "text-gray-600", label: stype };
+                  return (
+                    <span key={stype} className={`text-[65%] ${style.bg} ${style.text} px-2 py-0.5 rounded-full font-bold`}>
+                      {style.label}
+                    </span>
+                  );
+                })}
+              </div>
             )}
-            {/* added: show organisation type if available */}
-            {facility.gbv_profile?.organisation_type && (
+            {facility.gbv_profile?.organisation_type && facility.gbv_profile.organisation_type !== "other" && (
               <span className="text-[80%] text-black/70">
                 Organisation: <span className="font-semibold capitalize">{facility.gbv_profile.organisation_type.replace(/_/g, " ")}</span>
               </span>
             )}
-            {/* added: show contact person if available */}
-            {facility.gbv_profile?.contact_person && (
+            {facility.gbv_profile?.contact_person && !["adults and children", "children", "adults", "women", "men"].includes(facility.gbv_profile.contact_person.toLowerCase()) && (
               <span className="text-[80%] text-black/70">
                 Contact: <span className="font-semibold">{facility.gbv_profile.contact_person}</span>
+              </span>
+            )}
+            {facility.gbv_profile?.accessibility_info && (
+              <span className="text-[80%] text-black/70">
+                Hours: <span className="font-semibold">{facility.gbv_profile.accessibility_info}</span>
               </span>
             )}
           </div>

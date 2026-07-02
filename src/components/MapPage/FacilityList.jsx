@@ -10,14 +10,27 @@ import { fetchFacilityById } from "@services/query/fetchFacilityClusters.service
 import React, { useContext, useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
 import FacilityItem from "./FacilityItem";
+import { normalizeState, normalizeFacilityType } from "@libs/normalizeFilters";
 
 const FacilityList = ({
   searchTerm,
   defaultApi,
   setDefaultApi,
   toggle,
-  servicesFilter, // added: receive services filter from Sidebar
+  servicesFilter,    // added: receive services filter from Sidebar
+  locationInput,     // added: state/location filter
+  facilityTypeInput, // added: facility type filter
 }) => {
+  const buildServiceParams = () => {
+    let params = "";
+    Object.entries(servicesFilter).forEach(([key, value]) => {
+      if (value) params += `&${key}=true`;
+    });
+    if (locationInput) params += `&state=${encodeURIComponent(locationInput)}`;
+    if (facilityTypeInput) params += `&facility_type=${encodeURIComponent(facilityTypeInput)}`;
+    return params;
+  };
+
   const {
     status,
     data,
@@ -27,22 +40,29 @@ const FacilityList = ({
     isFetchingNextPage,
     fetchNextPage,
     refetch,
-  } = useInfiniteQuery([FETCH_NEAREST_FACILITY_KEY], fetchNearestFacility, {
-    enabled: defaultApi,
-    cacheTime: 3600000,
-    refetchOnWindowFocus: false,
-    getNextPageParam: () => null,
-  });
+  } = useInfiniteQuery(
+    [FETCH_NEAREST_FACILITY_KEY, servicesFilter, locationInput, facilityTypeInput],
+    ({ pageParam = 1 }) => fetchNearestFacility({ pageParam, meta: { serviceParams: buildServiceParams() } }),
+    {
+      enabled: defaultApi,
+      cacheTime: 3600000,
+      refetchOnWindowFocus: false,
+      getNextPageParam: () => null,
+    }
+  );
 
   // added: build query string from searchTerm + active service filter chips
   const buildSearchUrl = () => {
     let url = `/facilities/?search=${searchTerm}`;
-
-    // added: append each active service filter as a query param
     Object.entries(servicesFilter).forEach(([key, value]) => {
       if (value) url += `&${key}=true`;
     });
-
+    if (locationInput) {
+      url += `&state=${encodeURIComponent(normalizeState(locationInput))}`;
+    }
+    if (facilityTypeInput) {
+      url += `&facility_type=${encodeURIComponent(normalizeFacilityType(facilityTypeInput))}`;
+    }
     return url;
   };
 
@@ -62,7 +82,7 @@ const FacilityList = ({
     fetchNextPage: searchFetchNextPage,
     refetch: searchRefetch,
   } = useInfiniteQuery(
-    [SEARCH_FACILITY_KEY, searchTerm, servicesFilter], // added: include servicesFilter in query key so react-query refetches when chips change
+    [SEARCH_FACILITY_KEY, searchTerm, servicesFilter, locationInput, facilityTypeInput],
     searchFacility,
     {
       enabled: !defaultApi && (!!searchTerm || Object.values(servicesFilter).some(Boolean)), // added: also enable if any chip is active even without a search term
@@ -115,6 +135,9 @@ const FacilityList = ({
                         statename={facility.state}
                         operational_hours={facility.operating_hours}
                         services={facility.services}
+                        has_sarcs={facility.has_sarcs}
+                        has_gbv_services={facility.has_gbv_services}
+                        has_fistula_programme={facility.has_fistula_programme}
                         getFacility={async () => {
                           const full = await fetchFacilityById(facility.id);
                           setSelectedFacility(full);

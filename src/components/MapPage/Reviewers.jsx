@@ -1,7 +1,7 @@
 import React from "react";
 import StarRatings from "./StarRatings";
 
-const Reviewers = ({ rating, id, content, created_at }) => {
+const Reviewers = ({ rating, body, created_at, username }) => {
   return (
     <section className="flex flex-col items-start justify-start my-1 w-full">
       <div className="flex items-start justify-center space-x-2">
@@ -25,7 +25,7 @@ const Reviewers = ({ rating, id, content, created_at }) => {
         </span>
         <div className="flex flex-col items-start justify-start">
           {/* user id */}
-          <p className="font-semibold text-black/70 text-[80%]">User #{id}</p>
+          <p className="font-semibold text-black/70 text-[80%]">{username || 'User'}</p>
           {/* user rating */}
           <StarRatings className="my-1 w-[5%]" rating={rating} />
           {/* date */}
@@ -33,7 +33,7 @@ const Reviewers = ({ rating, id, content, created_at }) => {
         </div>
       </div>
       <p className="w-full break-words font-light text-[90%] my-1 border-b py-2 border-black/20 ">
-        {content}
+        {body}
       </p>
     </section>
   );
